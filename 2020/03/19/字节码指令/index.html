@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>OvO</title>
+  <title>字节码指令 | OvO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="OvO">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="字节码指令简介">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字节码指令">
+<meta property="og:url" content="http://yoursite.com/2020/03/19/%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4/index.html">
 <meta property="og:site_name" content="OvO">
+<meta property="og:description" content="字节码指令简介">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://q7fqr2en9.bkt.clouddn.com/demo.png">
+<meta property="og:image" content="http://q7fqr2en9.bkt.clouddn.com/demoAnalyseComment.png">
+<meta property="article:published_time" content="2020-03-19T09:36:10.000Z">
+<meta property="article:modified_time" content="2020-03-19T10:26:55.051Z">
 <meta property="article:author" content="Qin">
+<meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://q7fqr2en9.bkt.clouddn.com/demo.png">
   
     <link rel="alternative" href="/atom.xml" title="OvO" type="application/atom+xml">
   
@@ -142,16 +150,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-字节码指令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-字节码指令" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/19/%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4/">字节码指令</a>
+    <h1 class="article-title" itemprop="name">
+      字节码指令
     </h1>
   
 
@@ -165,11 +171,171 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>字节码指令简介</p>
-        
-          <a class="article-more-a" href="/2020/03/19/%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4/#more">more >></a>
-        
+<a id="more"></a>
+<div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#zi-jie-ma-yu-shu-ju-lei-xing">字节码与数据类型</a></li>
+<li><a href="#zhi-ling-lei-xing">指令类型</a><ul>
+<li><a href="#jia-zai-he-cun-chu-zhi-ling">加载和存储指令</a></li>
+<li><a href="#yun-suan-zhi-ling">运算指令</a></li>
+<li><a href="#lei-xing-zhuan-huan-zhi-ling">类型转换指令</a></li>
+<li><a href="#dui-xiang-chuang-jian-yu-fang-wen-zhi-ling">对象创建与访问指令</a></li>
+<li><a href="#cao-zuo-shu-zhan-guan-li-zhi-ling">操作数栈管理指令</a></li>
+<li><a href="#kong-zhi-zhuan-yi-zhi-ling">控制转移指令</a></li>
+<li><a href="#fang-fa-diao-yong-he-fan-hui-zhi-ling-chong-yao">方法调用和返回指令(重要)</a></li>
+<li><a href="#yi-chang-chu-li-zhi-ling">异常处理指令</a></li>
+<li><a href="#tong-bu-zhi-ling">同步指令</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<p>Opcode(1 byte)+Operands(0 or more bytes) 面向操作数栈，无寄存器，大多数指令只有一个操作码。</p>
+<h2><span id="zi-jie-ma-yu-shu-ju-lei-xing">字节码与数据类型</span><a href="#zi-jie-ma-yu-shu-ju-lei-xing" class="header-anchor">#</a></h2><p>在Java虚拟机指令集中，大多数的指令都包含了其操作所对应的数据类型信息。</p>
+<table>
+<thead>
+<tr>
+<th>字母前缀</th>
+<th>代表类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>i</td>
+<td>int</td>
+</tr>
+<tr>
+<td>l</td>
+<td>long</td>
+</tr>
+<tr>
+<td>s</td>
+<td>short</td>
+</tr>
+<tr>
+<td>b</td>
+<td>byte</td>
+</tr>
+<tr>
+<td>c</td>
+<td>char</td>
+</tr>
+<tr>
+<td>f</td>
+<td>float</td>
+</tr>
+<tr>
+<td>d</td>
+<td>double</td>
+</tr>
+<tr>
+<td>a</td>
+<td>reference</td>
+</tr>
+</tbody></table>
+<p>由于虚拟机操作码长度只有一个字节，指令集的数据有限。因此虚拟机只提供了有限的指令集来支持所有的数据类型。<br>如load 操作， 只有iload、lload、fload、dload、aload用来支持int、long、float、double、reference 类型的入栈，而对于boolean 、byte、short 和char 则没有专门的指令来进行运算。编译器会在编译期或运行期将byte 和 short 类型的数据带符号扩展为int类型的数据，将boolean 和 char 类型的数据零位扩展为相应的int 类型数据。与之类似，在处理boolean、byte、short 和 char 类型的数组时，也会发生转换。因此，大多数对于boolean、byte、short 和char 类型数据的擦操作，实际上都是使用相应的int 类型作为运算类型。</p>
+<h2><span id="zhi-ling-lei-xing">指令类型</span><a href="#zhi-ling-lei-xing" class="header-anchor">#</a></h2><p>字节码指令基本上可以分为以下几类：加载和存储指令，运算指令，类型转换指令，对象创建与访问指令，操作数栈管理指令，控制转移指令，方法调用和返回指令，（异常处理指令），同步指令</p>
+<h3><span id="jia-zai-he-cun-chu-zhi-ling">加载和存储指令</span><a href="#jia-zai-he-cun-chu-zhi-ling" class="header-anchor">#</a></h3><p>用于将数据从栈帧的局部变量表和操作数栈之间来回传输。  </p>
+<ol>
+<li>将一个局部变量加载到操作数栈的指令包括：iload,iload_&lt;n&gt;，lload、lload_&lt;n&gt;、float、 fload_&lt;n&gt;、dload、dload_&lt;n&gt;，aload、aload_&lt;n&gt;。  </li>
+<li>将一个数值从操作数栈存储到局部变量表的指令：istore,istore_&lt;n&gt;,lstore,lstore_&lt;n&gt;,fstore,fstore_&lt;n&gt;,dstore,dstore_&lt;n&gt;,astore,astore_&lt;n&gt;  </li>
+<li>将常量加载到操作数栈的指令：bipush,sipush,ldc,ldc_w,ldc2_w,aconst_null,iconst_ml,iconst_&lt;i&gt;,lconst_&lt;l&gt;,fconst_&lt;f&gt;,dconst_&lt;d&gt;  </li>
+<li>局部变量表的访问索引指令:wide  </li>
+</ol>
+<p>一部分以尖括号结尾的指令代表了一组指令，如iload_&lt;i&gt;，代表了iload_0,iload_1,iload_2,iload_3，这几组特殊指令将操作数隐含在指令中，不需要进行取操作数的动作。  </p>
+<h3><span id="yun-suan-zhi-ling">运算指令</span><a href="#yun-suan-zhi-ling" class="header-anchor">#</a></h3><p>算术指令用于对两个操作数栈上的值进行某种特定运算，并把结果重新存入到操作栈顶。</p>
+<ol>
+<li>加法指令:iadd,ladd,fadd,dadd  </li>
+<li>减法指令:isub,lsub,fsub,dsub  </li>
+<li>乘法指令:imul,lmul,fmul,dmul  </li>
+<li>除法指令:idiv,ldiv,fdiv,ddiv  </li>
+<li>求余指令:irem,lrem,frem,drem  </li>
+<li>取反指令:ineg,leng,fneg,dneg  </li>
+<li>位移指令:ishl,ishr,iushr,lshl,lshr,lushr  </li>
+<li>按位或指令:ior,lor  </li>
+<li>按位与指令:iand,land  </li>
+<li>按位异或指令:ixor,lxor  </li>
+<li>局部变量自增指令:iinc  </li>
+<li>比较指令:dcmpg,dcmpl,fcmpg,fcmpl,lcmp  </li>
+</ol>
+<p>Java虚拟机没有明确规定整型数据溢出的情况，但规定了处理整型数据时，只有除法和求余指令出现除数为0时会导致虚拟机抛出异常。<br>Java虚拟机要求在浮点数运算的时候，所有结果否必须舍入到适当的精度，如果有两种可表示的形式与该值一样，会优先选择最低有效位为零的。称之为最接近数舍入模式。<br>浮点数向整数转换的时候，Java虚拟机使用IEEE 754标准中的向零舍入模式，这种模式舍入的结果会导致数字被截断，所有小数部分的有效字节会被丢掉。  </p>
+<h3><span id="lei-xing-zhuan-huan-zhi-ling">类型转换指令</span><a href="#lei-xing-zhuan-huan-zhi-ling" class="header-anchor">#</a></h3><p>类型转换指令将两种Java虚拟机数值类型相互转换，这些操作一般用于实现用户代码的显式类型转换操作。  </p>
+<p>JVM直接就支持<strong>宽化</strong>类型转换(小范围类型向大范围类型转换)：</p>
+<ol>
+<li>int类型到long,float,double类型</li>
+<li>long类型到float,double类型  </li>
+<li>float到double类型  </li>
+</ol>
+<p>但在处理<strong>窄化</strong>类型转换时，必须显式使用转换指令来完成，这些指令包括：i2b、i2c、i2s、l2i、f2i、f2l、d2i、d2l和 d2f。<br>将int 或 long 窄化为整型T的时候，仅仅简单的把除了低位的N个字节以外的内容丢弃，N是T的长度。这有可能导致转换结果与输入值有不同的正负号。<br>在将一个浮点值窄化为整数类型T（仅限于 int 和 long 类型），将遵循以下转换规则：  </p>
+<ol>
+<li>如果浮点值是NaN ， 呐转换结果就是int 或 long 类型的0  </li>
+<li>如果浮点值不是无穷大，浮点值使用IEEE 754 的向零舍入模式取整，获得整数v， 如果v在T表示范围之内，那就过就是v  </li>
+<li>否则，根据v的符号， 转换为T 所能表示的最大或者最小正数  </li>
+</ol>
+<h3><span id="dui-xiang-chuang-jian-yu-fang-wen-zhi-ling">对象创建与访问指令</span><a href="#dui-xiang-chuang-jian-yu-fang-wen-zhi-ling" class="header-anchor">#</a></h3><p>虽然类实例和数组都是对象，Java虚拟机对类实例和数组的创建与操作使用了不同的字节码指令。  </p>
+<ol>
+<li>创建实例的指令:new  </li>
+<li>创建数组的指令:newarray,anewarray,multianewarray  </li>
+<li>访问字段指令:getfield,putfield,getstatic,putstatic  </li>
+<li>把数组元素加载到操作数栈指令:baload,caload,saload,iaload,laload,faload,daload,aaload  </li>
+<li>将操作数栈的数值存储到数组元素中执行:bastore,castore,castore,sastore,iastore,fastore,dastore,aastore  </li>
+<li>取数组长度指令:arraylength JVM支持方法级同步和方法内部一段指令序列同步，这两种都是通过moniter实现的。  </li>
+<li>检查实例类型指令:instanceof,checkcast  </li>
+</ol>
+<h3><span id="cao-zuo-shu-zhan-guan-li-zhi-ling">操作数栈管理指令</span><a href="#cao-zuo-shu-zhan-guan-li-zhi-ling" class="header-anchor">#</a></h3><p>如同操作一个普通数据结构中的堆栈那样，Java 虚拟机提供了一些用于直接操作操作数栈的指令，包括：  </p>
+<ol>
+<li>将操作数栈的栈顶一个或两个元素出栈：pop、pop2  </li>
+<li>复制栈顶一个或两个数值并将复制值或双份的复制值重新压入栈顶：dup、dup2、dup_x1、dup2_x1、dup_x2、dup2_x2。  </li>
+<li>将栈最顶端的两个数值互换：swap  </li>
+</ol>
+<h3><span id="kong-zhi-zhuan-yi-zhi-ling">控制转移指令</span><a href="#kong-zhi-zhuan-yi-zhi-ling" class="header-anchor">#</a></h3><p>让JVM有条件或无条件从指定指令而不是控制转移指令的下一条指令继续执行程序。控制转移指令包括：  </p>
+<ol>
+<li>条件分支:ifeq,iflt,ifle,ifne,ifgt,ifge,ifnull,ifnotnull,if_cmpeq,if_icmpne,if_icmlt,if_icmpgt等  </li>
+<li>复合条件分支:tableswitch,lookupswitch  </li>
+<li>无条件分支:goto,goto_w,jsr,jsr_w,ret  </li>
+</ol>
+<p>JVM中有专门的指令集处理int和reference类型的条件分支比较操作，为了可以无明显标示一个实体值是否是null,有专门的指令检测null 值。boolean类型和byte类型,char类型和short类型的条件分支比较操作，都使用int类型的比较指令完成，而 long,float,double条件分支比较操作，由相应类型的比较运算指令，运算指令会返回一个整型值到操作数栈中，随后再执行int类型的条件比较操作完成整个分支跳转。各种类型的比较都最终会转化为int类型的比较操作。  </p>
+<h3><span id="fang-fa-diao-yong-he-fan-hui-zhi-ling-chong-yao">方法调用和返回指令(重要)</span><a href="#fang-fa-diao-yong-he-fan-hui-zhi-ling-chong-yao" class="header-anchor">#</a></h3><ol>
+<li>invokevirtual指令:调用对象的实例方法，根据对象的实际类型进行分派(虚方法分派)</li>
+<li>invokeinterface指令:调用接口方法，在运行时搜索一个实现这个接口方法的对象，找出合适的方法进行调用</li>
+<li>invokespecial:调用需要特殊处理的实例方法，包括实例初始化方法，私有方法和父类方法  </li>
+<li>invokestatic:调用类方法(static)  </li>
+</ol>
+<p>方法返回指令是根据返回值的类型区分的，包括ireturn(返回值是boolean,byte,char,short和 int),lreturn,freturn,drturn和areturn，另外一个return供void方法，实例初始化方法，类和接口的类初始化i方法使用。  </p>
+<h3><span id="yi-chang-chu-li-zhi-ling">异常处理指令</span><a href="#yi-chang-chu-li-zhi-ling" class="header-anchor">#</a></h3><p>在Java程序中显式抛出异常的操作（throw语句）都有athrow 指令来实现，除了用throw 语句显示抛出异常情况外，Java虚拟机规范还规定了许多运行时异常会在其他Java虚拟机指令检测到异常状况时自动抛出。<br>在Java虚拟机中，处理异常不是由字节码指令来实现的，而是采用异常表来完成的。  </p>
+<h3><span id="tong-bu-zhi-ling">同步指令</span><a href="#tong-bu-zhi-ling" class="header-anchor">#</a></h3><p>方法级的同步是隐式的，无需通过字节码指令来控制，它实现在方法调用和返回操作中。虚拟机从方法常量池中的方法标结构中的 ACC_SYNCHRONIZED标志区分是否是同步方法。方法调用时，调用指令会检查该标志是否被设置，若设置，执行线程持有moniter，然后执行方法，最后完成方法时释放moniter。<br>同步一段指令集序列，通常由synchronized块标示，JVM指令集中有monitorenter和monitorexit来支持synchronized语义。</p>
+<p>说完了理论知识，来一个简单的栗子</p>
+<p><img src="http://q7fqr2en9.bkt.clouddn.com/demo.png" alt="demo"><br>java代码</p>
+<p>javac &lt;.java&gt;<br>编译后得到.class文件后<br>javap -verbose &lt;.class&gt;  </p>
+<p><img src="http://q7fqr2en9.bkt.clouddn.com/demoAnalyseComment.png" alt="demo"></p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -189,16 +355,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/19/%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/19/%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/18/class%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">.class文件组织结构</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -218,464 +443,14 @@
 
 
 
-
   
-    <article id="post-class文件组织结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/18/class%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/">.class文件组织结构</a>
-    </h1>
   
 
-        
-        <a href="/2020/03/18/class%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2020-03-18T10:02:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>.java文件 经javac编译器编译后的 .class文件的组织结构</p>
-        
-          <a class="article-more-a" href="/2020/03/18/class%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/18/class%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Software-Engineering-and-Computing-I" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/17/Software-Engineering-and-Computing-I/">Software Engineering and Computing I</a>
-    </h1>
   
 
-        
-        <a href="/2020/03/17/Software-Engineering-and-Computing-I/" class="archive-article-date">
-  	<time datetime="2020-03-17T11:28:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>软件工程与计算Ⅰ笔记</p>
-        
-          <a class="article-more-a" href="/2020/03/17/Software-Engineering-and-Computing-I/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">SE</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/17/Software-Engineering-and-Computing-I/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Sorting-Algorithm-01" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/07/Sorting-Algorithm-01/">Sorting_Algorithm_01</a>
-    </h1>
   
 
-        
-        <a href="/2019/10/07/Sorting-Algorithm-01/" class="archive-article-date">
-  	<time datetime="2019-10-07T15:07:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>排序算法总结1</p>
-        
-          <a class="article-more-a" href="/2019/10/07/Sorting-Algorithm-01/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Algorithm</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/07/Sorting-Algorithm-01/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-what-s-HTTPS" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/05/what-s-HTTPS/">What&#39;s HTTPS</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/05/what-s-HTTPS/" class="archive-article-date">
-  	<time datetime="2019-10-05T08:39:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>《图解HTTP》阅读笔记_02</p>
-        
-          <a class="article-more-a" href="/2019/10/05/what-s-HTTPS/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/05/what-s-HTTPS/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-What-s-HTTP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/02/What-s-HTTP/">What&#39;s HTTP</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/02/What-s-HTTP/" class="archive-article-date">
-  	<time datetime="2019-10-02T11:49:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>《图解HTTP》阅读笔记_01</p>
-        
-          <a class="article-more-a" href="/2019/10/02/What-s-HTTP/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/02/What-s-HTTP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-as-a-freshman" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/28/as-a-freshman/">As a freshman</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/28/as-a-freshman/" class="archive-article-date">
-  	<time datetime="2019-09-28T11:15:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大一总结</p>
-        
-          <a class="article-more-a" href="/2019/09/28/as-a-freshman/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Life</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/28/as-a-freshman/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -698,8 +473,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
