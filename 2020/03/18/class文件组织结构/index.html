@@ -16,7 +16,7 @@
 <meta property="og:description" content=".java文件 经javac编译器编译后的 .class文件的组织结构">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-18T10:02:35.000Z">
-<meta property="article:modified_time" content="2020-03-18T11:33:03.680Z">
+<meta property="article:modified_time" content="2020-03-20T13:38:31.456Z">
 <meta property="article:author" content="Qin">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -424,6 +424,8 @@
 <h5><span id="code-shu-xing-biao-jie-gou-ti-de-jie-shi">Code属性表结构体的解释</span><a href="#code-shu-xing-biao-jie-gou-ti-de-jie-shi" class="header-anchor">#</a></h5><p>1.attribute_name_index,属性名称索引，占有2个字节，其内的值指向了常量池中的某一项，该项表示字符串“Code”;<br>2. attribute_length,属性长度，占有 4个字节，其内的值表示后面有多少个字节是属于此Code属性表的；<br>3. max_stack,操作数栈深度的最大值，占有 2 个字节，在方法执行的任意时刻，操作数栈都不应该超过这个值，虚拟机的运行的时候，会根据这个值来设置该方法对应的栈帧(Stack Frame)中的操作数栈的深度；<br>4. max_locals,最大局部变量数目，占有 2个字节，其内的值表示局部变量表所需要的存储空间大小；<br>5. code_length,机器指令长度，占有 4 个字节，表示跟在其后的多少个字节表示的是机器指令；<br>6. code,机器指令区域，该区域占有的字节数目由 code_length中的值决定。JVM最底层的要执行的机器指令就存储在这里；<br>7. exception_table_length,显式异常表长度，占有2个字节，如果在方法代码中出现了try{} catch()形式的结构，该值不会为空，紧跟其后会跟着若干个exception_table结构体，以表示异常捕获情况；<br>8. exception_table，显式异常表，占有8 个字节，start_pc,end_pc,handler_pc中的值都表示的是PC计数器中的指令地址。exception_table表示的意思是：如果字节码从第start_pc行到第end_pc行之间出现了catch_type所描述的异常类型，那么将跳转到handler_pc行继续处理。<br>9. attribute_count,属性计数器，占有 2 个字节，表示Code属性表的其他属性的数目<br>10. attribute_info,表示Code属性表具有的属性表，它主要分为两个类型的属性表：“LineNumberTable”类型和“LocalVariableTable”类型。<br>“LineNumberTable”类型的属性表记录着Java源码和机器指令之间的对应关系<br>“LocalVariableTable”类型的属性表记录着局部变量描述  </p>
 <h4><span id="linenumbertable-shu-xing-biao">LineNumberTable属性表</span><a href="#linenumbertable-shu-xing-biao" class="header-anchor">#</a></h4><p>  编译器在将java源码编译成class文件时，会将源码中的语句行号跟编译好的机器指令关联起来，这样的class文件加载到内存中并运行时，如果抛出异常，JVM可以根据这个对应关系，抛出异常信息，告诉我们我们的源码的多少行有问题，方便我们定位问题。这个信息不是运行时必不可少的信息，但是默认情况下，编译器会生成这一项信息，如果你项取消这一信息，你可以使用-g:none 或-g:lines来取消或者要求设置这一项信息。如果使用了-g:none来生成class文件，class文件中将不会有LineNumberTable属性表，造成的影响就是 将来如果代码报错，将无法定位错误信息报错的行，并且如果项调试代码，将不能在此类中打断点（因为没有指定行号。）</p>
 <h4><span id="localvariabletable-shu-xing-biao">LocalVariableTable属性表</span><a href="#localvariabletable-shu-xing-biao" class="header-anchor">#</a></h4><p>  局部变量表信息会记录栈帧局部变量表中的变量和java源码中定义的变量之间的关系，这个信息不是运行时必须的属性，默认情况下不会生成到class文件中。你可以根据javac指令的-g:none或者-g:vars选项来取消或者设置这一项信息。</p>
+<hr>
+<p>参考资料：《深入理解JVM》周志明</p>
 
       
 
@@ -670,10 +672,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
