@@ -6,22 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Java内存区域与类的生命周期 | OvO</title>
+  <title>类加载器 | OvO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java内存区域与类的生命周期">
+  <meta name="description" content="类加载器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java内存区域与类的生命周期">
-<meta property="og:url" content="http://yoursite.com/2020/03/20/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%B8%8E%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
+<meta property="og:title" content="类加载器">
+<meta property="og:url" content="http://yoursite.com/2020/03/21/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/index.html">
 <meta property="og:site_name" content="OvO">
-<meta property="og:description" content="Java内存区域与类的生命周期">
+<meta property="og:description" content="类加载器">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://q7fqr2en9.bkt.clouddn.com/JVMdataArea.png">
-<meta property="article:published_time" content="2020-03-20T12:46:17.000Z">
-<meta property="article:modified_time" content="2020-03-21T00:10:51.465Z">
+<meta property="article:published_time" content="2020-03-21T13:32:27.000Z">
+<meta property="article:modified_time" content="2020-03-21T13:54:37.378Z">
 <meta property="article:author" content="Qin">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://q7fqr2en9.bkt.clouddn.com/JVMdataArea.png">
   
     <link rel="alternative" href="/atom.xml" title="OvO" type="application/atom+xml">
   
@@ -149,143 +147,58 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Java内存区域与类的生命周期" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-类加载器" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Java内存区域与类的生命周期
+      类加载器
     </h1>
   
 
         
-        <a href="/2020/03/20/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%B8%8E%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="archive-article-date">
-  	<time datetime="2020-03-20T12:46:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-20</time>
+        <a href="/2020/03/21/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/" class="archive-article-date">
+  	<time datetime="2020-03-21T13:32:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-21</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Java内存区域与类的生命周期</p>
+        <p>类加载器</p>
 <a id="more"></a>
 
 <hr>
-<h2><span id="jvm-yun-xing-shi-shu-ju-qu">JVM运行时数据区</span><a href="#jvm-yun-xing-shi-shu-ju-qu" class="header-anchor">#</a></h2><p><img src="http://q7fqr2en9.bkt.clouddn.com/JVMdataArea.png" alt="JVM运行时数据区"></p>
-<p>程序计数器、Java虚拟机栈、本地方法栈、Java堆、方法区  </p>
-<h3><span id="cheng-xu-ji-shu-qi">程序计数器</span><a href="#cheng-xu-ji-shu-qi" class="header-anchor">#</a></h3><p>线程私有，当前<strong>线程</strong>所执行的字节码的行号指示器<br>如果正在执行Native方法（非Java方法），这个计数器值为空（undefined）<br>此内存区域是Java虚拟机规范中没有规定任何OutOfMemoryError情况的区域  </p>
-<h3><span id="xu-ni-ji-zhan">虚拟机栈</span><a href="#xu-ni-ji-zhan" class="header-anchor">#</a></h3><p>线程私有，每个方法调用对应一个栈帧，含局部变量表、操作数栈、动态链接、方法出口等信息<br>局部变量表所需的内存空间在编译期间完成分配，当进入一个方法时，需要在帧中分配多大的局部变量空间是完全确定的。  </p>
-<h3><span id="ben-di-fang-fa-zhan">本地方法栈</span><a href="#ben-di-fang-fa-zhan" class="header-anchor">#</a></h3><p>与虚拟机栈的作用类似</p>
-<h3><span id="dui">堆</span><a href="#dui" class="header-anchor">#</a></h3><p>所有线程共享<br>所有对象实例（new出来的）<br>垃圾回收器管理的主要区域  </p>
-<h3><span id="fang-fa-qu">方法区</span><a href="#fang-fa-qu" class="header-anchor">#</a></h3><p>所有线程共享<br>包含运行时常量池<br>存储已被虚拟机加载的类型信息、常量、静态变量、Code</p>
-<h2><span id="lei-de-sheng-ming-zhou-qi">类的生命周期</span><a href="#lei-de-sheng-ming-zhou-qi" class="header-anchor">#</a></h2><p>加载、连接（验证、准备、解析）、初始化、使用、卸载  </p>
-<h3><span id="jia-zai">加载</span><a href="#jia-zai" class="header-anchor">#</a></h3><ol>
-<li>通过一个类的全限定名来获取定义此类的二进制字节流。</li>
-<li>将这个字节流所代表的静态存储结构转化为<strong>方法区</strong>的运行时数据结构。</li>
-<li>在堆中生成一个代表这个类的<strong>java.lang.Class</strong>对象，作为方法区这个类的各种数据的访问入口</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.lang.Class类方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; forName(String className,<span class="keyword">boolean</span> initialize, ClassLoader loader) <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用给定的类加载器返回与给定字符串名称的类或接口相关联的类对象。如果参数loader为空，则通过引导类加载器加载该类。只有当initialize参数为true并且尚未被初始化时，该类才被初始化。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">()</span> <span class="keyword">throws</span> InstantiationException,IllegalAccessException</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//此方法创建此Class对象表示的类的新实例。通过具有空参数列表的新表达式创建类。如果尚未初始化，则初始化该类。</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//返回由 类对象表示的实体（类，接口，数组类，原始类型或空白）的名称(含包名)。</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">ClassLoader <span class="title">getClassLoader</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//此方法返回此类的类加载器。如果类加载器是bootstrap类加载器，那么此方法返回null，因为引导类加载器是用C，C++等语言实现的。如果此对象表示基本类型或void，则返回null</span></span></span><br></pre></td></tr></table></figure>
-
-<h3><span id="yan-zheng">验证</span><a href="#yan-zheng" class="header-anchor">#</a></h3><p>验证是连接阶段的第一步，这一阶段的目的是为了确保Class文件的字节流中包含的信息符合当前虚拟机的要求，并不会危害虚拟机的自身安全。  </p>
-<ol>
-<li><p>文件格式验证：</p>
-<ol>
-<li>是否以魔数0xCAFEBABE开头。</li>
-<li>主、次版本号是否在当前虚拟机处理范围之内。</li>
-<li>常量池的常量中是否有不被支持的常量类型（检查常量tag标志）。</li>
-<li>指向常量的各种索引值中是否有指向不存在的常量或不符合类型的常量。</li>
-<li>CONSTANT_Utf8_info型的常量中是否有不符合UTF8编码的数据。</li>
-<li>Class文件中各个部分及文件本身是否有被删除的或附加的其他信息。</li>
-<li>……</li>
-</ol>
+<h2><span id="lei-jia-zai-qi">类加载器</span><a href="#lei-jia-zai-qi" class="header-anchor">#</a></h2><p>实现“通过一个类的全限定名来获取描述此类的二进制字节流”</p>
+<p>对于任意一个类，都需要由加载它的类加载器和这个类本身一同确立其在Java虚拟机中的唯一性，每一个类加载器，都拥有一个独立的类名称空间。<br>亦即是，比较两个类是否“相等”，只有这两个类是由同一个类加载器加载的前提下才有意义。</p>
+<h3><span id="3-chong-lei-jia-zai-qi">3种类加载器</span><a href="#3-chong-lei-jia-zai-qi" class="header-anchor">#</a></h3><ul>
+<li><p>启动类加载器（Bootstrap ClassLoader）</p>
+<p>  使用C++实现，是虚拟机自身的一部分，负责将存放在 &lt;JAVA_HOME&gt;\lib 目录中的，或者被 -Xbootclasspath参数所指定的路径中的，并且是虚拟机识别的（仅按照文件名识别，如rt.jar）类库加载到虚拟机内存中。<br>  无法被Java程序直接引用。</p>
 </li>
-<li><p>元数据验证：</p>
-<ol>
-<li>这个类是否有父类（除了java.lang.Object之外，所有类都应当有父类）。</li>
-<li>这个类是否继承了不允许被继承的类（被final修饰的类）。</li>
-<li>如果这个类不是抽象类，是否实现了其父类或接口之中所要求实现的所有方法。</li>
-<li>类中的字段、方法是否与父类产生矛盾（例如覆盖了父类的final字段，或者出现不符合规则的方法重载，例如方法参数都一致，但返回值类型却不同等等）</li>
-<li>……</li>
-</ol>
+<li><p>扩展类加载器（Extension ClassLoader）</p>
+<p>  由sun.misc.Launcher$ExtClassLoader实现，负责加载 &lt;JAVA_HOME&gt;\lib\ext 目录中的，或者被java.ext.dirs 系统变量所指定的路径中的所有类库。<br>  开发者可以直接使用。</p>
 </li>
-<li><p>字节码验证：<br>主要目的是通过数据流和控制流分析，确定程序语义是合法的、符合逻辑的。这个阶段将对类的方法体进行校验分析，保证被校验类的方法在运行时不会产生危害虚拟机安全的事件，例如：</p>
-<ol>
-<li>保证任意时刻操作数栈的数据类型与指令代码序列都能配合工作，例如不会出现类似这样的情况：在操作数栈放置了一个int类型的数据，使用时却按long类型来加载入本地变量表中。</li>
-<li>保证跳转指令不会跳转到方法体以外的字节码指令上。</li>
-<li>保证方法体中的类型转换是有效的，例如可以把一个子类对象赋值给父类数据类型，但是把父类对象赋值给子类数据类型，甚至把对象赋值给与它毫无继承关系、完全不相干的一个数据类型，则是危险不合法的。</li>
-<li>……</li>
-</ol>
-</li>
-<li><p>符号引用验证：<br>符号引用验证可以看作是类对自身以外（常量池中的各种符号引用）的信息进行匹配性校验，通常需要校验以下内容：</p>
-<ol>
-<li>符号引用中通过字符串描述的全限定名是否能够找到对应的类。</li>
-<li>在指定类中是否存在符合方法的字段描述符以及简单名称所描述的方法和字段。</li>
-<li>符号引用中的类、字段、方法的访问性（private、protected、public、default）是否可被当前类访问。</li>
-<li>……  </li>
-</ol>
-</li>
-</ol>
-<h3><span id="zhun-bei">准备</span><a href="#zhun-bei" class="header-anchor">#</a></h3><p>准备阶段是正式为类变量分配内存并设置类变量初始值（通常情况下是数据类型的零值，注意没有初始化）的阶段，这些变量所使用的内存都将在<strong>方法区</strong>中进行分配。这时候进行内存分配的仅包括类变量（被static修饰的变量），而不包括实例变量，实例变量将会在对象实例化的时候随着对象一起分配在Java堆中。  </p>
-<p>初始值设置时的特殊情况：<br>如果类字段的字段属性表中存在ConstantValue属性，那在准备阶段变量value就会被初始化为ConstantValue属性所指定的值，如</p>
-<p>public static final int value = 123;</p>
-<p>编译时Javac将会为value生成ConstantValue属性，在准备阶段虚拟机就会根据ConstantValue的设置将value赋值为123.  </p>
-<h3><span id="jie-xi">解析</span><a href="#jie-xi" class="header-anchor">#</a></h3><p>解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程。  </p>
-<ul>
-<li><p>符号引用（Symbolic References）：符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。</p>
-</li>
-<li><p>直接引用（Direct References）：直接引用可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。如果有了直接引用，那么引用的目标一定是已经存在于内存中。</p>
+<li><p>应用程序类加载器（Application ClassLoader）</p>
+<p>  由sun.misc.Launcher$AppClassLoader实现，是ClassLoader中的getSystemClassLoader()方法的返回值，所以一般也称为系统类加载器，负责加载用户类（ClassPath）上所指定的类库。<br>  开发者可以直接使用。</p>
 </li>
 </ul>
-<h4><span id="lei-huo-jie-kou-de-jie-xi">类或接口的解析</span><a href="#lei-huo-jie-kou-de-jie-xi" class="header-anchor">#</a></h4><p>假设当前代码所处的类为D，如果要把一个从未解析过的符号引用N解析为一个类或接口C的引用，那虚拟机完成整个解析过程需要以下3个步骤：  </p>
-<ol>
-<li>如果C不是一个数组类型，那虚拟机将会把代表N的全限定名传递给D的类加载器去加载这个类C。</li>
-<li>如果C是一个数组类型，并且数组的元素类型为对象，那将会按照第1点的规则加载数组元素类型。  </li>
-<li>如果上面的步骤没有出现任何异常，那么C在虚拟机中实际上已经成为了一个有效的类或接口了，但在解析完成之前还要进行符号引用验证，确认D是否具有对C的访问权限。如果发现不具备访问权限，则抛出java.lang.IllegalAccessError异常。  </li>
-</ol>
-<h4><span id="zi-duan-jie-xi">字段解析</span><a href="#zi-duan-jie-xi" class="header-anchor">#</a></h4><p>首先解析字段表内class_index项中索引的CONSTANT_Class_info符号引用，也就是字段所属的类或接口的符号引用，如果解析完成，将这个字段所属的类或接口用C表示，虚拟机规范要求按照如下步骤对C进行后续字段的搜索。  </p>
-<ol>
-<li>如果C 本身就包含了简单名称和字段描述符都与目标相匹配的字段，则返回这个字段的直接引用，查找结束。  </li>
-<li>否则，如果C中实现了接口，将会按照继承关系从下往上递归搜索各个接口和它的父接口如果接口中包含了简单名称和字段描述符都与目标相匹配的字段，则返回这个字段的直接引用，查找结束。  </li>
-<li>否则，如果C 不是java.lang.Object的话，将会按照继承关系从下往上递归搜索其父类，如果在父类中包含了简单名称和字段描述符都与目标相匹配的字段，则返回这个字段的直接引用，查找结束。  </li>
-<li>否则，查找失败，抛出java.lang.NoSuchFieldError异常。  </li>
-</ol>
-<p>如果查找过程成功返回了引用，将会对这个字段进行权限验证，如果发现不具备对字段的访问权限，将抛出java.lang.IllegalAccessError异常。</p>
-<p>如果有一个同名字段同时出现在C的接口和父类中，或者同时在自己的父类或多个接口中出现，那编译器可能拒绝编译，并提示”The field xxx is ambiguous”</p>
-<h4><span id="lei-fang-fa-jie-xi">类方法解析</span><a href="#lei-fang-fa-jie-xi" class="header-anchor">#</a></h4><p>首先解析类方法表内class_index项中索引的CONSTANT_Class_info符号引用，也就是方法所属的类或接口的符号引用，如果解析完成，将这个类方法所属的类或接口用C表示，虚拟机规范要求按照如下步骤对C进行后续类方法的搜索。  </p>
-<ol>
-<li>类方法和接口方法符号引用的常量类型定义是分开的，如果在类方法表中发现class_index中索引的C 是个接口，那就直接抛出java.lang.IncompatibleClassChangeError异常。  </li>
-<li>如果通过了第一步，在类C 中查找是否有简单名称和描述符都与目标相匹配的方法，如果有则返回这个方法的直接引用，查找结束。  </li>
-<li>否则，在类C的父类中递归查找是否有简单名称和描述符都与目标相匹配的方法，如果有则返回这个方法的直接引用，查找结束。  </li>
-<li>否则，在类C实现的接口列表以及他们的父接口中递归查找是否有简单名称和描述符都与目标相匹配的方法，如果存在相匹配的方法，说明类C是一个抽象类这时查找结束，抛出java.lang.AbstractMethodError异常。  </li>
-<li>否则，宣告方法查找失败，抛出java.lang.NoSuchMethodError。  </li>
-</ol>
-<p>最后，如果查找成功返回了直接引用，将会对这个方法进行权限验证，如果发现不具备此方法的访问权限，则抛出java.lang.IllegalAccessError异常。  </p>
-<h4><span id="jie-kou-fang-fa-jie-xi">接口方法解析</span><a href="#jie-kou-fang-fa-jie-xi" class="header-anchor">#</a></h4><p>首先解析接口方法表内class_index项中索引的CONSTANT_Class_info符号引用，也就是方法所属的类或接口的符号引用，如果解析完成，将这个接口方法所属的接口用C表示，虚拟机规范要求按照如下步骤对C进行后续接口方法的搜索。  </p>
-<ol>
-<li>与类解析方法不同，如果在接口方法表中发现class_index中的索引C是个类而不是个接口，那就直接抛出java.lang.IncompatibleClassChangeError异常。  </li>
-<li>否则，在接口C中查找是否有简单名称和描述符都与目标相匹配的方法，如果有则返回这个方法的直接引用，查找结束。  </li>
-<li>否则，在接口C的父接口中递归查找，直到java.lang.Object类（查找范围包括Object类）为止，看是否有简单名称和描述符都与目标相匹配的方法，如果有则返回这个方法的直接引用，查找结束。  </li>
-<li>否则，宣告方法查找失败，抛出java.lang.NoSuchMethodError。  </li>
-</ol>
-<p>由于接口中所有的方法默认都是public的，所以不存在访问权限的问题，因此接口方法的符号解析应当不会抛出java.lang.IllegalAccessError异常。</p>
-<h3><span id="chu-shi-hua">初始化</span><a href="#chu-shi-hua" class="header-anchor">#</a></h3><p>类初始化阶段是类加载过程的最后一步，到了这个阶段才真正开始执行类中定义的Java程序代码（或者说是字节码）。在准备阶段，变量已经赋过一次系统要求的初始值，而在初始化阶段，则根据程序员通过程序制定的主观计划去初始化类变量和其他资源。  </p>
-<ol>
-<li><p>编译器收集的顺序是由语句在源文件中出现的顺序决定的，静态语句块中只能访问到定义在静态语句块之前的变量，而定义在它之后的变量，在前面的静态语句块可以赋值，但不能访问，代码解释如下：</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        i = <span class="number">0</span>;                       <span class="comment">//给变量赋值可以正常编译通过</span></span><br><span class="line">        System.out.print(i);         <span class="comment">//编译器会提示“非法向前引用”</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注意变量i在类生命周期，连接的准备阶段已经在方法区中分配内存并设置类变量默认初始值，可以用静态代码块赋值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>初始化方法执行的顺序，虚拟机会保证在子类的初始化方法执行之前，父类的初始化方法已经执行完毕，因此在虚拟机中第一个被执行的类初始化方法一定是java.lang.Object。另外，也意味着父类中定义的静态语句块要优先于子类的变量赋值操作，例如：</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> A = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        A = <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Sub</span> <span class="keyword">extends</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> B = A;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    System.out.println(Sub.B);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//执行的结果，字段B的值将会是2</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>&lt;clinit&gt;()方法对于类或接口来说并不是必须的，如果一个类中没有静态语句块，也没有对变量的赋值操作，那么编译器可以不为这个类生成&lt;clinit&gt;()方法。  </p>
-</li>
-<li><p>接口中不能使用静态语句块，但仍然有变量初始化的操作，因此接口与类一样都会生成&lt;clinit&gt;()方法，但与类不同的是，执行接口的初始化方法之前，不需要先执行父接口的初始化方法。只有当父接口中定义的变量使用时，才会执行父接口的初始化方法。另外，接口的实现类在初始化时也一样不会执行接口的&lt;clinit&gt;()方法。  </p>
-</li>
-<li><p>虚拟机会保证一个类的&lt;clinit&gt;()方法在多线程环境中被正确的加锁、同步，如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的&lt;clinit&gt;()方法，其他线程都需要阻塞等待，直到活动线程执行类初始化方法完毕。</p>
-</li>
-</ol>
-<hr>
+<h3><span id="shuang-qin-wei-pai-mo-xing">双亲委派模型</span><a href="#shuang-qin-wei-pai-mo-xing" class="header-anchor">#</a></h3><pre><code>启动类加载器（Bootstrap ClassLoader）
+
+↑
+
+扩展类加载器（Extension ClassLoader）
+
+↑
+
+应用程序类加载器（Application ClassLoader）
+
+↑
+
+自定义类加载器（User ClassLoader）</code></pre><p>类加载器之间的父子关系一般都使用 组合（Composition）关系来复用父加载器的代码</p>
+<p>工作过程： 如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父加载器去完成，每一层都是如此，因此所有类加载的请求都会传到启动类加载器，只有当父加载器无法完成该请求时，子加载器才去自己加载。</p>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ClassLoader</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">synchronized</span> Class <span class="title">loadClass</span><span class="params">(String name, <span class="keyword">boolean</span> resolve)</span>  </span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> ClassNotFoundException </span>&#123;  </span><br><span class="line">    <span class="comment">// 首先检查该name指定的class是否有被加载  </span></span><br><span class="line">    Class c = findLoadedClass(name);  </span><br><span class="line">    <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;  </span><br><span class="line">        <span class="keyword">try</span> &#123;  </span><br><span class="line">            <span class="keyword">if</span> (parent != <span class="keyword">null</span>) &#123;  </span><br><span class="line">                <span class="comment">// 如果parent不为null，则调用parent的loadClass进行加载  </span></span><br><span class="line">                c = parent.loadClass(name, <span class="keyword">false</span>);  </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">                <span class="comment">// parent为null，则调用BootstrapClassLoader进行加载  </span></span><br><span class="line">                c = findBootstrapClass0(name);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;  </span><br><span class="line">            <span class="comment">// 如果仍然无法加载成功，则调用自身的findClass进行加载  </span></span><br><span class="line">            c = findClass(name);  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">if</span> (resolve) &#123;  </span><br><span class="line">        resolveClass(c);  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> c;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><hr>
 <p>参考资料：《深入理解JVM》周志明</p>
 
       
@@ -377,7 +290,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/20/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%B8%8E%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/03/21/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -391,18 +304,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/03/21/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          类加载器
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/03/19/%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">字节码指令</div>
+    <a href="/2020/03/20/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%B8%8E%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java内存区域与类的生命周期</div>
       <i class="icon-circle-right"></i>
     </a>
   
