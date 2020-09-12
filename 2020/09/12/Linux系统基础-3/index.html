@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/eason.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/eason.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="《Linux系统基础》笔记 part3 用户和组群账户管理  磁盘分区和文件系统管理  软件包管理  权限和所有者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统基础-3">
+<meta property="og:url" content="http://yoursite.com/2020/09/12/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-3/index.html">
+<meta property="og:site_name" content="OvO">
+<meta property="og:description" content="《Linux系统基础》笔记 part3 用户和组群账户管理  磁盘分区和文件系统管理  软件包管理  权限和所有者">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-12T02:20:28.000Z">
+<meta property="article:modified_time" content="2020-09-12T02:24:38.289Z">
+<meta property="article:author" content="Qin">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/12/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux系统基础-3 | OvO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">OvO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">13</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/QinRuixin" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/12/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eason.jpg">
+      <meta itemprop="name" content="Qin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OvO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux系统基础-3
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-12 10:20:28 / 修改时间：10:24:38" itemprop="dateCreated datePublished" datetime="2020-09-12T10:20:28+08:00">2020-09-12</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">《Linux系统基础》笔记 part3 用户和组群账户管理  磁盘分区和文件系统管理  软件包管理  权限和所有者</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2><span id="7-yong-hu-he-zu-qun-zhang-hu-guan-li">7 用户和组群账户管理</span><a href="#7-yong-hu-he-zu-qun-zhang-hu-guan-li" class="header-anchor">#</a></h2><p>在 Linux 系统中，用户账户是登录系统的唯一凭证，其中 root 用户是系统的最高管理者，该用户的 UID 是 0 级，与用户和组账户相关的配置文件有 /etc/passwd 、/etc/shadow 、 /etc/group 和 /etc/gshadow 。</p>
+<h3><span id="yong-hu-zhang-hu-jian-jie">用户账户简介</span><a href="#yong-hu-zhang-hu-jian-jie" class="header-anchor">#</a></h3><p>/etc/passwd 和 /etc/shadow</p>
+<p>用户角色不同，权限和能完成的任务不同，角色通过 UID 来标识。<br>在 Linux 系统中有三大类用户，分别是 root用户、系统用户和普通用户。</p>
+<p>可在Linux系统中使用 cat /etc/passwd 命令 对照以下介绍</p>
+<ol>
+<li><p>root用户</p>
+<p> root 用户 UID 为 0 。 root 用户的权限是最高的，普通用户无法执行的操作， root 用户都能完成，所以也被称之为超级用户。</p>
+</li>
+<li><p>系统用户</p>
+<p> 系统用户也称为虚拟用户、伪用户或假用户，这类用户不具有登录 Linux 系统的能力，但却是系统运行不可缺少的用户，比如 bin 、daemon 、 adm 、 ftp 、 mail 等，这类用户都是系统自身拥有的。系统用户的 UID 为1~999 。</p>
+</li>
+<li><p>普通用户</p>
+<p> 这类用户能登录系统，在 Linux 系统上进行普通操作，能操作自己目录的内容，其使用系统的权限受限，这类用户都是系统管理员创建的。普通用户的 UID 为 1000~60000</p>
+</li>
+</ol>
+<h3><span id="etc-passwd-wen-jian">/etc/passwd 文件</span><a href="#etc-passwd-wen-jian" class="header-anchor">#</a></h3><p>/etc/passwd 文件是系统识别用户的一个重要文件，Linux 系统中所有的用户都记录在该文件中。</p>
+<p>任何用户都可以读取 etc passwd 文件内容，在etc passwd 文件中，每一行表示的是一个用户账户的信息，一行有 7 个段位，每个段位用“ “::”分隔。<br>zhangsan:x:1000:1000:张三 :/ zhangsan :/bin/bash</p>
+<h4><span id="etc-passwd-wen-jian-zi-duan-han-yi">/etc/passwd 文件字段含义</span><a href="#etc-passwd-wen-jian-zi-duan-han-yi" class="header-anchor">#</a></h4><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>字段含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户名</td>
+<td>也称为登录名，在系统内用户名应该具有惟一性。在本例中， zhangsan 就是用户名</td>
+</tr>
+<tr>
+<td>密码</td>
+<td>存放加密用户的密码，看到的是一个 x ，其实密码已被映射到 /etc/shadow 文件中</td>
+</tr>
+<tr>
+<td>用户标识号 UID</td>
+<td>在系统内用一个整数标识用户 ID 号，每个用户的 UID 都是惟一的， root 用户的 UID 是 0 ，普通用户的 UID 默认从 1000 开始，本例 中的用户zhangsan 的 UID 是 1000</td>
+</tr>
+<tr>
+<td>组群标识号 GID</td>
+<td>在系统内用一个整数标识用户所属的主要组群 ID 号，每个组群 的 GID 都是惟一的</td>
+</tr>
+<tr>
+<td>用户名全称</td>
+<td>用户名描述，可以不设置。在本例中， zhangsan 用户的用户名 全称是张三</td>
+</tr>
+<tr>
+<td>主目录</td>
+<td>用户登录系统后首先进入的目录， zhangsan 用户的主目录是 /home/zhangsan</td>
+</tr>
+<tr>
+<td>登录 Shell</td>
+<td>用户使用的 Shell 类型， Linux 系统默认使用的 Shell 是 /bin/bash</td>
+</tr>
+</tbody></table>
+<h4><span id="etc-shadow-wen-jian">/etc/shadow 文件</span><a href="#etc-shadow-wen-jian" class="header-anchor">#</a></h4><p>/etc/shadow 文件是 /etc/passwd 的影子文件，这个文件并不是由 /etc/passwd 文件产生，这两个文件应该是对应互补的。 /etc/shadow 文件内容包括用户及被加密的密码以及其它 /etc/passwd 不能包括的信息，比如用户账户的有效期限等。</p>
+<p>文件只有 root 用户可以读取和操作。</p>
+<p>etc /shadow 文件的内容包括 9 个段位，每个段位之间用“ “::”分隔。</p>
+<p>zhangsan:$6$E/xvWMmh$rhYLQwwffEqIudVLFzMlvkb0iN4.0Oluk6H.UovEYN0/99dVoHXcaCNGZZkFY1S3QHYgm7e6JPzEew6ybmN4e0:16364:0:99999:7:::</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>字段含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户名</td>
+<td>这里的用户名和 /etc/passwd 中的用户名是相同的</td>
+</tr>
+<tr>
+<td>加密密码</td>
+<td>密码已经加密，如果有些用户在这里显示的是“!!”，则表示这个用户</td>
+</tr>
+<tr>
+<td>还没有设置密码，不能登录到系统</td>
+<td></td>
+</tr>
+<tr>
+<td>用户最后一次更改密码的日期</td>
+<td>从 1970 年 1 月 1 日算起到最后一次修改密码的时间间隔天数</td>
+</tr>
+<tr>
+<td>密码允许更换前的天数</td>
+<td>如果设置为 0 ，则禁用此功能。该字段是指用户可以更改密码的天数</td>
+</tr>
+<tr>
+<td>密码需要更换的天数</td>
+<td>如果设置为 0 ，则禁用此功能。该字段是指用户必须更改密码的天数</td>
+</tr>
+<tr>
+<td>密码更换前警告的天数</td>
+<td>用户登录系统后，系统登录程序提醒用户密码将要过期 账户被取消激活前的天数 表示用户密码过期多少天后，系统会禁用此用户，也就是说系统会不 让此用户登录，也不会提示用户过期，是完全禁用的</td>
+</tr>
+<tr>
+<td>用户账户过期日期</td>
+<td>指定用户账户禁用的天数（从 1970 年的 1 月 1 日开始到账户被禁用的天 数），如果这个字段的值为空，账户永久可用</td>
+</tr>
+<tr>
+<td>保留字段</td>
+<td>目前为空，以备将来 Linux 系统发展时使用</td>
+</tr>
+</tbody></table>
+<h3><span id="yong-hu-zhang-hu-she-zhi">用户账户设置</span><a href="#yong-hu-zhang-hu-she-zhi" class="header-anchor">#</a></h3><p>系统字符界面中创建、修改以及删除用户账户主要使用 useradd usermod 和 userdel</p>
+<h4><span id="useradd-chuang-jian-yong-hu-zhang-hu">useradd 创建用户账户</span><a href="#useradd-chuang-jian-yong-hu-zhang-hu" class="header-anchor">#</a></h4><p>创建用户账户就是在系统中创建一个新账户，为新账户分配用户 UID 、组群、主目录和登录 Shell 等资源，新创建的用户账户默认是被锁定的，无法使用，需要使用passwd 命令设置密码以后才能使用。创建用户账户就是在 /etc/passwd 文件中为新用户增加一条记录，同时更新 /etc/shadow 和/etc/group 文件。</p>
+<p>useradd [选项] [用户名]<br>passwd [用户名]  </p>
+<h4><span id="usermod-xiu-gai-yong-hu-zhang-hu">usermod 修改用户账户</span><a href="#usermod-xiu-gai-yong-hu-zhang-hu" class="header-anchor">#</a></h4><p>使用 usermod 命令可以更改用户的 Shell 类型、所属的组群、用户密码的有效期，还能更改用户的登录名。</p>
+<p>usermod [选项] [用户名]  </p>
+<h4><span id="userdel-shan-chu-yong-hu-zhang-hu">userdel 删除用户账户</span><a href="#userdel-shan-chu-yong-hu-zhang-hu" class="header-anchor">#</a></h4><p>使用 userdel 命令可以在 Linux 系统中删除用户账户，甚至连用户的主目录也一起删除。</p>
+<p>userdel [选项] [用户名]  </p>
+<h3><span id="zu-qun-zhang-hu-jian-jie">组群账户简介</span><a href="#zu-qun-zhang-hu-jian-jie" class="header-anchor">#</a></h3><p>具有某种共同特征的用户集合就是组群。通过组群可以集中设置访问权限和分配管理任务。</p>
+<p>在 Linux 系统中，有两种组群分类方法。一种方法将组群分为私有组群和标准组群。</p>
+<ol>
+<li><p>私有组群</p>
+<p> 当创建一个新的用户账户时，如果没有指定该用户属于哪一个组群，那么 Linux 就会创建一个和该用户同名的组群，这个组群就是私有组群，在这个私有组群中只包含这个用户。</p>
+</li>
+<li><p>标准组群</p>
+<p> 标准组群也称为普通组群，标准组群可以包含多个用户账户，如果使用标准组群，那么在创建一个新的用户账户时，应该指定该用户属于哪一个组群。</p>
+</li>
+</ol>
+<p>另外一种方法将组群分为主要组群和次要组群。</p>
+<ol>
+<li><p>主要组群</p>
+<p> 当一个用户账户属于多个组成员时登陆后所属的组群便是主要群组，其它组群是次要群组，一个用户账户只能属于一个主要组群。</p>
+</li>
+<li><p>次要组群</p>
+<p> 次要群组也称附加群组，一个用户账户可以属于多个次要群组。</p>
+</li>
+</ol>
+<h4><span id="etc-group-wen-jian">/etc/group 文件</span><a href="#etc-group-wen-jian" class="header-anchor">#</a></h4><p>/etc/group 文件的内容包括组群名、组群密码、 GID 及该组群所包含的用户，每个组群一条记录，一行有 4 个段位，每个段位用”:”分隔。</p>
+<p>zhangsan:x:1000:</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>字段含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>组群名</td>
+<td>组群名称，如组群名 root</td>
+</tr>
+<tr>
+<td>组群密码</td>
+<td>存放加密的组群密码，看到一个 x ，密码已被映射到 etc gshadow 文件中</td>
+</tr>
+<tr>
+<td>组群标识号(GID)</td>
+<td>在系统内用一个整数标识组群 GID ，每个组群的 GID 都是惟一的，默认普通组群的 GID 从 1000 开始， root 组群 GID 是 0</td>
+</tr>
+<tr>
+<td>组群成员</td>
+<td>属于这个组群的成员，如 root 组群的成员有 root 用户</td>
+</tr>
+</tbody></table>
+<p>GID 为 0 的组群是 root 组群。 Linux 系统会预留 GID 号 1~999 给系统虚拟组群使用，创建的新组群 GID 是从 1000 开始的</p>
+<h4><span id="etc-gshadow-wen-jian">/etc/gshadow 文件</span><a href="#etc-gshadow-wen-jian" class="header-anchor">#</a></h4><p>etc gshadow 文件中每个组群都有一条记录。一行有 4 个段位，每个段位用“ 分隔。<br>beijing:$6$E/xvWMmh$ ou</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>字段含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>组群名</td>
+<td>组群的名称</td>
+</tr>
+<tr>
+<td>组群密码</td>
+<td>密码已经加密，如果有些组群在这里显示的是“!!”，表示这个组群没有密码。本例中组群 shanghai 没有密码，组群 beijing 已设置密码</td>
+</tr>
+<tr>
+<td>组群管理者</td>
+<td>组群的管理者，有权在该组群中添加、删除用户</td>
+</tr>
+<tr>
+<td>组群成员</td>
+<td>属于该组群的用户成员列表，如有多个用户用逗 号分隔。本例中 beijing 组群的成员是 ou</td>
+</tr>
+</tbody></table>
+<h3><span id="zu-qun-zhang-hu-she-zhi">组群账户设置</span><a href="#zu-qun-zhang-hu-she-zhi" class="header-anchor">#</a></h3><p>系统字符界面下创建、修改以及删除组群账户主要使用 groupadd groupmod<br>和 groupdel 这 3 个命令。</p>
+<h4><span id="groupadd-chuang-jian-zu-qun-zhang-hu">groupadd 创建组群账户</span><a href="#groupadd-chuang-jian-zu-qun-zhang-hu" class="header-anchor">#</a></h4><p>groupadd [选项] [组群名]</p>
+<h4><span id="groupmod-xiu-gai-zu-qun-zhang-hu">groupmod 修改组群账户</span><a href="#groupmod-xiu-gai-zu-qun-zhang-hu" class="header-anchor">#</a></h4><p>groupmod [选项] [组群名]</p>
+<h4><span id="groupdel-shan-chu-zu-qun-zhang-hu">groupdel 删除组群账户</span><a href="#groupdel-shan-chu-zu-qun-zhang-hu" class="header-anchor">#</a></h4><p>groupdel [组群名]</p>
+<h3><span id="yong-hu-he-zu-qun-zhang-hu-wei-hu">用户和组群账户维护</span><a href="#yong-hu-he-zu-qun-zhang-hu-wei-hu" class="header-anchor">#</a></h3><p>passwd  gpasswd  su  newgrp  groups  id</p>
+<h4><span id="passwd">passwd</span><a href="#passwd" class="header-anchor">#</a></h4><p>设置或修改用户的密码，普通用户和超级权限用户都可以运行 passwd ，普通用户只能更改自己的用户密码， root 用户可以设置或修改任何用户的密码。如果 passwd 命令后面不接任何选项或用户名，则表示修改当前用户的密码。</p>
+<p>passwd [选项] [用户名]</p>
+<h4><span id="gpasswd">gpasswd</span><a href="#gpasswd" class="header-anchor">#</a></h4><p>设置一个组群的组群密码，或者是在组群中添加、删除用户。</p>
+<p>gpasswd [选项] [组群名]</p>
+<h4><span id="su">su</span><a href="#su" class="header-anchor">#</a></h4><p>使用 su 命令可以切换到其它用户账户进行登录。如果 su 命令不加任何选项，默认为切换到 root 用户，并且不改变 Shell 环境。</p>
+<p>su [选项] [用户]</p>
+<p>【例】 用户 it 使用 su 方式以 root 用户执行“ ls /root ”命令。<br>[it@rhel~]$ su -root -c “ls /root”<br>密码：  //在此输入用户 root 密码</p>
+<h4><span id="newgrp">newgrp</span><a href="#newgrp" class="header-anchor">#</a></h4><p>让用户账户以另一个组群的身份进行登录。newgrp 命令是以相同的账户名，不同的组群身份登录系统。如果要使用 newgrp 命令切换组群，用户必须是该组群的用户，否则将无法登录指定的组群。</p>
+<p>newgrp [组群名]</p>
+<h4><span id="groups">groups</span><a href="#groups" class="header-anchor">#</a></h4><p>使用 groups 命令可以显示指定用户账户的组群成员身份。</p>
+<p>groups [用户名]</p>
+<h4><span id="id">id</span><a href="#id" class="header-anchor">#</a></h4><p>使用 id 命令可以显示用户的 UID 以及该用户所属组群的 GID 。</p>
+<p>id [选项] [用户名]</p>
+<h2><span id="8-ci-pan-fen-qu-he-wen-jian-xi-tong-guan-li">8 磁盘分区和文件系统管理</span><a href="#8-ci-pan-fen-qu-he-wen-jian-xi-tong-guan-li" class="header-anchor">#</a></h2><p>在 Linux 系统中，如果需要在某个磁盘上存储数据，则需要将磁盘进行分区，然后创建文件系统，最后将文件系统挂载到目录下才可以。</p>
+<p>在安装 Linux 系统后需要添加更多的交换空间，可以通过添加一个交换分区或添加一个交换文件来实现。</p>
+<h3><span id="ci-pan-fen-qu-he-ge-shi-hua-jian-jie">磁盘分区和格式化简介</span><a href="#ci-pan-fen-qu-he-ge-shi-hua-jian-jie" class="header-anchor">#</a></h3><h4><span id="ci-pan-fen-qu">磁盘分区</span><a href="#ci-pan-fen-qu" class="header-anchor">#</a></h4><p>磁盘分区是指对硬盘物理介质的逻辑划分。将磁盘分成多个分区，不仅仅利于对文件的管理，而且不同的分区可以建立不同的文件系统，这样才能在不同的分区上安装不同的操作系统。</p>
+<p>不同操作系统原则上采用不同文件系统，需要不同的分区。而在Linux中，本身又需要更多的磁盘分区，比如根分区 / 和 swap 分区</p>
+<p>磁盘分区一共有 3 种：主分区、扩展分区和逻辑驱动器。扩展分区只不过是逻辑驱动器的“容器”，实际上只有主分区和逻辑驱动器才能进行数据存储。在一块磁盘上最多只能有四个主分区，可以另外建立一个扩展分区来代替四个主分区的其中一个，然后在扩展分区下可以建立更多的逻辑驱动器。</p>
+<p>在 Linux 系统中进行分区可以使用 fdisk 和 parted 等命令，或者使用相同功能的图形界面程序。</p>
+<h4><span id="ge-shi-hua">格式化</span><a href="#ge-shi-hua" class="header-anchor">#</a></h4><p>磁盘经过分区之后，下一个步骤就是要对磁盘分区进行格式化的工作（也就是创建文件系统的工作）。格式化是指对磁盘分区进行初始化的一种操作，这种操作通常会导致现有的分区中所有的数据被清除。简单说，就是把一张空白的磁盘划分成一个个小区域并编号，供计算机储存和读取数据使用。</p>
+<p>格式化是在磁盘中建立磁道和扇区，建立好之后，计算机才可以使用磁盘来储存数据。格式化的动作通常是在磁盘的开端写入启动扇区的数据、在根目录记录磁盘卷标、为文件分配表保留一些空间，以及检查磁盘上是否有损坏的扇区，如果有的话则在文件分配表标上损毁的记号，表示该扇区并不用来储存数据。</p>
+<p>分区后不能直接使用，必须要进行格式化。在 Windows 系统下可以通过资源管理器下的文件菜单或者 format 程序来执行，而在 Linux 系统中大多使用 mkfs 命令来完成。</p>
+<p>Linux 系统支持不同的文件系统，目前应用最广泛的就是 xfs 和 ext4</p>
+<h3><span id="linux-ci-pan-fen-qu">Linux 磁盘分区</span><a href="#linux-ci-pan-fen-qu" class="header-anchor">#</a></h3><p>使用 fdisk 命令可以用来对磁盘进行分区，它采用传统的问答式界面，除此之外还可以用来查看磁盘分区的详细信息，也能为每个分区指定分区的类型。</p>
+<p>fdisk [选项] [设备]</p>
+<h4><span id="fdisk-jiao-hu-shi-cao-zuo-zi-ming-ling">fdisk交互式操作子命令</span><a href="#fdisk-jiao-hu-shi-cao-zuo-zi-ming-ling" class="header-anchor">#</a></h4><table>
+<thead>
+<tr>
+<th>子命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>m</td>
+<td>显示所有能在 fdisk 中使用的子命令</td>
+</tr>
+<tr>
+<td>p</td>
+<td>显示磁盘分区信息</td>
+</tr>
+<tr>
+<td>a</td>
+<td>设置磁盘启动分区</td>
+</tr>
+<tr>
+<td>n</td>
+<td>创建新的分区</td>
+</tr>
+<tr>
+<td>e</td>
+<td>创建扩展分区</td>
+</tr>
+<tr>
+<td>p</td>
+<td>创建主分区</td>
+</tr>
+<tr>
+<td>t</td>
+<td>更改分区的系统 ID （也就是分区类型 ID</td>
+</tr>
+<tr>
+<td>d</td>
+<td>删除磁盘分区</td>
+</tr>
+<tr>
+<td>q</td>
+<td>退出 fdisk ，不保存磁盘分区设置</td>
+</tr>
+<tr>
+<td>l</td>
+<td>列出已知的分区类型</td>
+</tr>
+<tr>
+<td>v</td>
+<td>验证分区表</td>
+</tr>
+<tr>
+<td>w</td>
+<td>保存磁盘分区设置并退出 fdisk</td>
+</tr>
+</tbody></table>
+<h4><span id="linux-chang-yong-fen-qu-lei-xing">Linux常用分区类型</span><a href="#linux-chang-yong-fen-qu-lei-xing" class="header-anchor">#</a></h4><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>分区类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>83</td>
+<td>Linux</td>
+<td>Linux 普通分区</td>
+</tr>
+<tr>
+<td>fd</td>
+<td>Linux raid 自动</td>
+<td>RAID 使用的分区</td>
+</tr>
+<tr>
+<td>8e</td>
+<td>Linux LVM</td>
+<td>LVM 使用的分区</td>
+</tr>
+<tr>
+<td>82</td>
+<td>Linux swap / Solaris</td>
+<td>swap 分区</td>
+</tr>
+</tbody></table>
+<h4><span id="linux-xi-tong-xia-ying-pan-fen-qu-ju-li">Linux 系统下硬盘分区举例</span><a href="#linux-xi-tong-xia-ying-pan-fen-qu-ju-li" class="header-anchor">#</a></h4><ol>
+<li>进入 fdisk 界面，显示磁盘分区信息。</li>
+<li>创建和删除主分区。</li>
+<li>创建扩展分区和逻辑驱动器 。</li>
+<li>查看并转换分区类型 。</li>
+<li>保存分区设置信息，并退出 fdisk 。</li>
+<li>在非交互式界面下显示当前硬盘的分区信息。</li>
+<li>查看分区情况（使用 partprobe 命令更新分区表，使内核识别分区）。</li>
+</ol>
+<h3><span id="chuang-jian-wen-jian-xi-tong">创建文件系统</span><a href="#chuang-jian-wen-jian-xi-tong" class="header-anchor">#</a></h3><p>首先需要确认文件系统的类型，然后才能挂载使用，通过 mount 加载或者通过修改/etc/fstab 文件开机自动加载都可以实现该功能。</p>
+<p>目前 Windows 主流文件系统 NTFS NAT<br>Linux 主流文件系统 xfs ext4 ext3 ext2</p>
+<h4><span id="mkfs-chuang-jian-wen-jian-xi-tong">mkfs 创建文件系统</span><a href="#mkfs-chuang-jian-wen-jian-xi-tong" class="header-anchor">#</a></h4><p>mkfs [选项] [设备]</p>
+<ol>
+<li><p>查看当前磁盘上的分区情况，该磁盘设备是 /dev/sda 。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l /dev/sda</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>格式化 /dev/sda5 分区，创建 ext4 文件系统。</p>
+<p> 对计算机硬盘分好分区之后重启计算机，使用如下命令创建文件系统。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs -t ext4 /dev/sda5</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3><span id="gua-zai-he-xie-zai-wen-jian-xi-tong">挂载和卸载文件系统</span><a href="#gua-zai-he-xie-zai-wen-jian-xi-tong" class="header-anchor">#</a></h3><p>如果要挂载一个分区，首先需要确认文件系统的类型，然后才能挂载使用，通过使用 mount 和 umount 命令可以实现文件系统的挂载和卸载。</p>
+<h4><span id="mount-gua-zai-wen-jian-xi-tong">mount 挂载文件系统</span><a href="#mount-gua-zai-wen-jian-xi-tong" class="header-anchor">#</a></h4><p>使用 mount 命令可以将指定分区、光盘、 U盘或者是移动硬盘挂载到 Linux 系统的目录下。</p>
+<p>命令语法：<br>mount [选项] [设备] [挂载目录]</p>
+<h4><span id="umount-xie-zai-wen-jian-xi-tong">umount 卸载文件系统</span><a href="#umount-xie-zai-wen-jian-xi-tong" class="header-anchor">#</a></h4><p>umount [选项] [设备|挂载目录]</p>
+<h4><span id="cha-kan-ci-pan-fen-qu-gua-zai-qing-kuang">查看磁盘分区挂载情况</span><a href="#cha-kan-ci-pan-fen-qu-gua-zai-qing-kuang" class="header-anchor">#</a></h4><p>使用 df 命令可以显示每个文件所在的文件系统的信息，默认是显示所有文件系统。检查文件系统的磁盘空间使用情况，利用该命令获取硬盘使用了多少空间、目前还剩下多少空间等相关信息。</p>
+<p>df [选项] [文件]</p>
+<h3><span id="kai-ji-zi-dong-gua-zai-wen-jian-xi-tong">开机自动挂载文件系统</span><a href="#kai-ji-zi-dong-gua-zai-wen-jian-xi-tong" class="header-anchor">#</a></h3><p>修改 /etc/fstab 文件实现开机自动挂载文件系统</p>
+<p>/etc/fstab 文件包含了所有磁盘分区以及存储设备的信息。其中包含了磁盘分区和存储设备如何挂载，以及挂载在什么目录上的信息。 /etc/fstab 文件是一个简单的文本文件，必须要以 root 用户登录才可以编辑该文件。</p>
+<p>每一行都包含着一个设备或磁盘分区的信息，每一行又有多个列的信息。<br>/dev/sda5  /mnt/kk  ext4  defaults  0  0</p>
+<p>/etc/fstab文件构成</p>
+<ol>
+<li><p>设备</p>
+<p> 使用设备名称和 UUID 号表示都可以。如果要查看某设备的 UUID 号，可以用下面命令：<br> ls -l /dev/disk/by uuid 或 blkid</p>
+</li>
+<li><p>挂载目录</p>
+<p> Linux系统为每个设备或分区设定了挂载目录。</p>
+</li>
+<li><p>文件系统类型</p>
+<p> Linux系统为每个设备或分区指定了文件系统类型。</p>
+</li>
+<li><p>挂载选项</p>
+<p> 1 auto 和 noauto<br> 2 user 和 nouser<br> 3 exec 和 noexec<br> 4 ro<br> 5 rw<br> 6 sync 和 async<br> 7 defaults<br> 8 owner</p>
+</li>
+<li><p>转储选项</p>
+<p> dump选项检查文件系统并用一个数字来决定该文件系统是否需要备份。如果它是 0 dump 将会忽略该文件系统，不做备份。</p>
+</li>
+<li><p>文件系统检查选项</p>
+<p> fsck选项通过检验第 6 项中的数字来决定以何种顺序检查文件系统，如果它是 0，fsck 将不检查该文件系统。根文件系统（“/”）的默认值为 1，其他文件系统可以为 2-9 。</p>
+</li>
+</ol>
+<h3><span id="shi-yong-jiao-huan-kong-jian">使用交换空间</span><a href="#shi-yong-jiao-huan-kong-jian" class="header-anchor">#</a></h3><h4><span id="shi-yong-jiao-huan-fen-qu">使用交换分区</span><a href="#shi-yong-jiao-huan-fen-qu" class="header-anchor">#</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel ~]<span class="comment"># mkswap /dev/sda5</span></span><br><span class="line">[root@rhel ~]<span class="comment"># free</span></span><br><span class="line">[root@rhel ~]<span class="comment"># swapon /dev/sda5</span></span><br><span class="line">[root@rhel ~]<span class="comment"># free</span></span><br><span class="line">[root@rhel ~]<span class="comment"># cat /proc/swaps</span></span><br><span class="line">[root@rhel ~]<span class="comment"># swapoff /dev/sda5</span></span><br></pre></td></tr></table></figure>
+
+<h4><span id="shi-yong-jiao-huan-wen-jian">使用交换文件</span><a href="#shi-yong-jiao-huan-wen-jian" class="header-anchor">#</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(1)创建 /swapfile 文件</span><br><span class="line">将大小乘以 1024 来判定块的大小。例如，大小为 68MB 的交换文件的块大小为 65536 。</span><br><span class="line">在Shell 提示下以 root 用户身份输入以下命令，其中的 count 等于想要输入的块大小。</span><br><span class="line"></span><br><span class="line">[root@rhel ~]<span class="comment"># dd if=/dev/zero of=/swapfile bs=1024 count=66536</span></span><br><span class="line">[root@rhel ~]<span class="comment"># ls /</span></span><br><span class="line">[root@rhel ~]<span class="comment"># mkswap /swapfile</span></span><br><span class="line">[root@rhel ~]<span class="comment"># swapon /swapfile</span></span><br><span class="line">[root@rhel ~]<span class="comment"># free</span></span><br><span class="line">[root@rhel ~]<span class="comment"># cat /proc/swaps</span></span><br><span class="line">编辑 /etc/fstab 文件</span><br><span class="line"></span><br><span class="line">[root@rhel ~]<span class="comment"># swapoff /swapfile</span></span><br><span class="line">[root@rhel ~]<span class="comment"># free</span></span><br><span class="line">[root@rhel ~]<span class="comment"># rm -rf /swapfilee</span></span><br><span class="line">编辑 /etc/fstab 文件</span><br></pre></td></tr></table></figure>
+
+<h2><span id="9-ruan-jian-bao-guan-li">9 软件包管理</span><a href="#9-ruan-jian-bao-guan-li" class="header-anchor">#</a></h2><p>在 Linux 系统中，最常用的软件包是 RPM 包和tar 包。要管理 RPM 软件包可以使用 rpm 和 yum命令， yum 命令自动化地收集 RPM 软件包的相关信息，检查依赖性，并且一次安装所有依赖的软件包，无需繁琐地一次次安装。</p>
+<h3><span id="rpm-ruan-jian-bao-guan-li">RPM 软件包管理</span><a href="#rpm-ruan-jian-bao-guan-li" class="header-anchor">#</a></h3><p>RPM (Red Hat Package Manager)</p>
+<p>RPM 软件包管理主要有安装（添加）、删除（卸载）、刷新、升级、查询这五种基本操作模式。</p>
+<h4><span id="an-zhuang-rpm-ruan-jian-bao">安装 RPM 软件包</span><a href="#an-zhuang-rpm-ruan-jian-bao" class="header-anchor">#</a></h4><p>rpm -ivh [RPM 软件包文件名称]</p>
+<h4><span id="shan-chu-rpm-ruan-jian-bao">删除 RPM 软件包</span><a href="#shan-chu-rpm-ruan-jian-bao" class="header-anchor">#</a></h4><p>rpm -e [RPM 软件包文件名称]</p>
+<h4><span id="sheng-ji-rpm-ruan-jian-bao">升级 RPM 软件包</span><a href="#sheng-ji-rpm-ruan-jian-bao" class="header-anchor">#</a></h4><p>rpm -Uvh [RPM 软件包文件名称]</p>
+<h4><span id="shua-xin-rpm-ruan-jian-bao">刷新 RPM 软件包</span><a href="#shua-xin-rpm-ruan-jian-bao" class="header-anchor">#</a></h4><p>rpm -Fvh [RPM 软件包文件名称]</p>
+<h4><span id="cha-xun-zhi-ding-rpm-ruan-jian-bao-shi-fou-yi-jing-an-zhuang">查询指定 RPM 软件包是否已经安装</span><a href="#cha-xun-zhi-ding-rpm-ruan-jian-bao-shi-fou-yi-jing-an-zhuang" class="header-anchor">#</a></h4><p>rpm -q [RPM 软件包文件名称]</p>
+<h4><span id="cha-xun-xi-tong-zhong-suo-you-yi-jing-an-zhuang-de-rpm-ruan-jian-bao">查询系统中所有已经安装的 RPM 软件包</span><a href="#cha-xun-xi-tong-zhong-suo-you-yi-jing-an-zhuang-de-rpm-ruan-jian-bao" class="header-anchor">#</a></h4><p>rpm -qa</p>
+<h4><span id="cha-xun-yi-an-zhuang-rpm-ruan-jian-bao-de-miao-shu-xin-xi">查询已安装 RPM 软件包的描述信息</span><a href="#cha-xun-yi-an-zhuang-rpm-ruan-jian-bao-de-miao-shu-xin-xi" class="header-anchor">#</a></h4><p>rpm -qi [RPM 软件包文件名称]</p>
+<h4><span id="cha-xun-yi-an-zhuang-rpm-ruan-jian-bao-de-suo-bao-han-de-wen-jian-lie-biao">查询已安装 RPM 软件包的所包含的文件列表</span><a href="#cha-xun-yi-an-zhuang-rpm-ruan-jian-bao-de-suo-bao-han-de-wen-jian-lie-biao" class="header-anchor">#</a></h4><p>rpm -ql [RPM 软件包文件名称]</p>
+<h4><span id="cha-xun-rpm-ruan-jian-bao-de-yi-lai-guan-xi">查询 RPM 软件包的依赖关系</span><a href="#cha-xun-rpm-ruan-jian-bao-de-yi-lai-guan-xi" class="header-anchor">#</a></h4><p>rpm -qR [RPM 软件包文件名称]</p>
+<hr>
+<p>但是使用 rpm 命令安装软件包特别的麻烦，原因在于需要手动寻找安装该软件包所需要的一系列依赖关系。当软件包不用时需要卸载的话，由于卸载掉了某个依赖关系而导致其它的软件包不能用。</p>
+<h3><span id="shi-yong-yum-guan-li-rpm-ruan-jian-bao">使用 yum 管理 RPM 软件包</span><a href="#shi-yong-yum-guan-li-rpm-ruan-jian-bao" class="header-anchor">#</a></h3><p>yum Yellow dog Updater Modified ）起初是由Terra Soft 研发，其宗旨是自动化地升级、安装和删除 RPM 软件包，收集 RPM 软件包的相关信息，检查依赖性并且一次安装所有依赖的软件包，无须繁琐地一次次安装。</p>
+<ul>
+<li>可以同时配置多个软件仓库；</li>
+<li>简洁的配置文件 /etc/yum.conf</li>
+<li>自动解决安装或者删除 RPM 软件包时遇到<br>的依赖性问题；</li>
+<li>使用 yum 非常方便；</li>
+<li>保持与 RPM 数据库的一致性。</li>
+</ul>
+<p>软件仓库配置文件默认存储在/etc/yum.repos.d 目录中。</p>
+<h4><span id="yum-ming-ling-shi-yong">yum 命令使用</span><a href="#yum-ming-ling-shi-yong" class="header-anchor">#</a></h4><p>yum [选项] [命令]</p>
+<ol>
+<li>yum help 显示使用信息</li>
+<li>yum list 列出软件包</li>
+<li>yum search keyword搜索关键字</li>
+<li>yum info packagename 列出软件包详细信息</li>
+<li>yum install packagename 安装软件包 **</li>
+<li>yum remove packagename 删除软件包 **</li>
+<li>yum update packagename 升级软件包</li>
+</ol>
+<h3><span id="tar-bao-guan-li">tar 包管理</span><a href="#tar-bao-guan-li" class="header-anchor">#</a></h3><p>使用 tar 命令可以将文件和目录进行打包或压缩以做备份用。</p>
+<h4><span id="tar-bao-de-ji-ben-yong-fa">tar包的基本用法</span><a href="#tar-bao-de-ji-ben-yong-fa" class="header-anchor">#</a></h4><p>tar [选项] [文件|目录]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">打包</span><br><span class="line">[root@rhel ~]<span class="comment"># tar cvf abc.tar /root/abc</span></span><br><span class="line">查看</span><br><span class="line">[root@rhel ~]<span class="comment"># tar tvf abc.tar</span></span><br><span class="line">解包</span><br><span class="line">[root@rhel ~]<span class="comment"># tar xvf abc.tar</span></span><br><span class="line">将文件 /root/abc/d 添加到 abc.tar 包里面去。</span><br><span class="line">[root@rhel ~]<span class="comment"># touch /root/abc/d</span></span><br><span class="line">[root@rhel ~]<span class="comment"># tar rvf abc.tar /root/abc/d</span></span><br><span class="line">更新原来 tar 包 abc.tar 中的文件 /root/abc/d 。</span><br><span class="line">[root@rhel ~]<span class="comment"># tar uvf abc.tar /root/abc/d</span></span><br></pre></td></tr></table></figure>
+
+<h4><span id="tar-bao-de-te-shu-shi-yong">tar包的特殊使用</span><a href="#tar-bao-de-te-shu-shi-yong" class="header-anchor">#</a></h4><p>使用 tar 命令可以在打包或解包的同时调用其他的压缩程序，比如调用 gzip 、 bzip2 和xz 等。</p>
+<ol>
+<li><p>tar 调用 gzip</p>
+<p> 使用 tar 命令可以在归档或者是解包的同时调用 gzip 压缩程序。以“.gz”结尾的文件就是 gzip 压缩的结果。与 gzip 相对应的解压缩程序是 gunzip tar 命令中使用 z 选项来调用 gzip 。</p>
+</li>
+<li><p>tar 调用 bzip2</p>
+<p> 使用 tar 命令可以在归档或者是解包的同时调用 bzip2 压缩程序。以“.bz2 ”结尾的文件就是 bzip2 压缩的结果。与 bzip2 相对应 的解压缩程序是 bunzip2 。tar 命令中使用 j 选项来调用 bzip2 。</p>
+</li>
+<li><p>tar 调用 xz</p>
+<p> 使用 tar 命令可以在归档或者是解包的同时调用 xz 压缩程序。以“.xz” 结尾的文件就是 xz 压缩的结果。 tar 命令中使用 J 选项来调用。</p>
+</li>
+</ol>
+<h2><span id="10-quan-xian-he-suo-you-zhe">10 权限和所有者</span><a href="#10-quan-xian-he-suo-you-zhe" class="header-anchor">#</a></h2><h3><span id="quan-xian-she-zhi">权限设置</span><a href="#quan-xian-she-zhi" class="header-anchor">#</a></h3><p>通过设置权限可以限制或允许以下三种用户访问：文件的用户所有者（属主）、文件的组群所有者（用户所在组的同组用户）、系统中的其它用户。</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>文件</th>
+<th>目录</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>r（读取）</td>
+<td>对文件而言，该用户具有读取文件内容的权限</td>
+<td>对目录来说，该用户具有浏览目录的权限；</td>
+</tr>
+<tr>
+<td>w（写入）</td>
+<td>对文件而言，该用户具有新增、修改文件内容的权限</td>
+<td>对目录来说该用户具有删除、移动目录内文件的权限；</td>
+</tr>
+<tr>
+<td>x（执行）</td>
+<td>对文件而言，该用户具有执行文件的权限</td>
+<td>对目录来说，该用户具有进入目录的权限；</td>
+</tr>
+<tr>
+<td>-</td>
+<td>表示不具有该项权限。</td>
+<td>表示不具有该项权限。</td>
+</tr>
+</tbody></table>
+<p>chmod的命令语法：<br>chmod [操作对象] [操作符号] [权限] [文件|目录]</p>
+<h4><span id="wen-zi-she-ding-fa">文字设定法</span><a href="#wen-zi-she-ding-fa" class="header-anchor">#</a></h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>选项含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>u</td>
+<td>表示用户所有者，即文件或目录的所有者</td>
+</tr>
+<tr>
+<td>g</td>
+<td>表示组群所有者，即与文件的用户所有者有相同组群GID 的所有用户</td>
+</tr>
+<tr>
+<td>o</td>
+<td>表示其它用户</td>
+</tr>
+<tr>
+<td>a</td>
+<td>表示所有用户，它是系统默认值文字设定法设置权限</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>选项含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+</td>
+<td>添加某个权限</td>
+</tr>
+<tr>
+<td>-</td>
+<td>取消某个权限</td>
+</tr>
+<tr>
+<td>=</td>
+<td>赋予给定权限并取消原先权限（如果有的话）</td>
+</tr>
+</tbody></table>
+<h4><span id="shu-zi-she-ding-fa">数字设定法</span><a href="#shu-zi-she-ding-fa" class="header-anchor">#</a></h4><p>chmod [n1n2n3] [文件|目录]</p>
+<p>n1表示用户所有者的权限 n2 表示组群所有者的权限， n3 表示其它用户的权限。</p>
+<p>二进制位</p>
+<p>r：对应数值 4<br>w：对应数值 2<br>x：对应数值 1<br>-：对应数值 0</p>
+<h4><span id="te-shu-quan-xian-jian-jie">特殊权限简介</span><a href="#te-shu-quan-xian-jian-jie" class="header-anchor">#</a></h4><p>除了 基本 权限之外，还有三个特殊的权限 。用户 如果没有特殊的需求，一般是不需要启用特殊权限，避免出现安全方面的隐患。<br>特殊权限有以下3 种类型。</p>
+<ol>
+<li><p>SUID</p>
+<p> 对一个可执行文件，不是以发起者身份来获取资源，而是以可执行文件的用户所有者身份来 执行；对一个 目录无影响。</p>
+</li>
+<li><p>SGID</p>
+<p> 对一个可执行文件，不是以发起者身份来获取资源，而是以可执行文件的组群所有者身份来执行；对一个目录，在 该目录中创建的任意新文件的所属组与该目录的所属组 相同。</p>
+</li>
+<li><p>Sticky</p>
+<p> 对一个可执行文件无影响；对目录设置 Sticky 之后，尽管其它用户有写权限，也必须由文件所有者执行删除和移动等操作。</p>
+</li>
+</ol>
+<h4><span id="wen-zi-she-ding-fa-she-zhi-te-shu-quan-xian">文字设定法设置特殊权限</span><a href="#wen-zi-she-ding-fa-she-zhi-te-shu-quan-xian" class="header-anchor">#</a></h4><table>
+<thead>
+<tr>
+<th>权限</th>
+<th>命令</th>
+<th>模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SUID</td>
+<td>chmod u+s</td>
+<td>s=x+SUID  S=-+SUID</td>
+</tr>
+<tr>
+<td>SGID</td>
+<td>chmod g+s</td>
+<td>s=x+SGID S=-+SGID</td>
+</tr>
+<tr>
+<td>Sticky</td>
+<td>chmod o+t</td>
+<td>t=x+Sticky T=-+Sticky</td>
+</tr>
+</tbody></table>
+<p>SUID：对应数值 4<br>SGID：对应数值 2<br>Sticky：对应数值 1</p>
+<h3><span id="geng-gai-wen-jian-he-mu-lu-suo-you-zhe">更改文件和目录所有者</span><a href="#geng-gai-wen-jian-he-mu-lu-suo-you-zhe" class="header-anchor">#</a></h3><p>chown [选项] [用户.组群] [文件|目录]<br>chown [选项] [用户:组群] [文件|目录]</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/10/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-2/" rel="prev" title="Linux系统基础-2">
+      <i class="fa fa-chevron-left"></i> Linux系统基础-2
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">7 用户和组群账户管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">用户账户简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.2.</span> <span class="nav-text">&#x2F;etc&#x2F;passwd 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.2.1.</span> <span class="nav-text">&#x2F;etc&#x2F;passwd 文件字段含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.2.2.</span> <span class="nav-text">&#x2F;etc&#x2F;shadow 文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text">用户账户设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.3.1.</span> <span class="nav-text">useradd 创建用户账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.3.2.</span> <span class="nav-text">usermod 修改用户账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.3.3.</span> <span class="nav-text">userdel 删除用户账户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.4.</span> <span class="nav-text">组群账户简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.4.1.</span> <span class="nav-text">&#x2F;etc&#x2F;group 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.4.2.</span> <span class="nav-text">&#x2F;etc&#x2F;gshadow 文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.5.</span> <span class="nav-text">组群账户设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.5.1.</span> <span class="nav-text">groupadd 创建组群账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.5.2.</span> <span class="nav-text">groupmod 修改组群账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.5.3.</span> <span class="nav-text">groupdel 删除组群账户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.6.</span> <span class="nav-text">用户和组群账户维护</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.6.1.</span> <span class="nav-text">passwd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.6.2.</span> <span class="nav-text">gpasswd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.6.3.</span> <span class="nav-text">su</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.6.4.</span> <span class="nav-text">newgrp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.6.5.</span> <span class="nav-text">groups</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.6.6.</span> <span class="nav-text">id</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">8 磁盘分区和文件系统管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">磁盘分区和格式化简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.1.</span> <span class="nav-text">磁盘分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.2.</span> <span class="nav-text">格式化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">Linux 磁盘分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.2.1.</span> <span class="nav-text">fdisk交互式操作子命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.2.2.</span> <span class="nav-text">Linux常用分区类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.2.3.</span> <span class="nav-text">Linux 系统下硬盘分区举例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.3.</span> <span class="nav-text">创建文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.3.1.</span> <span class="nav-text">mkfs 创建文件系统</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.4.</span> <span class="nav-text">挂载和卸载文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.4.1.</span> <span class="nav-text">mount 挂载文件系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.4.2.</span> <span class="nav-text">umount 卸载文件系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.4.3.</span> <span class="nav-text">查看磁盘分区挂载情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.5.</span> <span class="nav-text">开机自动挂载文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.6.</span> <span class="nav-text">使用交换空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.6.1.</span> <span class="nav-text">使用交换分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.6.2.</span> <span class="nav-text">使用交换文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">9 软件包管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.1.</span> <span class="nav-text">RPM 软件包管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.1.</span> <span class="nav-text">安装 RPM 软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.2.</span> <span class="nav-text">删除 RPM 软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.3.</span> <span class="nav-text">升级 RPM 软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.4.</span> <span class="nav-text">刷新 RPM 软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.5.</span> <span class="nav-text">查询指定 RPM 软件包是否已经安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.6.</span> <span class="nav-text">查询系统中所有已经安装的 RPM 软件包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.7.</span> <span class="nav-text">查询已安装 RPM 软件包的描述信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.8.</span> <span class="nav-text">查询已安装 RPM 软件包的所包含的文件列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.1.9.</span> <span class="nav-text">查询 RPM 软件包的依赖关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.2.</span> <span class="nav-text">使用 yum 管理 RPM 软件包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.2.1.</span> <span class="nav-text">yum 命令使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.3.</span> <span class="nav-text">tar 包管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.3.1.</span> <span class="nav-text">tar包的基本用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.3.2.</span> <span class="nav-text">tar包的特殊使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">4.</span> <span class="nav-text">10 权限和所有者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.1.</span> <span class="nav-text">权限设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">4.1.1.</span> <span class="nav-text">文字设定法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">4.1.2.</span> <span class="nav-text">数字设定法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">4.1.3.</span> <span class="nav-text">特殊权限简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">4.1.4.</span> <span class="nav-text">文字设定法设置特殊权限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.2.</span> <span class="nav-text">更改文件和目录所有者</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Qin"
+      src="/images/eason.jpg">
+  <p class="site-author-name" itemprop="name">Qin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Qinruixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Qinruixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-75-26" title="zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-75-26" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>zhihu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div id="music163player">
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=1300140490&auto=1&height=66"></iframe>
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qin</span>
+</div>
+  <div class="powered-by">由 xinxin 用爱发电
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

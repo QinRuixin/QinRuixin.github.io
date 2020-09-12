@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/eason.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/eason.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="《Linux系统基础》笔记 part2 目录与文件管理 Linux常用操作命令 Shell编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统基础-2">
+<meta property="og:url" content="http://yoursite.com/2020/09/10/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-2/index.html">
+<meta property="og:site_name" content="OvO">
+<meta property="og:description" content="《Linux系统基础》笔记 part2 目录与文件管理 Linux常用操作命令 Shell编程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-10T15:09:55.000Z">
+<meta property="article:modified_time" content="2020-09-10T15:12:44.714Z">
+<meta property="article:author" content="Qin">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/10/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux系统基础-2 | OvO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">OvO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">13</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/QinRuixin" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/10/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eason.jpg">
+      <meta itemprop="name" content="Qin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OvO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux系统基础-2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-10 23:09:55 / 修改时间：23:12:44" itemprop="dateCreated datePublished" datetime="2020-09-10T23:09:55+08:00">2020-09-10</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">《Linux系统基础》笔记 part2 目录与文件管理 Linux常用操作命令 Shell编程</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2><span id="4-mu-lu-he-wen-jian-guan-li">4 目录和文件管理</span><a href="#4-mu-lu-he-wen-jian-guan-li" class="header-anchor">#</a></h2><p>Linux操作系统以目录的形式挂载文件系统，其目录结构是一个分层的树形结构。</p>
+<h3><span id="wen-jian-lei-xing">文件类型</span><a href="#wen-jian-lei-xing" class="header-anchor">#</a></h3><p>Linux 文件类型常见的有：普通文件、目录文件、设备文件（字符设备文件和块设备文件）、管道文件和符号链接文件等。</p>
+<p>用“ ls -lh ”命令查看某个文件的属性可以看到有类似“-rwx——”的属性符号，其属性第一个符号是“-”，这样的文件在 Linux 系统中就是普通文件。第二到四的符号 rwx 表示文件所有者的权限为 读写执行，剩余符号 “-” 表示 组群用户 和 其他用户 对该文件都没有权限。</p>
+<p>第一个符号是“d”，表示目录文件（directory）<br>第一个符号是“b”，表示块设备文件（block），可以随机读写 常见的是磁盘<br>第一个符号是“c”，表示字符设备文件（character），可以接收字符流 /dev/null是常用的字符设备文件，送入这个设备的所有内容都被忽略<br>第一个符号是“p”，表示管道文件（FIFO文件）<br>第一个符号是“l”，表示软链接文件（符号链接文件），可以是任意文件或目录，可以链接不同系统的文件，删除软链接文件不影响源文件。但删除源文件后，软链接文件没有指向，此时 cat 输出文件内容会失败，提示 No such file or directory ，但vi编辑文件会重新创建出源文件。<br>ls -lh 后 看到文件的硬链接数大于二 表示 硬链接文件。硬链接是已存在文件的另一个文件，对硬链接文件进行读写和删除操作时，结果和软链接相同。但如果删除硬链接文件的源文件，硬链接文件仍然存在，而且保留了原有的内容。这时，系统就“忘记”了它曾经是硬链接文件，而把它当成一个普通文件。</p>
+<h3><span id="linux-mu-lu-jie-gou">Linux 目录结构</span><a href="#linux-mu-lu-jie-gou" class="header-anchor">#</a></h3><table>
+<thead>
+<tr>
+<th>目录</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>/</td>
+<td>根目录</td>
+</tr>
+<tr>
+<td>/home</td>
+<td>包含 Linux 系统上各用户的主目录，子目录名称默认以该用户名命名</td>
+</tr>
+<tr>
+<td>/root</td>
+<td>是 root 用户的主目录</td>
+</tr>
+<tr>
+<td>/bin</td>
+<td>包含常用的命令文件，不能包含子目录</td>
+</tr>
+<tr>
+<td>/sbin</td>
+<td>包含系统管理员和 root 用户所使用的命令文件</td>
+</tr>
+<tr>
+<td>/dev</td>
+<td>包含大部分的设备文件，比如磁盘、光驱等</td>
+</tr>
+<tr>
+<td>/lib</td>
+<td>包含 Linux 系统的共享文件和内核模块文件</td>
+</tr>
+<tr>
+<td>/lib/modules</td>
+<td>目录存放核心可加载模块</td>
+</tr>
+<tr>
+<td>/lib64</td>
+<td>包含 64 位版本 Linux 系统的共享文件和内核模块文件</td>
+</tr>
+<tr>
+<td>/tmp</td>
+<td>包含一些临时文件</td>
+</tr>
+<tr>
+<td>/mnt</td>
+<td>手动为某些设备（比如硬盘）挂载提供挂载目录</td>
+</tr>
+<tr>
+<td>/boot</td>
+<td>包含 Linux 系统的内核文件和引导装载程序（如 GRUB ）文件</td>
+</tr>
+<tr>
+<td>/opt</td>
+<td>包含某些第三方应用程序的安装文件</td>
+</tr>
+<tr>
+<td>/media</td>
+<td>由系统自动为某些设备（一般为光盘、 U 盘等设备）挂载提供挂载目录</td>
+</tr>
+<tr>
+<td>/var</td>
+<td>该目录存放不经常变化的数据，如系统日志、打印队列、 DNS 数据库文件等</td>
+</tr>
+<tr>
+<td>/etc</td>
+<td>包含 Linux 系统上大部分的配置文件，建议修改配置文件之前先备份</td>
+</tr>
+<tr>
+<td>/usr</td>
+<td>包含可以供所有用户使用的程序和数据</td>
+</tr>
+<tr>
+<td>/srv</td>
+<td>存储一些服务启动之后所需要取用的资料目录</td>
+</tr>
+<tr>
+<td>/run</td>
+<td>一个临时文件系统，一些程序或服务启动以后，会将他们的 PID 放置在该目录中</td>
+</tr>
+<tr>
+<td>/sys</td>
+<td>在 Linux 系统提供热插拔能力的同时，该目录包含所检测到的硬件设置，它们被 转换成 /dev 目录中的设备文件</td>
+</tr>
+<tr>
+<td>/proc</td>
+<td>是一个虚拟的文件系统，它不存在磁盘上，而是由内核在内存中产生， 用于提供系统的相关信息。</td>
+</tr>
+<tr>
+<td>下面说明在 /proc 目录下的一些最重要的文件。</td>
+<td></td>
+</tr>
+<tr>
+<td>/proc/cpuinfo ：该文件保存计算机 CPU 信息。</td>
+<td></td>
+</tr>
+<tr>
+<td>/proc/filesystems ：该文件保存 Linux 文件系统信息。</td>
+<td></td>
+</tr>
+<tr>
+<td>/proc/ioports ：该文件保存计算机 I/O 端口号信息。</td>
+<td></td>
+</tr>
+<tr>
+<td>/proc/version ：该文件保存 Linux 系统版本信息。</td>
+<td></td>
+</tr>
+<tr>
+<td>/proc/meminfo ：该文件保存计算机内存信息。</td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h3><span id="wen-jian-he-mu-lu-cao-zuo">文件和目录操作</span><a href="#wen-jian-he-mu-lu-cao-zuo" class="header-anchor">#</a></h3><p>pwd, cd, ls, touch, mkdir, rmdir, cp, mv, rm, wc<br>显示工作目录， 更换工作目录， 列出文件信息， 创建空文件、更改文件时间， 创建目录， 删除目录， 复制文件和目录， 文件和目录改名、移动文件和目录路径， 删除文件或目录， 统计文件行数、单词数和字节数和字符数</p>
+<h4><span id="ls-ming-ling-xian-shi-de-xiang-xi-xin-xi">ls 命令显示的详细信息</span><a href="#ls-ming-ling-xian-shi-de-xiang-xi-xin-xi" class="header-anchor">#</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@ECS /]<span class="comment"># ls -lh</span></span><br><span class="line">total 60K</span><br><span class="line">lrwxrwxrwx.  1 root root    7 Apr 26 15:48 bin -&gt; usr/bin</span><br><span class="line">dr-xr-xr-x.  5 root root 4.0K Apr 26 16:01 boot</span><br><span class="line">drwxr-xr-x  19 root root 2.9K Jul 20 08:20 dev</span><br><span class="line">drwxr-xr-x. 79 root root 4.0K Aug  5 19:40 etc</span><br><span class="line">drwxr-xr-x.  3 root root 4.0K Jul 20 08:37 home</span><br><span class="line">lrwxrwxrwx.  1 root root    7 Apr 26 15:48 lib -&gt; usr/lib</span><br><span class="line">lrwxrwxrwx.  1 root root    9 Apr 26 15:48 lib64 -&gt; usr/lib64</span><br><span class="line">drwx------.  2 root root  16K Apr 26 15:48 lost+found</span><br><span class="line">drwxr-xr-x.  2 root root 4.0K Apr 11  2018 media</span><br><span class="line">drwxr-xr-x.  2 root root 4.0K Apr 11  2018 mnt</span><br><span class="line">drwxr-xr-x.  3 root root 4.0K Aug  5 19:40 opt</span><br><span class="line">dr-xr-xr-x  89 root root    0 Jul 20 08:20 proc</span><br><span class="line">dr-xr-x---.  5 root root 4.0K Sep  6 09:47 root</span><br><span class="line">drwxr-xr-x  26 root root  740 Aug  5 19:40 run</span><br><span class="line">lrwxrwxrwx.  1 root root    8 Apr 26 15:48 sbin -&gt; usr/sbin</span><br><span class="line">drwxr-xr-x.  2 root root 4.0K Apr 11  2018 srv</span><br><span class="line">dr-xr-xr-x  13 root root    0 Sep  6 09:56 sys</span><br><span class="line">drwxrwxrwt.  9 root root 4.0K Sep  6 03:13 tmp</span><br><span class="line">drwxr-xr-x. 13 root root 4.0K Apr 26 15:48 usr</span><br><span class="line">drwxr-xr-x. 20 root root 4.0K Aug  8  2018 var</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>列数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第 1 列</td>
+<td>第 1 个字符表示文件的类型</td>
+</tr>
+<tr>
+<td>-</td>
+<td>第 2-4 个字符表示文件的用户所有者对此文件的访问权限</td>
+</tr>
+<tr>
+<td>-</td>
+<td>第 5-7 个字符表示文件的组群所有者对此文件的访问权限</td>
+</tr>
+<tr>
+<td>-</td>
+<td>第 8-10 个字符表示其他用户对此文件的访问权限</td>
+</tr>
+<tr>
+<td>第 2 列</td>
+<td>文件的链接数</td>
+</tr>
+<tr>
+<td>第 3 列</td>
+<td>文件的用户所有者</td>
+</tr>
+<tr>
+<td>第 4 列</td>
+<td>文件的组群所有者</td>
+</tr>
+<tr>
+<td>第 5 列</td>
+<td>文件长度（也就是文件大小，不是文件的磁盘占用量）</td>
+</tr>
+<tr>
+<td>第 6-8 列</td>
+<td>文件的更改时间（mtime） 或者是文件的最后访问时间（atime）</td>
+</tr>
+<tr>
+<td>第 9 列</td>
+<td>文件名称</td>
+</tr>
+</tbody></table>
+<h3><span id="lian-jie-wen-jian">链接文件</span><a href="#lian-jie-wen-jian" class="header-anchor">#</a></h3><p>在 Linux 系统中，内核为每一个新创建的文件分配一个 inode （索引节点）号，文件属性保存在索引节点里，在访问文件时，索 引节点被复制到内存里，从而实现文件的快速访问。</p>
+<p>Linux 系统中包括硬链接和软链接（也被称为符号链接）两种。</p>
+<p>ln [选项] [源文件名] [链接文件名] 默认为硬链接</p>
+<h4><span id="ying-lian-jie">硬链接</span><a href="#ying-lian-jie" class="header-anchor">#</a></h4><p>硬链接文件有两个限制：</p>
+<ol>
+<li>不允许给目录创建硬链接。</li>
+<li>只有在同一文件系统中的文件之间才能创建链接。</li>
+</ol>
+<h4><span id="ruan-lian-jie">软链接</span><a href="#ruan-lian-jie" class="header-anchor">#</a></h4><p>软链接也叫符号链接，这个文件包含了另一个文件的路径名。可以是任意文件或目录，可以链接不同文件系统的文件，和 Windows 下的快捷方式相似。链接文件甚至可以链接不存在的文件，这就产生一般称之为“断链”的问题，链接文件甚至可以循环链接自己。</p>
+<h4><span id="ying-lian-jie-he-ruan-lian-jie-de-qu-bie">硬链接和软链接的区别</span><a href="#ying-lian-jie-he-ruan-lian-jie-de-qu-bie" class="header-anchor">#</a></h4><p>硬链接记录的是目标的 inode ，软链接记录的是目标的路径。软链接就像是快捷方式，而硬链接就像是备份。软链接可以做跨分区的链接，而硬链接由于 inode 的缘故，只能在本分区中做链接。所以软链接的使用频率要高得多。</p>
+<h2><span id="5-linux-chang-yong-cao-zuo-ming-ling">5 Linux 常用操作命令</span><a href="#5-linux-chang-yong-cao-zuo-ming-ling" class="header-anchor">#</a></h2><h3><span id="wen-ben-nei-rong-xian-shi">文本内容显示</span><a href="#wen-ben-nei-rong-xian-shi" class="header-anchor">#</a></h3><p>cat more less head tail</p>
+<h4><span id="cat">cat</span><a href="#cat" class="header-anchor">#</a></h4><p>显示文本文件</p>
+<p>cat [选项] [文件]</p>
+<p> 把 textfile1 文件的内容加上行号后输<br>入到 textfile2 文件中。<br>[root@rhel ~]# cat<br>n textfile1 &gt; textfile2</p>
+<h4><span id="more">more</span><a href="#more" class="header-anchor">#</a></h4><p>分页显示文本文件</p>
+<p>more [选项] [文件]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">【例】 从第 20 行开始显示 testfile 文件的内容。</span><br><span class="line">[root@rhel ~]<span class="comment"># more +20 testfile</span></span><br></pre></td></tr></table></figure>
+
+<h4><span id="less">less</span><a href="#less" class="header-anchor">#</a></h4><p>回卷显示文本文件</p>
+<p>less [选项] [文件]</p>
+<h4><span id="head">head</span><a href="#head" class="header-anchor">#</a></h4><p>显示指定文件的前若干行文件内容。如果没有给出具体行数值，默认缺省设置为 10行。如果没有指定文件， head 就从标准输入读取。</p>
+<p>head [选项] [文件]</p>
+<h4><span id="tail">tail</span><a href="#tail" class="header-anchor">#</a></h4><p>查看文件末尾数据</p>
+<p>类 head</p>
+<h3><span id="wen-ben-nei-rong-chu-li">文本内容处理</span><a href="#wen-ben-nei-rong-chu-li" class="header-anchor">#</a></h3><p>sort uniq cut comm diff</p>
+<h4><span id="sort-dui-wen-jian-zhong-de-shu-ju-jin-xing-pai-xu">sort 对文件中的数据进行排序</span><a href="#sort-dui-wen-jian-zhong-de-shu-ju-jin-xing-pai-xu" class="header-anchor">#</a></h4><h4><span id="uniq-jiang-chong-fu-xing-cong-shu-chu-wen-jian-zhong-shan-chu">uniq 将重复行从输出文件中删除</span><a href="#uniq-jiang-chong-fu-xing-cong-shu-chu-wen-jian-zhong-shan-chu" class="header-anchor">#</a></h4><h4><span id="cut-cong-wen-jian-mei-xing-zhong-xian-shi-chu-xuan-ding-de-zi-jie-zi-fu-huo-zi-duan">cut 从文件每行中显示出选定的字节、字符或字段</span><a href="#cut-cong-wen-jian-mei-xing-zhong-xian-shi-chu-xuan-ding-de-zi-jie-zi-fu-huo-zi-duan" class="header-anchor">#</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">【例】 显示文件 /etc/passwd 中的用户登录名和用户名全称字段，这是第 1 个和第 5 个字段，由冒号隔开。</span><br><span class="line">[root@rhel ~]<span class="comment"># cut -f 1,5 -d: /etc/passwd</span></span><br><span class="line">root:root</span><br><span class="line">bin:bin</span><br><span class="line">daemon:daemon</span><br><span class="line">adm:adm</span><br></pre></td></tr></table></figure>
+
+<h4><span id="comm-zhu-xing-bi-jiao-liang-ge-yi-pai-guo-xu-de-wen-jian">comm 逐行比较两个已排过序的文件</span><a href="#comm-zhu-xing-bi-jiao-liang-ge-yi-pai-guo-xu-de-wen-jian" class="header-anchor">#</a></h4><p>comm [选项] [文件1] [文件2]</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>选项含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-1</td>
+<td>不输出文件1 特有的行</td>
+</tr>
+<tr>
+<td>-2</td>
+<td>不输出文件 2 特有的行</td>
+</tr>
+<tr>
+<td>-3 不输出两个文件共有的行</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>如果没有指定任何参数，comm 命令读取这两个文件，然后输出三列：第 1 列输出 file1 中特有的行；第 2 列输出 file2 中特有的行；第 3 列输出两个文件中共有的行。</p>
+<h4><span id="diff-zhu-xing-bi-jiao-liang-ge-wen-ben-wen-jian-lie-chu-qi-bu-tong-zhi-chu">diff 逐行比较两个文本文件，列出其不同之处</span><a href="#diff-zhu-xing-bi-jiao-liang-ge-wen-ben-wen-jian-lie-chu-qi-bu-tong-zhi-chu" class="header-anchor">#</a></h4><h3><span id="wen-jian-he-ming-ling-cha-zhao">文件和命令查找</span><a href="#wen-jian-he-ming-ling-cha-zhao" class="header-anchor">#</a></h3><p>grep find locate</p>
+<h4><span id="grep-cha-zhao-wen-jian-zhong-fu-he-tiao-jian-de-zi-fu-chuan">grep 查找文件中符合条件的字符串</span><a href="#grep-cha-zhao-wen-jian-zhong-fu-he-tiao-jian-de-zi-fu-chuan" class="header-anchor">#</a></h4><p>grep [选项] [查找模式] [文件名]</p>
+<p>查找模式可使用正则表达式</p>
+<h4><span id="find-lie-chu-wen-jian-xi-tong-nei-fu-he-tiao-jian-de-wen-jian">find 列出文件系统内符合条件的文件</span><a href="#find-lie-chu-wen-jian-xi-tong-nei-fu-he-tiao-jian-de-wen-jian" class="header-anchor">#</a></h4><p>find [路径] [选项]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">【例1】 查找 /boot 目录下的启动菜单配置文件 grub.cfg 。</span><br><span class="line">[root@rhel ~]<span class="comment"># find /boot</span></span><br><span class="line">name grub.cfg</span><br><span class="line"></span><br><span class="line">【例2】 查找 目录下所有以“ “.conf ”为扩展名的文件。</span><br><span class="line">[root@rhel ~]<span class="comment"># find /</span></span><br><span class="line">name <span class="string">'*.conf'</span></span><br><span class="line"></span><br><span class="line">【例3】 列出当前目录及其子目录下所有最近 20 天内更改</span><br><span class="line">过的文件。</span><br><span class="line">[root@rhel ~]<span class="comment"># find .</span></span><br><span class="line">ctime 20</span><br></pre></td></tr></table></figure>
+
+<h4><span id="locate-zai-shu-ju-ku-zhong-cha-zhao-wen-jian">locate 在数据库中查找文件</span><a href="#locate-zai-shu-ju-ku-zhong-cha-zhao-wen-jian" class="header-anchor">#</a></h4><p>locate [选项] [范本样式]</p>
+<h3><span id="xi-tong-xin-xi-xian-shi">系统信息显示</span><a href="#xi-tong-xin-xi-xian-shi" class="header-anchor">#</a></h3><p>uname hostname free du</p>
+<h4><span id="uname-xian-shi-ji-suan-ji-ji-cao-zuo-xi-tong-xiang-guan-xin-xi">uname 显示计算机及操作系统相关信息</span><a href="#uname-xian-shi-ji-suan-ji-ji-cao-zuo-xi-tong-xiang-guan-xin-xi" class="header-anchor">#</a></h4><p>-r release</p>
+<h4><span id="hostname-xian-shi-huo-xiu-gai-ji-suan-ji-zhu-ji-ming">hostname 显示或修改计算机主机名</span><a href="#hostname-xian-shi-huo-xiu-gai-ji-suan-ji-zhu-ji-ming" class="header-anchor">#</a></h4><h4><span id="free-cha-kan-nei-cun-xin-xi">free 查看内存信息</span><a href="#free-cha-kan-nei-cun-xin-xi" class="header-anchor">#</a></h4><h4><span id="du-xian-shi-mu-lu-huo-wen-jian-de-ci-pan-zhan-yong-liang">du 显示目录或文件的磁盘占用量</span><a href="#du-xian-shi-mu-lu-huo-wen-jian-de-ci-pan-zhan-yong-liang" class="header-anchor">#</a></h4><p>du [选项] [文件|目录]</p>
+<p>显示目录或文件的磁盘占用量。逐级进入指定目录的每一个子目录并显示该目录占用文件系统数据块的情况。如果没有给出文件或目录名称，那么就对当前目录进行统计。</p>
+<blockquote>
+<p>df - report file system disk space usage<br>df -l   df -h  </p>
+</blockquote>
+<h3><span id="ri-qi-he-shi-jian">日期和时间</span><a href="#ri-qi-he-shi-jian" class="header-anchor">#</a></h3><p>cal date hwclock</p>
+<h4><span id="cal-xian-shi-ri-li-xin-xi">cal 显示日历信息</span><a href="#cal-xian-shi-ri-li-xin-xi" class="header-anchor">#</a></h4><h4><span id="date-xian-shi-he-she-zhi-xi-tong-ri-qi-he-shi-jian">date 显示和设置系统日期和时间</span><a href="#date-xian-shi-he-she-zhi-xi-tong-ri-qi-he-shi-jian" class="header-anchor">#</a></h4><h4><span id="hwclock-cha-kan-he-she-zhi-ying-jian-shi-zhong">hwclock 查看和设置硬件时钟</span><a href="#hwclock-cha-kan-he-she-zhi-ying-jian-shi-zhong" class="header-anchor">#</a></h4><h3><span id="xin-xi-jiao-liu">信息交流</span><a href="#xin-xi-jiao-liu" class="header-anchor">#</a></h3><p>echo mesg wall write</p>
+<h4><span id="echo-zai-xian-shi-qi-shang-xian-shi-wen-zi">echo 在显示器上显示文字</span><a href="#echo-zai-xian-shi-qi-shang-xian-shi-wen-zi" class="header-anchor">#</a></h4><h4><span id="mesg-yun-xu-huo-ju-jue-xie-xiao-xi">mesg 允许或拒绝写消息</span><a href="#mesg-yun-xu-huo-ju-jue-xie-xiao-xi" class="header-anchor">#</a></h4><h4><span id="wall-dui-quan-bu-yi-deng-lu-yong-hu-fa-song-xin-xi">wall 对全部已登录用户发送信息</span><a href="#wall-dui-quan-bu-yi-deng-lu-yong-hu-fa-song-xin-xi" class="header-anchor">#</a></h4><h4><span id="write-xiang-yong-hu-fa-song-xiao-xi">write 向用户发送消息</span><a href="#write-xiang-yong-hu-fa-song-xiao-xi" class="header-anchor">#</a></h4><h3><span id="qi-ta-ming-ling">其他命令</span><a href="#qi-ta-ming-ling" class="header-anchor">#</a></h3><p>clear uptime</p>
+<h4><span id="clear-qing-chu-ji-suan-ji-ping-mu-xin-xi">clear 清除计算机屏幕信息</span><a href="#clear-qing-chu-ji-suan-ji-ping-mu-xin-xi" class="header-anchor">#</a></h4><h4><span id="uptime-xian-shi-xi-tong-yi-jing-yun-xing-de-shi-jian">uptime 显示系统已经运行的时间</span><a href="#uptime-xian-shi-xi-tong-yi-jing-yun-xing-de-shi-jian" class="header-anchor">#</a></h4><h2><span id="6-shell-bian-cheng">6 Shell 编程</span><a href="#6-shell-bian-cheng" class="header-anchor">#</a></h2><h3><span id="shou-xi-shell-cheng-xu-de-chuang-jian">熟悉 Shell 程序的创建</span><a href="#shou-xi-shell-cheng-xu-de-chuang-jian" class="header-anchor">#</a></h3><p>Shell 程序基本语法较为简单，主要由开头部分、注释部分以及语句执行部分组成。</p>
+<ol>
+<li><p>开头</p>
+<p> Shell 程序必须以 #!/bin/bash 该行开始（必须放在文件的第一行）。</p>
+<p> <code>#!</code>符号 用来告诉系统它后面的参数是用来执行该文件的程序，在这个例子中使用 /bin/bash来执行程序。当编辑好脚本时，如果要执行该脚本，还必须使其可执行。</p>
+<p> 要使脚本可执行，需赋予该文件可执行的权限，使用如下命令文件才能运行。<br> chmod u+x 文件名</p>
+</li>
+<li><p>注释</p>
+<p> 在进行 Shell 编程时，以 开头的句子表示注释，直到这一行的结束</p>
+</li>
+<li><p>执行命令</p>
+<p> 在 Shell 程序中可以输入多行命令以得到命令的结果信息，这样就提高系统管理的工作效率。</p>
+</li>
+</ol>
+<h3><span id="shell-bian-liang">Shell变量</span><a href="#shell-bian-liang" class="header-anchor">#</a></h3><p>$var 的形式来引用名为 var 的变量的值。</p>
+<h4><span id="chang-yong-shell-huan-jing-bian-liang">常用 Shell 环境变量</span><a href="#chang-yong-shell-huan-jing-bian-liang" class="header-anchor">#</a></h4><table>
+<thead>
+<tr>
+<th>Shell环境变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HOME</td>
+<td>用于保存用户主目录的完全路径名</td>
+</tr>
+<tr>
+<td>PATH</td>
+<td>用于保存用冒号分隔的目录路径名，</td>
+</tr>
+<tr>
+<td>Shell</td>
+<td>将按 PATH 变量中给出的顺序搜索这些目录，找到的第一个与命令名称一致的可执行文件将被执行</td>
+</tr>
+<tr>
+<td>TERM</td>
+<td>终端的类型</td>
+</tr>
+<tr>
+<td>UID</td>
+<td>当前用户的 UID ，由数字构成</td>
+</tr>
+<tr>
+<td>PWD</td>
+<td>当前工作目录的绝对路径名，该变量的取值随 cd 命令的使用而变化</td>
+</tr>
+<tr>
+<td>PS1</td>
+<td>主提示符，在 root 用户下，默认的主提示符是”#”，在普通用户下，默认的主提示符是”$”</td>
+</tr>
+<tr>
+<td>PS2</td>
+<td>在 Shell 接收用户输入命令的过程中，如果用户在输入行的末尾输入 然后按回车键，或者当用户按回车键时 Shell 判断出用户输入的命令没有结束时，就显示这个辅助提示符，提示用户继续输入命令的其余部分，默认的辅助提示符是”&gt;”</td>
+</tr>
+</tbody></table>
+<h4><span id="yong-hu-ding-yi-de-bian-liang">用户定义的变量</span><a href="#yong-hu-ding-yi-de-bian-liang" class="header-anchor">#</a></h4><p>用户可以按照下面的语法规则定义自己的变量。<br>变量名=变量值<br>注意不能有空格  </p>
+<p>在定义变量时，变量名前不应该加符号“$”，在引用变量的内容时则应在变量名前加符号“$” 。</p>
+<p>在给变量赋值时，等号两边一定不能留空格，若变量中本身就包含了空格，则整个字符串都要用双引号括起来。在编写 Shell 程序时，为了使变量名和命令名相区别，建议所有的变量名都用大写字母来表示。</p>
+<p>有时需要在说明一个变量并对它设置为一个特定值后就不再改变它的值时，可以用下面的命令来保证一个变量的只读性。</p>
+<pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">readonly</span> 变量名</span><br></pre></td></tr></table></figure></code></pre><p>在任何时候创建的变量都只是当前 Shell 的局部变量，所以不能被 Shell 运行的其他命令或 Shell程序所利用，而 export 命令可以将一个局部变量提供给 Shell 命令使用，其格式是：</p>
+<pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> 变量名</span><br></pre></td></tr></table></figure></code></pre><p>也可以在给变量赋值的同时使用 export 命令：</p>
+<pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> 变量名=变量值</span><br></pre></td></tr></table></figure></code></pre><p>使用 export 说明的变量在 Shell 以后运行的所有命令或程序中都可以访问到。</p>
+<h4><span id="yu-ding-yi-bian-liang">预定义变量</span><a href="#yu-ding-yi-bian-liang" class="header-anchor">#</a></h4><p>预定义变量和环境变量相类似，也是在 Shell 一开始时就定义了的变量。所不同的是，用户只能根据 Shell 的定义来使用这些变量，所有预定义变量都是由符号“ 和另一个符号组成的。</p>
+<table>
+<thead>
+<tr>
+<th>预定义变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$#</td>
+<td>位置参数的数量</td>
+</tr>
+<tr>
+<td>$*</td>
+<td>所有位置参数的内容</td>
+</tr>
+<tr>
+<td>$?</td>
+<td>命令执行后返回的状态， 0 表示没有错误，非 0 表示有错误</td>
+</tr>
+<tr>
+<td>$$</td>
+<td>当前进程的进程号</td>
+</tr>
+<tr>
+<td>$!</td>
+<td>后台运行的最后一个进程号</td>
+</tr>
+<tr>
+<td>$0</td>
+<td>当前执行的进程名</td>
+</tr>
+</tbody></table>
+<h4><span id="can-shu-zhi-huan-de-bian-liang">参数置换的变量</span><a href="#can-shu-zhi-huan-de-bian-liang" class="header-anchor">#</a></h4><p>Shell 提供了参数置换功能以便用户可以根据不同的条件来给变量赋不同的值。参数置换的变量有四种，这些变量通常与某一个位置参数相联系，根据指定的位置参数是否已经设置决定变量的取值。</p>
+<ol>
+<li><p>变量=${参数-word}</p>
+<p> 如果设置了参数，则用参数的值置换变量的值，否则用 word 置换，<br> 即这种变量的值等于某一个参数的值。如果该参数没有设置，则变量<br> 就等于 word 值。</p>
+</li>
+<li><p>变量=${参数=word}</p>
+<p> 如果设置了参数，则用参数的值置换变量的值，否则把变量设置成<br> word ，然后再用 word 替换参数的值。位置参数不能用于这种方式，<br> 因为在 shell 程序中不能为位置参数赋值。</p>
+</li>
+<li><p>变量=${参数?word}</p>
+<p> 如果设置了参数，则用参数的值置换变量的值，否则就显示 word 并<br> 从 shell 中退出，如果省略了 word ，则显示标准信息。这种变量要求<br> 一定等于某一个参数的值。如果该参数没有设置，就显示一个信息，<br> 然后退出，这种方式常用于出错指示。</p>
+</li>
+<li><p>变量=${参数+word}</p>
+<p> 如果设置了参数，则用 word 置换变量，否则不进行置换。</p>
+</li>
+</ol>
+<p>【例】</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel ~]<span class="comment"># var="hello"</span></span><br><span class="line">[root@rhel ~]<span class="comment"># echo $var $&#123;title-"somebody"&#125;!</span></span><br><span class="line">hello somebody!</span><br><span class="line">[root@rhel ~]<span class="comment"># echo $var $&#123;title+"somebody"&#125;!</span></span><br><span class="line">hello !</span><br><span class="line">[root@rhel ~]<span class="comment"># echo $var $&#123;title?"title is null or empty"&#125;!</span></span><br><span class="line">bash: title: title is null or empty</span><br><span class="line">[root@rhel ~]<span class="comment"># echo $var $&#123;title="tom and jerry"&#125;!</span></span><br><span class="line">hello tom and jerry!</span><br><span class="line">[root@rhel ~]<span class="comment"># echo $var $&#123;title+"somebbody"&#125;!</span></span><br><span class="line">hello somebbody!</span><br></pre></td></tr></table></figure>
+
+<h3><span id="bian-liang-biao-da-shi">变量表达式</span><a href="#bian-liang-biao-da-shi" class="header-anchor">#</a></h3><p>test 是 Shell 程序中的一个表达式，通过和 Shell 提供的 if 等条件语句相结合可以方便地测试字符串、文件状态和数字。其语法如下所示。</p>
+<p>test [表达式]</p>
+<h4><span id="zi-fu-chuan-bi-jiao">字符串比较</span><a href="#zi-fu-chuan-bi-jiao" class="header-anchor">#</a></h4><p>字符窜比较是用来测试字符串是否相同、长度是否为 0 、字符串是否为 null 。</p>
+<p>常用的字符串比较符号：</p>
+<p>=  比较两个字符串是否相同，相同则为”是”<br>!=  比较两个字符串是否不同，不同则为”是”<br>-n  比较字符串的长度是否大于0 ，如果大于 0 则为”是”<br>-z  比较字符串的长度是否小于0 ，如果小于 0 则为”是”  </p>
+<p>$? | 命令执行后返回的状态， 0 表示没有错误，即“是”</p>
+<p>【例】 字符串比较的使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel ~]<span class="comment"># str1=abcd</span></span><br><span class="line">[root@rhel ~]<span class="comment"># test $str1 = abcd</span></span><br><span class="line">[root@rhel ~]<span class="comment"># echo $?</span></span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<h4><span id="shu-zi-bi-jiao">数字比较</span><a href="#shu-zi-bi-jiao" class="header-anchor">#</a></h4><table>
+<thead>
+<tr>
+<th>数字比较符号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-eq</td>
+<td>相等</td>
+</tr>
+<tr>
+<td>-ge</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>-le</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>-ne</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>-gt</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>-lt</td>
+<td>小于</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel ~]<span class="comment"># int1=4</span></span><br><span class="line">[root@rhel ~]<span class="comment"># test $int1 -gt 2</span></span><br><span class="line">[root@rhel ~]<span class="comment"># echo $?</span></span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<h4><span id="luo-ji-ce-shi">逻辑测试</span><a href="#luo-ji-ce-shi" class="header-anchor">#</a></h4><p>逻辑测试是用来测试文件是否存在。</p>
+<p>常用的逻辑测试符号：</p>
+<table>
+<thead>
+<tr>
+<th>逻辑测试符号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>!</td>
+<td>与一个逻辑值相反的逻辑值</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>两个逻辑值为 是 返回值才为 是 ，反之为 否</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>两个逻辑值有一个为 是 ，返回值就为 是</td>
+</tr>
+</tbody></table>
+<p>【例】 逻辑测试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@rhel ~]<span class="comment"># test</span></span><br><span class="line">r empty a s empty</span><br><span class="line">[root@rhel ~]<span class="comment"># echo $?</span></span><br><span class="line">1</span><br><span class="line">//结果显示 1 表示文件 empty 存在且只读以及长度为</span><br><span class="line">非 0 是不对的</span><br></pre></td></tr></table></figure>
+
+<h4><span id="wen-jian-cao-zuo-ce-shi">文件操作测试</span><a href="#wen-jian-cao-zuo-ce-shi" class="header-anchor">#</a></h4><p>文件操作测试表达式通常是为了测试文件的文件操作逻辑。</p>
+<table>
+<thead>
+<tr>
+<th>文件操作测试符号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-d</td>
+<td>对象存在且为目录则返回值为 是</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>对象存在且为文件则返回值为 是</td>
+</tr>
+<tr>
+<td>-L</td>
+<td>对象存在且为符号链接则返回值为 是</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>对象存在且可读，则返回值为 是</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>对象存在且长度非 0 则返回值为 是</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>对象存在且可写，则返回值为 是</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>对象存在且可执行，则返回值为 是</td>
+</tr>
+<tr>
+<td>!</td>
+<td>测试条件的否定</td>
+</tr>
+</tbody></table>
+<h3><span id="shell-tiao-jian-pan-duan-yu-ju">Shell条件判断语句</span><a href="#shell-tiao-jian-pan-duan-yu-ju" class="header-anchor">#</a></h3><p>if-then-fi语句和if-then-else-fi语句 以及case语句</p>
+<h4><span id="if-then-fi">if-then-fi</span><a href="#if-then-fi" class="header-anchor">#</a></h4><p>语法格式：<br>if 命令行 1<br>then<br>命令行2<br>fi  </p>
+<p>read [变量名] 可以从标准输入中读取值赋予变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#filename:test-if</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"Do you want to continue: Y or N"</span></span><br><span class="line"><span class="built_in">read</span> ANS</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$ANS</span>=N -o <span class="variable">$ANS</span>=n ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">运行 Shell 程序 <span class="built_in">test</span>-if ，输出内容如下所示。</span><br><span class="line">[root@rhel ~]<span class="comment"># bash test-if</span></span><br><span class="line">Do you want to <span class="built_in">continue</span>: Y or N</span><br></pre></td></tr></table></figure>
+
+<h4><span id="if-then-else-fi">if-then-else-fi</span><a href="#if-then-else-fi" class="header-anchor">#</a></h4><p>语法格式：<br>if 命令行 1<br>then<br>命令行2<br>else<br>命令行3<br>fi  </p>
+<h4><span id="case">case</span><a href="#case" class="header-anchor">#</a></h4><p>语法格式：<br>case string in<br>exp-1)<br>若干个命令行1<br>;;<br>exp-2)<br>若干个命令行2<br>;;<br>……<br>*)<br>其它命令行<br>esac</p>
+<h3><span id="shell-xun-huan-kong-zhi-yu-ju">Shell循环控制语句</span><a href="#shell-xun-huan-kong-zhi-yu-ju" class="header-anchor">#</a></h3><p>for 语句、 while 语句以及 until 语句。</p>
+<h4><span id="for-xun-huan-yu-ju">for循环语句</span><a href="#for-xun-huan-yu-ju" class="header-anchor">#</a></h4><p>for 变量名 [in 数值列表]<br>do<br>若干个命令行<br>done</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#filename: qqq</span></span><br><span class="line">sum=0</span><br><span class="line"><span class="keyword">for</span> INT <span class="keyword">in</span> $*</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">sum=`expr <span class="variable">$sum</span> + <span class="variable">$INT</span>`</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$sum</span></span><br><span class="line">运行</span><br><span class="line">Shell 程序 qqq ，输出内容如下所示。</span><br><span class="line">[root@rhel~]<span class="comment"># bash /root/qqq 1 2 3 4 5</span></span><br><span class="line">15</span><br></pre></td></tr></table></figure>
+
+<h4><span id="while-xun-huan-yu-ju">while循环语句</span><a href="#while-xun-huan-yu-ju" class="header-anchor">#</a></h4><p>while []<br>若干个命令行1<br>do<br>若干个命令行2<br>done</p>
+<hr>
+<p>Q 生成以$prefix前缀的从1到n的文件 即 假设prefix=question 生成 question1 question2 …… question[n]</p>
+<hr>
+<h4><span id="until-xun-huan-yu-ju">until循环语句</span><a href="#until-xun-huan-yu-ju" class="header-anchor">#</a></h4><p>until []<br>若干个命令行1<br>do<br>若干个命令行2<br>done</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/08/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-1/" rel="prev" title="Linux系统基础-1">
+      <i class="fa fa-chevron-left"></i> Linux系统基础-1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/12/Linux%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80-3/" rel="next" title="Linux系统基础-3">
+      Linux系统基础-3 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">4 目录和文件管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">文件类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.2.</span> <span class="nav-text">Linux 目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text">文件和目录操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.3.1.</span> <span class="nav-text">ls 命令显示的详细信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.4.</span> <span class="nav-text">链接文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.4.1.</span> <span class="nav-text">硬链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.4.2.</span> <span class="nav-text">软链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.4.3.</span> <span class="nav-text">硬链接和软链接的区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">5 Linux 常用操作命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">文本内容显示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.1.</span> <span class="nav-text">cat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.2.</span> <span class="nav-text">more</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.3.</span> <span class="nav-text">less</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.4.</span> <span class="nav-text">head</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.5.</span> <span class="nav-text">tail</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">文本内容处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.2.1.</span> <span class="nav-text">sort 对文件中的数据进行排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.2.2.</span> <span class="nav-text">uniq 将重复行从输出文件中删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.2.3.</span> <span class="nav-text">cut 从文件每行中显示出选定的字节、字符或字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.2.4.</span> <span class="nav-text">comm 逐行比较两个已排过序的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.2.5.</span> <span class="nav-text">diff 逐行比较两个文本文件，列出其不同之处</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.3.</span> <span class="nav-text">文件和命令查找</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.3.1.</span> <span class="nav-text">grep 查找文件中符合条件的字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.3.2.</span> <span class="nav-text">find 列出文件系统内符合条件的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.3.3.</span> <span class="nav-text">locate 在数据库中查找文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.4.</span> <span class="nav-text">系统信息显示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.4.1.</span> <span class="nav-text">uname 显示计算机及操作系统相关信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.4.2.</span> <span class="nav-text">hostname 显示或修改计算机主机名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.4.3.</span> <span class="nav-text">free 查看内存信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.4.4.</span> <span class="nav-text">du 显示目录或文件的磁盘占用量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.5.</span> <span class="nav-text">日期和时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.5.1.</span> <span class="nav-text">cal 显示日历信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.5.2.</span> <span class="nav-text">date 显示和设置系统日期和时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.5.3.</span> <span class="nav-text">hwclock 查看和设置硬件时钟</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.6.</span> <span class="nav-text">信息交流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.6.1.</span> <span class="nav-text">echo 在显示器上显示文字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.6.2.</span> <span class="nav-text">mesg 允许或拒绝写消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.6.3.</span> <span class="nav-text">wall 对全部已登录用户发送信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.6.4.</span> <span class="nav-text">write 向用户发送消息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.7.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.7.1.</span> <span class="nav-text">clear 清除计算机屏幕信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.7.2.</span> <span class="nav-text">uptime 显示系统已经运行的时间</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">6 Shell 编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.1.</span> <span class="nav-text">熟悉 Shell 程序的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.2.</span> <span class="nav-text">Shell变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.2.1.</span> <span class="nav-text">常用 Shell 环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.2.2.</span> <span class="nav-text">用户定义的变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.2.3.</span> <span class="nav-text">预定义变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.2.4.</span> <span class="nav-text">参数置换的变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.3.</span> <span class="nav-text">变量表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.3.1.</span> <span class="nav-text">字符串比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.3.2.</span> <span class="nav-text">数字比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.3.3.</span> <span class="nav-text">逻辑测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.3.4.</span> <span class="nav-text">文件操作测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.4.</span> <span class="nav-text">Shell条件判断语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.4.1.</span> <span class="nav-text">if-then-fi</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.4.2.</span> <span class="nav-text">if-then-else-fi</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.4.3.</span> <span class="nav-text">case</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.5.</span> <span class="nav-text">Shell循环控制语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.5.1.</span> <span class="nav-text">for循环语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.5.2.</span> <span class="nav-text">while循环语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">3.5.3.</span> <span class="nav-text">until循环语句</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Qin"
+      src="/images/eason.jpg">
+  <p class="site-author-name" itemprop="name">Qin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Qinruixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Qinruixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-75-26" title="zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-75-26" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>zhihu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div id="music163player">
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=1300140490&auto=1&height=66"></iframe>
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qin</span>
+</div>
+  <div class="powered-by">由 xinxin 用爱发电
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
