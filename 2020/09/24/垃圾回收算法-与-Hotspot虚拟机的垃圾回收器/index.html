@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/eason.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/eason.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="标记-清除  标记-复制  标记-整理  ||  Serial  ParNew  Parallel-Scavenge(PS) ;;  SerialOld  ParOld  Concurrent-Mark-Sweep(CMS) ;; Garbage First(G1) ;; Shenandoah ZGC Eplison">
+<meta property="og:type" content="article">
+<meta property="og:title" content="垃圾回收算法 与 Hotspot虚拟机的垃圾回收器">
+<meta property="og:url" content="http://yoursite.com/2020/09/24/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95-%E4%B8%8E-Hotspot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/index.html">
+<meta property="og:site_name" content="OvO">
+<meta property="og:description" content="标记-清除  标记-复制  标记-整理  ||  Serial  ParNew  Parallel-Scavenge(PS) ;;  SerialOld  ParOld  Concurrent-Mark-Sweep(CMS) ;; Garbage First(G1) ;; Shenandoah ZGC Eplison">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-24T01:10:04.000Z">
+<meta property="article:modified_time" content="2020-09-24T01:16:47.868Z">
+<meta property="article:author" content="Qin">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/24/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95-%E4%B8%8E-Hotspot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>垃圾回收算法 与 Hotspot虚拟机的垃圾回收器 | OvO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">OvO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">16</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/QinRuixin" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/24/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95-%E4%B8%8E-Hotspot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eason.jpg">
+      <meta itemprop="name" content="Qin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OvO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          垃圾回收算法 与 Hotspot虚拟机的垃圾回收器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-24 09:10:04 / 修改时间：09:16:47" itemprop="dateCreated datePublished" datetime="2020-09-24T09:10:04+08:00">2020-09-24</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">标记-清除  标记-复制  标记-整理  ||  Serial  ParNew  Parallel-Scavenge(PS) ;;  SerialOld  ParOld  Concurrent-Mark-Sweep(CMS) ;; Garbage First(G1) ;; Shenandoah ZGC Eplison</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>从如何判定对象消亡的角度出发，垃圾收集算法可以划分为 “引用计数式垃圾收集”（Reference Counting） 和 “追踪式垃圾收集” （Traceing） 两大类，这两类也常被称作 “直接垃圾收集” 和 “间接垃圾收集”</p>
+<h2><span id="ji-chu-zhi-shi">基础知识</span><a href="#ji-chu-zhi-shi" class="header-anchor">#</a></h2><h3><span id="1-la-ji">1 垃圾</span><a href="#1-la-ji" class="header-anchor">#</a></h3><blockquote>
+<p>C语言申请内存：malloc free</p>
+<p>C++： new delete 资源获取即初始化(RAII, Resource Acquisition Is Initialization)  可以使用 wrapper 对象 进行资源管理</p>
+<p>Java: new 反射等方式创建对象   依靠垃圾回收算法自动回收</p>
+<p>主要是针对 堆和方法区</p>
+</blockquote>
+<h3><span id="2-ru-he-ding-wei-la-ji">2 如何定位垃圾</span><a href="#2-ru-he-ding-wei-la-ji" class="header-anchor">#</a></h3><ol>
+<li><p>引用计数</p>
+<p> 问题：循环引用 难以解决</p>
+</li>
+<li><p>根可达算法</p>
+</li>
+</ol>
+<h3><span id="3-fen-dai-shou-ji-li-lun">3 分代收集 理论</span><a href="#3-fen-dai-shou-ji-li-lun" class="header-anchor">#</a></h3><p>弱分代假说和强分代假说共同奠定了 常用垃圾收集器的设计原则： 收集器应该将Java堆 划分出不同的区域，然后将回收对象依据其年龄（熬过垃圾收集过程的次数）分配到不同区域之中存储</p>
+<h4><span id="ruo-fen-dai-jia-shuo">弱分代假说</span><a href="#ruo-fen-dai-jia-shuo" class="header-anchor">#</a></h4><p>1 绝大多数对象都是朝生夕灭的</p>
+<h4><span id="qiang-fen-dai-jia-shuo">强分代假说</span><a href="#qiang-fen-dai-jia-shuo" class="header-anchor">#</a></h4><p>2 熬过越多次垃圾收集过程的对象就越难以消亡</p>
+<h4><span id="kua-dai-yin-yong-jia-shuo">跨代引用假说</span><a href="#kua-dai-yin-yong-jia-shuo" class="header-anchor">#</a></h4><p>3 跨代引用相对于同代引用来说仅占极少数</p>
+<h3><span id="4-chang-jian-de-la-ji-hui-shou-suan-fa">4 常见的垃圾回收算法</span><a href="#4-chang-jian-de-la-ji-hui-shou-suan-fa" class="header-anchor">#</a></h3><ol>
+<li>标记-清除 - 位置不连续 产生碎片</li>
+<li>标记-复制 - 没有碎片，浪费空间</li>
+<li>标记-整理 - 没有碎片，效率偏低 与 标记-清除 类似 但压缩空间</li>
+</ol>
+<blockquote>
+<p>是否移动对象 都存在弊端 移动则内存回收时会更复杂，不移动则内存分配时会更复杂</p>
+<p>从垃圾收集的停顿时间来看，不移动对象停顿时间会更短，甚至可以不需要停顿，但是从整个程序的吞吐量来看，移动对象会更划算（内存分配和访问相比垃圾收集频率高很多）。</p>
+<p>Parallel Scavenge PS收集器因为与吞吐量关系密切，也称为吞吐量收集器（Throughput Collector） 基于 <strong>标记-整理</strong></p>
+<p>ConcurrentMarkSweep CMS收集器的关注点是尽可能地缩短垃圾收集时用户线程的停顿时间 基于 <strong>标记-清除</strong></p>
+</blockquote>
+<h2><span id="la-ji-shou-ji-chong-lei">垃圾收集种类</span><a href="#la-ji-shou-ji-chong-lei" class="header-anchor">#</a></h2><ul>
+<li>部分收集（Partial GC） 指目标不是完整收集整个Java堆的垃圾收集<ul>
+<li>新生代收集 Minor GC / Young GC  指目标只是新生代的垃圾收集</li>
+<li>老年代收集 Major GC（看语境） / Old GC  指目标只是老年代的垃圾收集(CMS)</li>
+<li>混合收集 Mixed GC  指目标是收集整个新生代以及部分老年代的垃圾收集(G1)</li>
+</ul>
+</li>
+<li>整堆收集（Full GC）  收集整个Java堆和方法区的垃圾收集</li>
+</ul>
+<h2><span id="jvm-nei-cun-fen-dai-mo-xing-yong-yu-fen-dai-la-ji-hui-shou-suan-fa">JVM内存分代模型（用于分代垃圾回收算法）</span><a href="#jvm-nei-cun-fen-dai-mo-xing-yong-yu-fen-dai-la-ji-hui-shou-suan-fa" class="header-anchor">#</a></h2><ol>
+<li><p>新生代 + 老年代 + 永久代（1.7）/ 元数据区(1.8) Metaspace</p>
+<ol>
+<li>永久代 元数据 - Class</li>
+<li>永久代必须指定大小限制 ，元数据可以设置，也可以不设置，无上限（受限于物理内存）</li>
+<li>字符串常量 1.7在永久代，1.8在堆</li>
+<li>MethodArea逻辑概念 - 永久代、元数据</li>
+</ol>
+</li>
+<li><p>新生代 = Eden + 2个suvivor区（s0与s1） （基于标记-复制 Serial + ParNew 收集器框架采用）</p>
+<ol>
+<li>Young GC回收之后，大多数的对象会被回收，活着的进入s0</li>
+<li>再次Young GC，活着的对象 Eden + s0 -&gt; s1</li>
+<li>再次Young GC，Eden + s1 -&gt; s0</li>
+<li>年龄足够 -&gt; 老年代 （15 CMS 6）</li>
+<li>s区装不下 -&gt; 老年代</li>
+</ol>
+</li>
+<li><p>老年代</p>
+<ol>
+<li>顽固分子</li>
+<li>老年代满了 Full GC</li>
+</ol>
+</li>
+<li><p>GC Tuning (Generation)</p>
+<ol>
+<li>尽量减少 Full GC</li>
+<li>MinorGC = Young GC</li>
+<li>MajorGC = Full GC</li>
+</ol>
+</li>
+</ol>
+<h2><span id="chang-jian-de-la-ji-hui-shou-qi">常见的垃圾回收器</span><a href="#chang-jian-de-la-ji-hui-shou-qi" class="header-anchor">#</a></h2><ol>
+<li><p>Serial 年轻代 单线程（串行） 会 STW（Stop The World）</p>
+<p> 标记-复制算法</p>
+</li>
+<li><p>ParNew 年轻代 多线程（并行） 配合CMS的并行回收</p>
+<p> 实质上是 Serial 收集器的多线程并行版本，共用相当多的代码</p>
+</li>
+<li><p>PS Parallel Scavenge 年轻代 并行回收</p>
+<p> 标记-整理算法</p>
+<p> 框架与 Serial 和 ParNew 收集器不同</p>
+<p> 关注点与CMS尽可能缩短垃圾收集时用户线程的停顿时间不同，目标是 达到一个可控制的吞吐量 因此运用标记-整理算法</p>
+<blockquote>
+<p>吞吐量 = 运行用户代码时间 / (运行用户代码时间 + 运行垃圾收集时间)</p>
+</blockquote>
+<p> 通过 两个参数用于精准控制吞吐量</p>
+<ul>
+<li><p>控制最大垃圾收集停顿时间 -XX:MaxGCPauseMillis  缩短该时间其实是以牺牲吞吐量和新生代空间为代价的</p>
+</li>
+<li><p>直接设置吞吐量大小的 -XX:GCTimeRatio  允许最大垃圾收集时间占总时间的多少</p>
+<p>-XX:+UseAdaptiveSizePolicy  动态调整 自适应  先用以上两个参数设立一个优化目标</p>
+</li>
+</ul>
+</li>
+<li><p>SerialOld 老年代</p>
+<p> 标记-整理算法</p>
+</li>
+<li><p>ParallelOld 老年代</p>
+<p> 多线程的 SerialOld</p>
+<p> PS+ParallelOld 配合 注重吞吐量或处理器资源稀缺的场合 “吞吐量优先”收集器</p>
+<p> 在此之前，PS只能与SerialOld配合 很尴尬</p>
+</li>
+<li><p>CMS Concurrent Mark Sweep 老年代 并发的， 垃圾回收和应用程序同时运行，降低STW的时间(200ms)</p>
+<p> 以获取最短回收停顿时间为目标</p>
+<p> 但只能与 Serial 或 ParNew 配合使用，一般是 ParNew jdk9之后一定是 ParNew</p>
+<p> 整个过程分为 4 个步骤：</p>
+<ol>
+<li><p>初始标记（CMS initial）</p>
+</li>
+<li><p>并发标记（CMS concurrent mark）</p>
+</li>
+<li><p>重新标记（CMS remark）</p>
+</li>
+<li><p>并发清除（CMS concurrent sweep）</p>
+<p>初始标记和重新标记 需要 STW 。1 初始标记仅仅标记 GC Roots能直接关联到的对象；2 并发标记遍历对象图，可以和用户线程并发；3 重新标记进行修正，比初始标记停顿时间稍长，但也远比并发标记所需时间短；4 最后并发清除<br>(三色标记 增量更新)</p>
+</li>
+</ol>
+</li>
+<li><p>G1 Garbage First 面向全堆的收集器</p>
+<p> 框架与 Serial 和 ParNew 收集器不同</p>
+<p> 面向局部收集的设计思路 和 基于Region的内存布局形式</p>
+<p> 面向堆内存任何部分来组成回收集（Collection Set 一般简称CSet）进行回收 衡量标准是哪块内存中存放的垃圾数量最多，回收利益最大，G1 收集器的 Mixed GC 模式</p>
+<p> Region  Humongous  </p>
+<p> 整个过程分为 4 个步骤：</p>
+<ol>
+<li><p>初始标记</p>
+</li>
+<li><p>并发标记</p>
+</li>
+<li><p>最终标记</p>
+</li>
+<li><p>筛选回收</p>
+<p>重新标记时 采用 原始快照算法 实现 (三色标记 原始快照)</p>
+<p>除了并发标记 其余阶段都要完全暂停用户线程，追求低时延同时获得尽可能高的吞吐量</p>
+<p>整体采用“标记-整理”  但局部看（两个Region之间）基于“标记-复制”算法实现</p>
+</li>
+</ol>
+</li>
+<li><p>Shenandoah 低延迟</p>
+</li>
+<li><p>ZGC 低延迟</p>
+</li>
+<li><p>Eplison</p>
+</li>
+</ol>
+<hr>
+<p>1.8默认的垃圾回收：PS + ParallelOld</p>
+<p>jdk1.9 默认垃圾收集器G1</p>
+<p>-XX:+PrintCommandLineFlagsjvm参数可查看默认设置收集器类型</p>
+<p>-XX:+PrintGCDetails亦可通过打印的GC日志的新生代、老年代名称判断</p>
+<hr>
+<h2><span id="can-kao-zi-liao">参考资料</span><a href="#can-kao-zi-liao" class="header-anchor">#</a></h2><p>《深入理解JVM》——周志明  </p>
+<p><a href="https://www.infoq.com/articles/G1-One-Garbage-Collector-To-Rule-Them-All/" target="_blank" rel="noopener">G1收集器</a>  </p>
+<p><a href="https://blogs.oracle.com/jonthecollector/our-collectors" target="_blank" rel="noopener">收集器</a>  </p>
+<p><a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">Java HotSpot VM选项</a>  </p>
+<p><a href="http://java.sun.com/javase/technologies/hotspot/vmoptions.jsp" target="_blank" rel="noopener">Java HotSpot VM选项</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/22/Linux%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-1/" rel="prev" title="Linux程序设计-1">
+      <i class="fa fa-chevron-left"></i> Linux程序设计-1
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">1 垃圾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.2.</span> <span class="nav-text">2 如何定位垃圾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text">3 分代收集 理论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.3.1.</span> <span class="nav-text">弱分代假说</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.3.2.</span> <span class="nav-text">强分代假说</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">1.3.3.</span> <span class="nav-text">跨代引用假说</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.4.</span> <span class="nav-text">4 常见的垃圾回收算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">垃圾收集种类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">JVM内存分代模型（用于分代垃圾回收算法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">4.</span> <span class="nav-text">常见的垃圾回收器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Qin"
+      src="/images/eason.jpg">
+  <p class="site-author-name" itemprop="name">Qin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Qinruixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Qinruixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-75-26" title="zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-75-26" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>zhihu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div id="music163player">
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=1300140490&auto=1&height=66"></iframe>
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qin</span>
+</div>
+  <div class="powered-by">由 xinxin 用爱发电
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
