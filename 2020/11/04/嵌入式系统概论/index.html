@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/eason.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/eason.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="2020秋 嵌入式系统概论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="嵌入式系统概论">
+<meta property="og:url" content="http://yoursite.com/2020/11/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA/index.html">
+<meta property="og:site_name" content="OvO">
+<meta property="og:description" content="2020秋 嵌入式系统概论">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-04T05:30:05.000Z">
+<meta property="article:modified_time" content="2020-11-04T05:33:15.535Z">
+<meta property="article:author" content="Qin">
+<meta property="article:tag" content="嵌入式">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/11/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>嵌入式系统概论 | OvO</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">OvO</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/QinRuixin" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/04/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/eason.jpg">
+      <meta itemprop="name" content="Qin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OvO">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          嵌入式系统概论
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-04 13:30:05 / 修改时间：13:33:15" itemprop="dateCreated datePublished" datetime="2020-11-04T13:30:05+08:00">2020-11-04</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">2020秋 嵌入式系统概论</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2><span id="yi-qian-ru-shi-xi-tong-jian-jie">一 嵌入式系统简介</span><a href="#yi-qian-ru-shi-xi-tong-jian-jie" class="header-anchor">#</a></h2><h3><span id="qian-ru-shi-xi-tong-ding-yi">嵌入式系统定义**</span><a href="#qian-ru-shi-xi-tong-ding-yi" class="header-anchor">#</a></h3><p>IEEE：用于控制、监视或者辅助操作机器和设备的装置</p>
+<p>国内普遍认同的定义：嵌入式系统是 “以应用为中心,以计算机技术为基础,软硬件可裁减,适用于应用系统对功能、可靠性、成本、体积、功耗有严格要求的专用计算机系统”</p>
+<h3><span id="qian-ru-shi-xi-tong-te-dian">嵌入式系统特点**</span><a href="#qian-ru-shi-xi-tong-te-dian" class="header-anchor">#</a></h3><ol>
+<li>形式多样，面向特定用途；</li>
+<li>得到多种处理器和处理器架构支持；</li>
+<li>嵌入式系统通常非常注重成本问题；</li>
+<li>有实时性和可靠性的要求；</li>
+<li>需要专门的方法和开发工具；</li>
+<li>嵌入式系统使用的操作系统一般是适应多种处理器、可剪裁、轻量型、实时可靠、 可固化的嵌入式操作系统。</li>
+</ol>
+<h3><span id="qian-ru-shi-xi-tong-fen-lei">嵌入式系统分类**</span><a href="#qian-ru-shi-xi-tong-fen-lei" class="header-anchor">#</a></h3><ul>
+<li>按嵌入式处理器的位数来分类</li>
+<li>按应用来分类</li>
+<li>按速度分类<ul>
+<li>强实时系统</li>
+<li>一般实时系统</li>
+<li>弱实时系统</li>
+</ul>
+</li>
+<li>按确定性来分类<ul>
+<li>硬实时</li>
+<li>软实时</li>
+</ul>
+</li>
+<li>按嵌入式系统软件复杂程度来分类<ul>
+<li>循环轮询系统</li>
+<li>有限状态机系统</li>
+<li>前后台系统</li>
+<li>单处理器多任务系统</li>
+<li>多处理器多任务系统</li>
+</ul>
+</li>
+</ul>
+<h3><span id="qian-ru-shi-xi-tong-ying-yong-an-zhao-ying-yong-fen-lei">嵌入式系统应用（按照应用分类）**</span><a href="#qian-ru-shi-xi-tong-ying-yong-an-zhao-ying-yong-fen-lei" class="header-anchor">#</a></h3><ul>
+<li>信息家电</li>
+<li>移动终端</li>
+<li>工业控制</li>
+<li>汽车电子</li>
+<li>通信类</li>
+<li>可穿戴设备</li>
+<li>航天航空</li>
+</ul>
+<h3><span id="qian-ru-shi-xi-tong-zu-cheng">嵌入式系统组成**</span><a href="#qian-ru-shi-xi-tong-zu-cheng" class="header-anchor">#</a></h3><ul>
+<li>一般是由嵌入式硬件和软件组成的</li>
+<li>硬件包括以微处理器为核心集成存储器和系统专用的IO设备</li>
+<li>软件包括初始化代码及驱动，嵌入式操作系统和应用程序等<br>结构图 应用软件-中间件-实时内核-驱动-系统硬件</li>
+</ul>
+<h3><span id="iot">IOT**</span><a href="#iot" class="header-anchor">#</a></h3><p>IOT（物联网）是万物互联的互联网，是互联网和嵌入式系统发展到高级阶段的融合。分为感知层、传输层、应用层。</p>
+<h3><span id="cps">CPS**</span><a href="#cps" class="header-anchor">#</a></h3><p>信息物理系统，计算进程和物理进程的统一体，集<strong>计算、通信、控制</strong>于一体的下一代智能系统</p>
+<p>基本组成 传感器 执行器 决策控制单元</p>
+<h3><span id="tong-yong-ji-suan-ji-yu-qian-ru-shi-ji-suan-ji-dui-bi">通用计算机与嵌入式计算机对比</span><a href="#tong-yong-ji-suan-ji-yu-qian-ru-shi-ji-suan-ji-dui-bi" class="header-anchor">#</a></h3><table>
+<thead>
+<tr>
+<th>特征</th>
+<th>通用计算机</th>
+<th>嵌入式计算机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>形式和类型</td>
+<td>看得见；按其体系结构、运算速度和结构规模等因素分为大中小型机和微机。</td>
+<td>看不见；形式多样，应用领域广泛，按应用来分。</td>
+</tr>
+<tr>
+<td>组成</td>
+<td>软件和硬件相对独立</td>
+<td>软件与硬件是紧密集成在一起的</td>
+</tr>
+<tr>
+<td>开发方式</td>
+<td>开发平台和运行平台都是通用计算机</td>
+<td>采用交叉开发的方式</td>
+</tr>
+<tr>
+<td>二次开发性</td>
+<td>有（应用程序可重新编制</td>
+<td>冇（一般不能再编程</td>
+</tr>
+</tbody></table>
+<h3><span id="san-yao-su">三要素</span><a href="#san-yao-su" class="header-anchor">#</a></h3><p>嵌入  </p>
+<p>专用  </p>
+<p>计算机</p>
+<h2><span id="er-qian-ru-shi-xi-tong-she-ji">二 嵌入式系统设计</span><a href="#er-qian-ru-shi-xi-tong-she-ji" class="header-anchor">#</a></h2><h3><span id="qian-ru-shi-xi-tong-mian-lin-tiao-zhan">嵌入式系统面临挑战</span><a href="#qian-ru-shi-xi-tong-mian-lin-tiao-zhan" class="header-anchor">#</a></h3><ol>
+<li>需要多少硬件?</li>
+<li>如何满足时限要求,如何处理多项功能在时间上的协调一致关系?</li>
+<li>如何降低系统的功耗?</li>
+<li>如何设计以保证系统可升级?</li>
+<li>如何保证系统可靠地工作?</li>
+</ol>
+<h3><span id="qian-ru-shi-xi-tong-de-she-ji-guo-cheng-de-ji-ben-liu-cheng">嵌入式系统的设计过程的基本流程</span><a href="#qian-ru-shi-xi-tong-de-she-ji-guo-cheng-de-ji-ben-liu-cheng" class="header-anchor">#</a></h3><ul>
+<li>需求分析</li>
+<li>规格说明</li>
+<li>体系结构</li>
+<li>构件设计</li>
+<li>系统集成</li>
+</ul>
+<h3><span id="chuan-tong-kai-fa-guo-cheng">传统开发过程</span><a href="#chuan-tong-kai-fa-guo-cheng" class="header-anchor">#</a></h3><ul>
+<li>基本特征<ul>
+<li>系统从一开始就被划分为软件和硬件两大部分</li>
+<li>软件和硬件独立进行开发设计</li>
+<li>Hardware first approach often adopted</li>
+</ul>
+</li>
+<li>隐含问题<ul>
+<li>软硬件之间的交互受到很大限制</li>
+<li>系统集成相对滞后，NRE（Non-Recurring Engineering）较大</li>
+</ul>
+</li>
+</ul>
+<h3><span id="ruan-ying-jian-hua-fen">软硬件划分</span><a href="#ruan-ying-jian-hua-fen" class="header-anchor">#</a></h3><ul>
+<li>软件硬件划分通常由<strong>速度、灵活性以及开销</strong>来决策</li>
+<li>嵌⼊式系统的设计涉及硬件与软件部件,设计中必须决定什么功能由硬件实现,什么功能由软件实现。</li>
+<li>硬件和软件具有双重性</li>
+<li>软硬件变动对系统的决策造成影响</li>
+<li>划分和选择需要考虑多种因素</li>
+<li><strong>硬件和软件的双重性</strong>是划分决策的前提</li>
+</ul>
+<h3><span id="tong-chang-you-ruan-jian-shi-xian-de-bu-fen">通常由软件实现的部分</span><a href="#tong-chang-you-ruan-jian-shi-xian-de-bu-fen" class="header-anchor">#</a></h3><ul>
+<li>操作系统功能<ul>
+<li>任务调度</li>
+<li>资源管理</li>
+<li>设备驱动</li>
+</ul>
+</li>
+<li>协议栈<ul>
+<li>TCP／IP</li>
+</ul>
+</li>
+<li>应用软件框架</li>
+<li>除基本系统、物理接口、基本逻辑电路，许多由硬件实现的功能都可以由软件实现。</li>
+</ul>
+<h3><span id="shuang-chong-xing-bu-fen">双重性部分</span><a href="#shuang-chong-xing-bu-fen" class="header-anchor">#</a></h3><ul>
+<li>算法(加密/解密，编码/解码，压缩/解缩)</li>
+<li>数学运算(浮点运算)</li>
+</ul>
+<h2><span id="san-qian-ru-shi-wei-chu-li-qi">三 嵌入式微处理器</span><a href="#san-qian-ru-shi-wei-chu-li-qi" class="header-anchor">#</a></h2><h3><span id="feng-nuo-yi-man-jie-gou-yu-ha-fo-jie-gou">冯诺伊曼结构与哈佛结构</span><a href="#feng-nuo-yi-man-jie-gou-yu-ha-fo-jie-gou" class="header-anchor">#</a></h3><p>冯诺依曼结构将指令和数据存放在 同一存储空间 中， 统一编址指令和数据通过 同一总线访问</p>
+<p>哈佛结构则是不同于冯诺依曼结构的一种 并行体系结构 ，其主要特点是程序和数据存储在 不同的存储空间 中，即程序存储器和数据存储器是两个相互独立的存储器，每个存储器独立编制、独立访问 。与之相对应的是系统中设置的 两条总线 （程序总线和数据总线）</p>
+<h3><span id="risc-he-cisc">RISC和CISC</span><a href="#risc-he-cisc" class="header-anchor">#</a></h3><ul>
+<li>Complex<ul>
+<li>很多寻址模式</li>
+<li>很多操作</li>
+</ul>
+</li>
+<li>Reduced<ul>
+<li>load/store</li>
+<li>流水线指令</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>CISC</th>
+<th>RISC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>指令系统</td>
+<td>复杂，庞大</td>
+<td>简单，精简</td>
+</tr>
+<tr>
+<td>指令字长</td>
+<td>不固定</td>
+<td>等长</td>
+</tr>
+<tr>
+<td>访存指令</td>
+<td>不加限制</td>
+<td>只有LOAD/STORE</td>
+</tr>
+<tr>
+<td>指令执行周期</td>
+<td>相差很大</td>
+<td>通常在一个周期内完成</td>
+</tr>
+<tr>
+<td>寄存器数目</td>
+<td>寄存器较少</td>
+<td>寄存器较多</td>
+</tr>
+</tbody></table>
+<h3><span id="da-duan-yu-xiao-duan">大端与小端</span><a href="#da-duan-yu-xiao-duan" class="header-anchor">#</a></h3><p>操作系统内容，在此不赘述 （小端——数据的低字节保存在内存的低地址</p>
+<h3><span id="qian-ru-shi-wei-chu-li-qi-fen-lei">嵌入式微处理器分类</span><a href="#qian-ru-shi-wei-chu-li-qi-fen-lei" class="header-anchor">#</a></h3><ul>
+<li>嵌入式微处理单元（MPU）</li>
+<li>嵌入式微控制器（MCU）</li>
+<li>嵌入式DSP处理器——信号处理</li>
+<li>嵌入式SoC</li>
+</ul>
+<h3><span id="qian-ru-shi-wei-chu-li-qi-te-dian">嵌入式微处理器特点</span><a href="#qian-ru-shi-wei-chu-li-qi-te-dian" class="header-anchor">#</a></h3><ul>
+<li>体积小、重量轻、可靠性高</li>
+<li>功耗低</li>
+<li>成本低</li>
+<li>工作温度、抗电磁干扰、可靠性灯方面增强</li>
+</ul>
+<h3><span id="xuan-xing">选型</span><a href="#xuan-xing" class="header-anchor">#</a></h3><p>速度、成本、可靠性、可扩展性  </p>
+<ol>
+<li>Make a list of required hardware interfaces  </li>
+<li>Examine the software architecture  </li>
+<li>Select the architecture  </li>
+<li>Identify Memory Needs  </li>
+<li>Start searching for microcontrollers  </li>
+<li>Examine Costs and Power Constraints  </li>
+<li>Check part availability  </li>
+<li>Select a development kit  </li>
+<li>Investigate compilers and tools  </li>
+<li>Start Experimenting </li>
+</ol>
+<h3><span id="watchdog">WatchDog*</span><a href="#watchdog" class="header-anchor">#</a></h3><p>看门狗是一个可以在一定时间内被复位的计数器。</p>
+<p>实现嵌入式系统在无人状态下的连续工作。</p>
+<p>当看门狗启动后，计数器开始自动计数，经过一定时间，如果没有被复位，计数器溢出就会对CPU产生一个复位信号使系统重启（俗称“被狗咬”）。</p>
+<p>系统正常运行时，需要在看门狗允许的时间间隔内对看门狗计数器清零（俗称“喂狗”），不让复位信号产生。如果系统不出问题，程序保证按时“喂狗”，一旦程序跑飞，没有“喂狗”，系统“被咬”复位。</p>
+<h2><span id="si-cun-chu-ti-xi">四 存储体系</span><a href="#si-cun-chu-ti-xi" class="header-anchor">#</a></h2><h3><span id="cun-chu-qi-xi-tong-de-ceng-ci-jie-gou">存储器系统的层次结构</span><a href="#cun-chu-qi-xi-tong-de-ceng-ci-jie-gou" class="header-anchor">#</a></h3><ul>
+<li>寄存器</li>
+<li>Cache （SRAM）</li>
+<li>主存（DRAM）</li>
+<li>外存（flash，硬盘）</li>
+</ul>
+<h3><span id="rom-de-chong-lei-yu-xuan-xing">ROM的种类与选型</span><a href="#rom-de-chong-lei-yu-xuan-xing" class="header-anchor">#</a></h3><ul>
+<li>ROM</li>
+<li>EPROM</li>
+<li>EEPROM</li>
+<li>Flash</li>
+</ul>
+<h3><span id="flash-de-chong-lei-yu-xuan-xing">Flash的种类与选型</span><a href="#flash-de-chong-lei-yu-xuan-xing" class="header-anchor">#</a></h3><ul>
+<li><p>NOR</p>
+<ul>
+<li>Word-accessible read.</li>
+<li>Erase by blocks</li>
+<li>( BIOS</li>
+</ul>
+</li>
+<li><p>NAND</p>
+<ul>
+<li>Read by pages (512-4K bytes)</li>
+<li>Erase by blocks</li>
+<li>常用于存储文件，(固态硬盘</li>
+</ul>
+</li>
+</ul>
+<h3><span id="ram-de-chong-lei-yu-xuan-xing">RAM的种类与选型</span><a href="#ram-de-chong-lei-yu-xuan-xing" class="header-anchor">#</a></h3><ul>
+<li>DRAM 需要刷新，更密集，价格更低（一般内存使用）<ul>
+<li>SDRAM 时钟同步，提高性能  </li>
+</ul>
+</li>
+<li>SRAM 不需刷新，更快（一般cache使用）</li>
+</ul>
+<h2><span id="wu-qian-ru-shi-xi-tong-zong-xian">五 嵌入式系统总线*</span><a href="#wu-qian-ru-shi-xi-tong-zong-xian" class="header-anchor">#</a></h2><h3><span id="zong-xian-jie-gou-chang-jian-de-zong-xian-ji-te-dian">总线结构，常见的总线及特点*</span><a href="#zong-xian-jie-gou-chang-jian-de-zong-xian-ji-te-dian" class="header-anchor">#</a></h3><p>单总线——单一的系统总线 连接CPU 主存和 I/O设备</p>
+<p>双总线——CPU 和 主存 之间专门设置一组高速的存储总线 CPU可通过专用总线于存储器交换信息，并减轻了系统总线的负担  </p>
+<p>多总线——在双总线的基础上增加I/O总线，其中，系统总线是  CPU 主存和通道（IOP） 之间进行数据传送的公共通路</p>
+<h3><span id="mang-deng-io-he-zhong-duan-io">忙等IO和中断IO*</span><a href="#mang-deng-io-he-zhong-duan-io" class="header-anchor">#</a></h3><h4><span id="mang-deng">忙等*</span><a href="#mang-deng" class="header-anchor">#</a></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">peek</span><span class="params">(<span class="keyword">char</span> *location)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> *location;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">poke</span><span class="params">(<span class="keyword">char</span>* location, <span class="keyword">char</span> newval)</span></span>&#123;</span><br><span class="line">    (*location) = newval;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// busy/wait output</span></span><br><span class="line">current_char=mystring;</span><br><span class="line"><span class="keyword">while</span>(*current_char!=<span class="string">'\0'</span>)&#123;</span><br><span class="line">    poke(OUT_CHAR, *current_char);</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">peek</span>(OUT_STATUS)!=<span class="number">0</span>)&#123;</span><br><span class="line">        current_char++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Simultaneous busy/wait input and output</span></span><br><span class="line"><span class="keyword">while</span> (TRUE) &#123;</span><br><span class="line">    <span class="comment">/* read */</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">peek</span>(IN_STATUS) == <span class="number">0</span>); 	<span class="comment">//等到可以读 IN_STATUS==1为true可以读</span></span><br><span class="line">    achar = (<span class="keyword">char</span>)<span class="built_in">peek</span>(IN_DATA);	<span class="comment">// 读</span></span><br><span class="line">    <span class="comment">/* write */</span></span><br><span class="line">    poke(OUT_DATA,achar);</span><br><span class="line">    poke(OUT_STATUS,<span class="number">1</span>);	<span class="comment">//标记为已经写</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">peek</span>(OUT_STATUS) != <span class="number">0</span>);	<span class="comment">//CPU处理了写的数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>缺点：效率低，CPU 在测试设备时候不能工作，难以IO 并发</p>
+<h4><span id="zhong-duan">中断*</span><a href="#zhong-duan" class="header-anchor">#</a></h4><p>中断：让设备可以改变CPU 的控制流，需要子例程去处理设备  </p>
+<p>中断行为：基于子例程调用机制<br>中断使得下一个指令是预先确定好的子例程调用<br>返回地址预先保存，为了返回执行前台程序</p>
+<p>中断过程：CPU响应中断–&gt;设备发送中断向量 –&gt;CPU调用处理函数 –&gt;软件处理请求 –&gt;CPU把状态返回到前台程序</p>
+<p>中断处理过程：中断请求、中断排队或优先级仲裁、中断处理、中断返回</p>
+<p>使中断更具体的机制：</p>
+<ol>
+<li>优先级：哪个中断得到CPU</li>
+<li>向量机制，哪个代码是那种类型调用的</li>
+</ol>
+<p>中断开销：中断延迟、寄存器现场保护、进入中断服务、中断恢复</p>
+<h3><span id="independent-i-o-port-memory-mapped-i-o">Independent I/O port | memory-mapped I/O*</span><a href="#independent-i-o-port-memory-mapped-i-o" class="header-anchor">#</a></h3><p>Independent I/O port  只有特定的IO命令能访问  </p>
+<p>memory-mapped I/O  1 device control registers are just variables in memory and can be addressed in C the same way as any other variables. 2 no special protection mechanism</p>
+<h2><span id="liu-qian-ru-shi-ruan-jian">六 嵌入式软件*</span><a href="#liu-qian-ru-shi-ruan-jian" class="header-anchor">#</a></h2><h3><span id="qian-ru-shi-ruan-jian-te-dian">嵌入式软件 特点*</span><a href="#qian-ru-shi-ruan-jian-te-dian" class="header-anchor">#</a></h3><ul>
+<li>内存有限</li>
+<li>CPU往往恰好满足要求</li>
+<li>RTOS、专有OS或裸机</li>
+<li>有实时性要求（确定性）</li>
+<li>采用交叉开发的方式</li>
+<li>执行流程：多数嵌入式设备从开机开始就会运行某个程序，一直运行到系统关机。这个程序可能存储在ROM，也可能从非易失性存储器转移到RAM中执行</li>
+<li>每个嵌入式设备都是不同的</li>
+<li>需要专门的开发工具</li>
+</ul>
+<h3><span id="qian-ru-shi-ruan-jian-de-fen-lei">嵌入式软件的分类*</span><a href="#qian-ru-shi-ruan-jian-de-fen-lei" class="header-anchor">#</a></h3><p>系统软件、支撑软件、应用软件</p>
+<h3><span id="qian-ru-shi-ruan-jian-ti-xi-jie-gou">嵌入式软件体系结构*</span><a href="#qian-ru-shi-ruan-jian-ti-xi-jie-gou" class="header-anchor">#</a></h3><ul>
+<li>轮转结构（round-robin architecture）</li>
+<li>状态机 ( State Machine )</li>
+<li>带有中断的轮转结构（ round-robin with interrupts architecture）</li>
+<li>中断（Just Interrupts）</li>
+<li>函数队列结构（function-queue-scheduling architecture）  </li>
+</ul>
+<h3><span id="rtos-gai-nian">RTOS概念**</span><a href="#rtos-gai-nian" class="header-anchor">#</a></h3><p>对外来事件能在限定的时间内做出预定质量响应的计算机系统</p>
+<h3><span id="rtos-te-dian">RTOS特点**</span><a href="#rtos-te-dian" class="header-anchor">#</a></h3><ul>
+<li>可靠性</li>
+<li>可预测性</li>
+<li>高性能</li>
+<li>紧凑</li>
+<li>可扩展性  </li>
+</ul>
+<h3><span id="rtos-xuan-xing-yuan-ze">RTOS选型原则**</span><a href="#rtos-xuan-xing-yuan-ze" class="header-anchor">#</a></h3><p>综合权衡</p>
+<ol>
+<li>成本</li>
+<li>可靠性</li>
+<li>实时性</li>
+<li>工具链</li>
+<li>模块丰富</li>
+<li>RTOS 内核 RAM、ROM 占用量</li>
+<li>支持</li>
+</ol>
+<h3><span id="ren-wu-guan-li">任务管理***</span><a href="#ren-wu-guan-li" class="header-anchor">#</a></h3><p>实时系统及任务调度（RMS、EDF算法）</p>
+<h3><span id="cun-chu-guan-li-qian-ru-shi-xi-tong-jing-tai-he-dong-tai-nei-cun-guan-li">存储管理——嵌入式系统静态和动态内存管理**</span><a href="#cun-chu-guan-li-qian-ru-shi-xi-tong-jing-tai-he-dong-tai-nei-cun-guan-li" class="header-anchor">#</a></h3><p>ucOS-II不划分内核和用户空间，系统只有一个地址空间。采用固定分区的存储管理方法，含有多个内存分区，不同分区中的内存块大小不同</p>
+<p>OSMemCreate  OSMemGet  OSMemPut</p>
+<p>任务的栈空间分配方法</p>
+<p>静态分配：在编译的时候分配 static OS_STK MyTaskStack[stack_size]</p>
+<p>动态分配：在任务运行的时候使用 malloc() 函数来动态申请内存空间</p>
+<ul>
+<li>在ANSI C中malloc()和free()两个函数动态地分配内存和释放内存。易产生碎片。</li>
+<li>由于内存管理算法的原因，malloc()和free()函数执行时间是不确定的。μC/OS-II 对malloc()和free()函数进行了改进，使得它们可以分配和释放固定大小的内存块。这样⼀来，malloc()和free()函数的执行时间也是固定的</li>
+</ul>
+<h2><span id="qi-qian-ru-shi-shi-shi-nei-he-jie-he-ucos-ii-he-freertos">七 嵌入式实时内核（结合ucOS-II和freertos）**</span><a href="#qi-qian-ru-shi-shi-shi-nei-he-jie-he-ucos-ii-he-freertos" class="header-anchor">#</a></h2><p>实时任务调度、中断与时钟、同步与通信、存储管理（静态、动态）</p>
+<h3><span id="shi-shi-ren-wu-diao-du">实时任务调度**</span><a href="#shi-shi-ren-wu-diao-du" class="header-anchor">#</a></h3><p>近似地每时每刻总是让优先级最高的就绪任务处于运行状态” 。为了保证这一点，它在系统或用户任务调用系统函数及执行中断服务程序结束时总是调用调度器，来确定应该运行的任务并运行它 。</p>
+<p>μC/OS_II进行任务调度的依据就是任务就绪表</p>
+<h3><span id="zhong-duan-yu-shi-zhong">中断与时钟**</span><a href="#zhong-duan-yu-shi-zhong" class="header-anchor">#</a></h3><p>μC/OS-II系统响应中断的过程为： 系统接收到中断请求后，这时如果CPU处于中断允许状态（即中断是开放的），系统就会中止正在运行的当前任务，而按照中断向量的指向转而去运行中断服务子程序；当中断服务子程序的运行结束后，系统将会根据情况返回到被中止的任务继续运行或者转向运行另一个具有更高优先级别的就绪任务。</p>
+<h3><span id="tong-bu-yu-tong-xin">同步与通信**</span><a href="#tong-bu-yu-tong-xin" class="header-anchor">#</a></h3><p>管理的核心是事件控制块ECB，同步可以通过开关中断实现。互斥使用信号量。通信可以使用邮箱和消息队列实现。</p>
+<h3><span id="cun-chu-guan-li-jing-tai-dong-tai">存储管理（静态、动态）**</span><a href="#cun-chu-guan-li-jing-tai-dong-tai" class="header-anchor">#</a></h3><p>ucOS-II不划分内核和用户空间，系统只有一个地址空间。采用固定分区的存储管理方法，含有多个内存分区，不同分区中的内存块大小不同</p>
+<p>OSMemCreate  OSMemGet  OSMemPut</p>
+<p>任务的栈空间分配方法</p>
+<p>静态分配：在编译的时候分配 static OS_STK MyTaskStack[stack_size]</p>
+<p>动态分配：在任务运行的时候使用 malloc() 函数来动态申请内存空间</p>
+<ul>
+<li>在ANSI C中malloc()和free()两个函数动态地分配内存和释放内存。易产生碎片。</li>
+<li>由于内存管理算法的原因，malloc()和free()函数执行时间是不确定的。μC/OS-II 对malloc()和free()函数进行了改进，使得它们可以分配和释放固定大小的内存块。这样⼀来，malloc()和free()函数的执行时间也是固定的</li>
+</ul>
+<h2><span id="ba-bsp-bootloader">八 bsp, bootloader</span><a href="#ba-bsp-bootloader" class="header-anchor">#</a></h2><h3><span id="qian-ru-shi-xi-tong-de-qi-dong-guo-cheng">嵌入式系统的启动过程</span><a href="#qian-ru-shi-xi-tong-de-qi-dong-guo-cheng" class="header-anchor">#</a></h3><ol>
+<li>上电复位、板级初始化</li>
+<li>系统引导/升级</li>
+<li>操作系统初始化</li>
+<li>应用程序初始化</li>
+<li>多任务应用运行</li>
+</ol>
+<h3><span id="bsp-te-dian-yu-bios-qu-bie">BSP ，特点，与 BIOS 区别</span><a href="#bsp-te-dian-yu-bios-qu-bie" class="header-anchor">#</a></h3><p>BSP 全称“板级支持包”(Board Support Packages),说的简单一点,就是一段启动代码, 和计算机主板的 BIOS 差不多,但提供的功能区别就相差很大</p>
+<p>特点：硬件相连性——BSP必须为操作系统提供操作和控制具体硬件的方法；操作系统相连性——BSP必须为不同的操作系统提供接口；</p>
+<p>区别：BIOS主要是负责在电脑开启时检测、初始化系统设备（设置栈指针，中断分配，内存初始化..）、装入操作系统并调度操作系统向硬件发出的指令。</p>
+<p>BSP是和操作系统绑在一起运行在主板上的，尽管BSP的开始部分和BIOS所做的工作类似，可是大部分和BIOS不同，作用也完全不同。</p>
+<p>程序员还可以编程修改BSP，在BSP中任意添加一些和系统无关的驱动或程序，甚至可以把上层开发的统统放到BSP中。 而BIOS程序是用户不能更改，编译编程的，只能对参数进行修改设置。更不会包含一些基本的硬件驱动。</p>
+<h3><span id="yin-dao-mo-shi">引导模式</span><a href="#yin-dao-mo-shi" class="header-anchor">#</a></h3><p>操作系统引导概念：将操作系统装入内存并开始执行的过程。</p>
+<p>按时间效率和空间效率不同的要求，分为两种模式：</p>
+<ol>
+<li>需要BootLoader的引导模式：节省空间，牺牲时间，适用于硬件成本低，运行速度快，但启动速度相对慢</li>
+<li>不需要BootLoader的引导模式：时间效率高，系统快速启动，直接在NOR flash或ROM系列非易失性存储介质中运行，但不满足运行速度的要求</li>
+</ol>
+<h3><span id="bootloader-ji-qi-qi-dong-guo-cheng">bootloader及其启动过程</span><a href="#bootloader-ji-qi-qi-dong-guo-cheng" class="header-anchor">#</a></h3><p>bootloader的概念：bootloader是嵌入式系统中的OS启动加载程序。</p>
+<p>启动过程：</p>
+<ol>
+<li>初始化硬件，如设置UART（至少设置一个），检测存储器等</li>
+<li>设置启动参数，告诉内核硬件的信息，如用哪个启动界面，波特率</li>
+<li>跳转到操作系统的首地址</li>
+<li>消亡</li>
+</ol>
+<h3><span id="final-jian-mo">Final 建模**</span><a href="#final-jian-mo" class="header-anchor">#</a></h3><h3><span id="you-xian-zhuang-tai-ji-ji-qi-ying-yong">有限状态机及其应用</span><a href="#you-xian-zhuang-tai-ji-ji-qi-ying-yong" class="header-anchor">#</a></h3><p>Moore state models: all actions are upon state entry</p>
+<p>Mealy state models: all actions are in transitions</p>
+<h3><span id="you-xian-zhuang-tai-ji-de-shi-xian">有限状态机的实现</span><a href="#you-xian-zhuang-tai-ji-de-shi-xian" class="header-anchor">#</a></h3><p><strong>扫地机器人</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/24/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95-%E4%B8%8E-Hotspot%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" rel="prev" title="垃圾回收算法 与 Hotspot虚拟机的垃圾回收器">
+      <i class="fa fa-chevron-left"></i> 垃圾回收算法 与 Hotspot虚拟机的垃圾回收器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/04/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="next" title="云计算">
+      云计算 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">一 嵌入式系统简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">嵌入式系统定义**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.2.</span> <span class="nav-text">嵌入式系统特点**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text">嵌入式系统分类**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.4.</span> <span class="nav-text">嵌入式系统应用（按照应用分类）**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.5.</span> <span class="nav-text">嵌入式系统组成**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.6.</span> <span class="nav-text">IOT**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.7.</span> <span class="nav-text">CPS**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.8.</span> <span class="nav-text">通用计算机与嵌入式计算机对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.9.</span> <span class="nav-text">三要素</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">二 嵌入式系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">嵌入式系统面临挑战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">嵌入式系统的设计过程的基本流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.3.</span> <span class="nav-text">传统开发过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.4.</span> <span class="nav-text">软硬件划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.5.</span> <span class="nav-text">通常由软件实现的部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.6.</span> <span class="nav-text">双重性部分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">三 嵌入式微处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.1.</span> <span class="nav-text">冯诺伊曼结构与哈佛结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.2.</span> <span class="nav-text">RISC和CISC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.3.</span> <span class="nav-text">大端与小端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.4.</span> <span class="nav-text">嵌入式微处理器分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.5.</span> <span class="nav-text">嵌入式微处理器特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.6.</span> <span class="nav-text">选型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.7.</span> <span class="nav-text">WatchDog*</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">4.</span> <span class="nav-text">四 存储体系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.1.</span> <span class="nav-text">存储器系统的层次结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.2.</span> <span class="nav-text">ROM的种类与选型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.3.</span> <span class="nav-text">Flash的种类与选型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">4.4.</span> <span class="nav-text">RAM的种类与选型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">5.</span> <span class="nav-text">五 嵌入式系统总线*</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">5.1.</span> <span class="nav-text">总线结构，常见的总线及特点*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">5.2.</span> <span class="nav-text">忙等IO和中断IO*</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">5.2.1.</span> <span class="nav-text">忙等*</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">5.2.2.</span> <span class="nav-text">中断*</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">5.3.</span> <span class="nav-text">Independent I&#x2F;O port | memory-mapped I&#x2F;O*</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">6.</span> <span class="nav-text">六 嵌入式软件*</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.1.</span> <span class="nav-text">嵌入式软件 特点*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.2.</span> <span class="nav-text">嵌入式软件的分类*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.3.</span> <span class="nav-text">嵌入式软件体系结构*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.4.</span> <span class="nav-text">RTOS概念**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.5.</span> <span class="nav-text">RTOS特点**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.6.</span> <span class="nav-text">RTOS选型原则**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.7.</span> <span class="nav-text">任务管理***</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">6.8.</span> <span class="nav-text">存储管理——嵌入式系统静态和动态内存管理**</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">7.</span> <span class="nav-text">七 嵌入式实时内核（结合ucOS-II和freertos）**</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">7.1.</span> <span class="nav-text">实时任务调度**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">7.2.</span> <span class="nav-text">中断与时钟**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">7.3.</span> <span class="nav-text">同步与通信**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">7.4.</span> <span class="nav-text">存储管理（静态、动态）**</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">8.</span> <span class="nav-text">八 bsp, bootloader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">8.1.</span> <span class="nav-text">嵌入式系统的启动过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">8.2.</span> <span class="nav-text">BSP ，特点，与 BIOS 区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">8.3.</span> <span class="nav-text">引导模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">8.4.</span> <span class="nav-text">bootloader及其启动过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">8.5.</span> <span class="nav-text">Final 建模**</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">8.6.</span> <span class="nav-text">有限状态机及其应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">8.7.</span> <span class="nav-text">有限状态机的实现</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Qin"
+      src="/images/eason.jpg">
+  <p class="site-author-name" itemprop="name">Qin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Qinruixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Qinruixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/hhh-75-26" title="zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-75-26" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>zhihu</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+      <div id="music163player">
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=1300140490&auto=1&height=66"></iframe>
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qin</span>
+</div>
+  <div class="powered-by">由 xinxin 用爱发电
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
