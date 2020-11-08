@@ -20,22 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="睁开双眼，点亮手机屏幕——2020年8月11号08:00">
+  <meta name="description" content="Dockerfile简介与基本命令">
 <meta property="og:type" content="article">
-<meta property="og:title" content="返校记">
-<meta property="og:url" content="http://yoursite.com/2020/08/12/%E8%BF%94%E6%A0%A1%E8%AE%B0/index.html">
+<meta property="og:title" content="Dockerfile简介">
+<meta property="og:url" content="http://yoursite.com/2020/11/08/Dockerfile%E7%AE%80%E4%BB%8B/index.html">
 <meta property="og:site_name" content="OvO">
-<meta property="og:description" content="睁开双眼，点亮手机屏幕——2020年8月11号08:00">
+<meta property="og:description" content="Dockerfile简介与基本命令">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://nju-cat.oss-cn-hangzhou.aliyuncs.com/essay/plane.png">
-<meta property="article:published_time" content="2020-08-12T15:28:08.000Z">
-<meta property="article:modified_time" content="2020-08-12T15:48:59.066Z">
+<meta property="article:published_time" content="2020-11-08T11:59:53.000Z">
+<meta property="article:modified_time" content="2020-11-08T12:01:07.667Z">
 <meta property="article:author" content="Qin">
-<meta property="article:tag" content="essay">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://nju-cat.oss-cn-hangzhou.aliyuncs.com/essay/plane.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/12/%E8%BF%94%E6%A0%A1%E8%AE%B0/">
+<link rel="canonical" href="http://yoursite.com/2020/11/08/Dockerfile%E7%AE%80%E4%BB%8B/">
 
 
 <script id="page-configurations">
@@ -48,7 +46,7 @@
   };
 </script>
 
-  <title>返校记 | OvO</title>
+  <title>Dockerfile简介 | OvO</title>
   
 
 
@@ -161,7 +159,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/12/%E8%BF%94%E6%A0%A1%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/08/Dockerfile%E7%AE%80%E4%BB%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/eason.jpg">
@@ -174,7 +172,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          返校记
+          Dockerfile简介
         </h1>
 
         <div class="post-meta">
@@ -185,7 +183,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-12 23:28:08 / 修改时间：23:48:59" itemprop="dateCreated datePublished" datetime="2020-08-12T23:28:08+08:00">2020-08-12</time>
+              <time title="创建时间：2020-11-08 19:59:53 / 修改时间：20:01:07" itemprop="dateCreated datePublished" datetime="2020-11-08T19:59:53+08:00">2020-11-08</time>
             </span>
 
           
@@ -196,7 +194,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">睁开双眼，点亮手机屏幕——2020年8月11号08:00</div>
+            <div class="post-description">Dockerfile简介与基本命令</div>
 
         </div>
       </header>
@@ -207,14 +205,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>睁开双眼，点亮手机屏幕——2020年8月11号08:00，打开QQ，把置顶的课程群聊一一取消置顶。漫长的居家时期终于要结束了，经历了最水的一个学期，也经历了最硬核的一个假期。两个月来，上了3门暑期课程，写了4个大作业，刚刚赶完最后一个ddl，考试周就来了，返校第二天早上喜提专业课考试。  </p>
-<p>傍晚离开家，像是出去散步一样，虽然拖着行李箱，但完全没有一种返校的仪式感。一阵风吹来，落叶纷飞，突然意识到已经是秋天了。原来已经在家住了这么久——从冬到春，从春到夏，从夏到秋……这是漫长的“假期”，也是漫长的“学期”，寒假与暑假之间的壁垒被打破，一个学期连着下个学期不再是梦。  </p>
-<p>之前最担心的事情还是发生了，返校这天有台风登陆，万幸的是航班没有取消，只是延误了一阵子。返校的飞机从南往北飞，特地挑了一个最左边的位置，因为想在空中看夕阳，最后如愿以偿，弥补了未能按时返校的遗憾。  </p>
-<p><img src="https://nju-cat.oss-cn-hangzhou.aliyuncs.com/essay/plane.png" alt="空中夕阳"></p>
-<p>到达学校已是夜深，按计划住进了原本在学校里的酒店，之所以说“原本”，是因为疫情期间，本在学校里的酒店也被“隔离”了，当然这只是一种戏谑。  </p>
-<p>8月12号7:30，走在这熟悉而陌生的校园里，忽而觉得自己从来都没离开过，忽而觉得像两年前初来乍到一样。</p>
-<p>7个月没见了，关于这个校园的记忆，也几乎尘封了7个月。  </p>
-<p>两周后就要再一次离开这里了，这一次，将是某种意义上的永远。但愿两周内，能记录下关于这里想记录的一切。</p>
+        <p>Dockerfile 是用来构建 Docker 镜像的构建文件，是由一系列命令和参数构成的脚本</p>
+<ul>
+<li>编写 Dockerfile 文件</li>
+<li>docker build</li>
+<li>docker run</li>
+</ul>
+<p>镜像是分层的， Dockerfile 的每一条命令都会在之前镜像的基础上添加一层</p>
+<h2><span id="ji-chu-zhi-shi">基础知识</span><a href="#ji-chu-zhi-shi" class="header-anchor">#</a></h2><ol>
+<li>每条保留字指令 大写 且后面要跟随至少一个参数</li>
+<li>指令按照从上到下，顺序执行</li>
+<li>#表示注释</li>
+<li>每条指令创建一个新的镜像层，并对镜像进行提交</li>
+</ol>
+<h2><span id="zhi-ling">指令</span><a href="#zhi-ling" class="header-anchor">#</a></h2><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> 		<span class="comment"># 基础镜像</span></span><br><span class="line"><span class="keyword">MAINTAINER</span>	<span class="comment"># 镜像维护者的姓名和邮箱地址</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash">			<span class="comment"># 容器构建时需要运行的命令</span></span></span><br><span class="line"><span class="keyword">EXPOSE</span>      <span class="comment"># 当前容器对外暴露出的端口</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash">     <span class="comment"># 指定在创建容器后，终端默认登录进来的工作目录</span></span></span><br><span class="line"><span class="keyword">ENV</span>         <span class="comment"># 用来在构建镜像过程中设置环境变量</span></span><br><span class="line"><span class="keyword">ADD</span><span class="bash">         <span class="comment"># 将宿主机目录下的文件拷贝进镜像，自动处理URL和解压tar压缩包</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash">        <span class="comment"># 类似 ADD 将 构建上下文目录中&lt;源路径&gt;的文件/目录 复制到 新的一层的镜像内的&lt;目的路径&gt; 位置</span></span></span><br><span class="line"><span class="keyword">VOLUME</span><span class="bash">      <span class="comment"># 容器数据卷，用于数据保存和持久化工作</span></span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash">         <span class="comment"># 指定一个容器启动时要运行的命令，可以有多个，但只有最后一个生效，CMD会被 docker run 之后的参数替换</span></span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="bash">  <span class="comment"># 指定一个容器启动时要运行的命令 可以在 docker run 后添加参数</span></span></span><br><span class="line"><span class="keyword">ONBUILD</span>     <span class="comment"># 当构建一个被继承的 Dockerfile 时 运行命令，父镜像在被子镜像继承后 父镜像的 ONBUILD 被触发</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="cmd-yu-entrypoint-qu-bie">CMD 与 ENTRYPOINT 区别</span><a href="#cmd-yu-entrypoint-qu-bie" class="header-anchor">#</a></h3><h4><span id="cmd-li-zi">CMD 例子</span><a href="#cmd-li-zi" class="header-anchor">#</a></h4><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> centos</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> yum install -y curl</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"curl"</span>, <span class="string">"-s"</span>, <span class="string">"http://ip.cn"</span> ]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t myip .  # docker build -f ./Dockerfile -t myip . 若 Dockerfile 在当前文件夹 可以省略 -f</span><br><span class="line">docker run myip -i      # 报错</span><br></pre></td></tr></table></figure>
+
+<h4><span id="entrypoint-li-zi">ENTRYPOINT 例子</span><a href="#entrypoint-li-zi" class="header-anchor">#</a></h4><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> centos</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> yum install -y curl</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="bash"> [ <span class="string">"curl"</span>, <span class="string">"-s"</span>, <span class="string">"http://ip.cn"</span> ]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker build -t myip .  # docker build -f ./Dockerfile -t myip . 若 Dockerfile 在当前文件夹 可以省略 -f</span><br><span class="line">docker run myip -i      # 成功打印头部信息</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><a href="https://docs.docker.com/engine/reference/builder/" target="_blank" rel="noopener">官方文档</a></p>
 
     </div>
 
@@ -224,7 +239,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/essay/" rel="tag"># essay</a>
+              <a href="/tags/docker/" rel="tag"># docker</a>
           </div>
 
         
@@ -233,12 +248,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/03/21/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/" rel="prev" title="类加载器">
-      <i class="fa fa-chevron-left"></i> 类加载器
+    <a href="/2020/11/06/docker%E5%85%A5%E9%97%A8/" rel="prev" title="docker入门">
+      <i class="fa fa-chevron-left"></i> docker入门
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/08/13/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94SQL%E8%AF%AD%E5%8F%A5/" rel="next" title="数据库基础——SQL语句">
-      数据库基础——SQL语句 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/11/08/%E5%9C%A8docker%E4%B8%AD%E5%90%AF%E5%8A%A8Jenkins/" rel="next" title="在docker中启动Jenkins">
+      在docker中启动Jenkins <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -298,6 +313,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">CMD 与 ENTRYPOINT 区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.1.</span> <span class="nav-text">CMD 例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.1.2.</span> <span class="nav-text">ENTRYPOINT 例子</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

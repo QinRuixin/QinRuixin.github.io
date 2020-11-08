@@ -20,22 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="睁开双眼，点亮手机屏幕——2020年8月11号08:00">
+  <meta name="description" content="在docker容器中运行Jenkins">
 <meta property="og:type" content="article">
-<meta property="og:title" content="返校记">
-<meta property="og:url" content="http://yoursite.com/2020/08/12/%E8%BF%94%E6%A0%A1%E8%AE%B0/index.html">
+<meta property="og:title" content="在docker中启动Jenkins">
+<meta property="og:url" content="http://yoursite.com/2020/11/08/%E5%9C%A8docker%E4%B8%AD%E5%90%AF%E5%8A%A8Jenkins/index.html">
 <meta property="og:site_name" content="OvO">
-<meta property="og:description" content="睁开双眼，点亮手机屏幕——2020年8月11号08:00">
+<meta property="og:description" content="在docker容器中运行Jenkins">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://nju-cat.oss-cn-hangzhou.aliyuncs.com/essay/plane.png">
-<meta property="article:published_time" content="2020-08-12T15:28:08.000Z">
-<meta property="article:modified_time" content="2020-08-12T15:48:59.066Z">
+<meta property="article:published_time" content="2020-11-08T12:02:20.000Z">
+<meta property="article:modified_time" content="2020-11-08T12:03:32.013Z">
 <meta property="article:author" content="Qin">
-<meta property="article:tag" content="essay">
+<meta property="article:tag" content="docker jenkins">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://nju-cat.oss-cn-hangzhou.aliyuncs.com/essay/plane.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/12/%E8%BF%94%E6%A0%A1%E8%AE%B0/">
+<link rel="canonical" href="http://yoursite.com/2020/11/08/%E5%9C%A8docker%E4%B8%AD%E5%90%AF%E5%8A%A8Jenkins/">
 
 
 <script id="page-configurations">
@@ -48,7 +46,7 @@
   };
 </script>
 
-  <title>返校记 | OvO</title>
+  <title>在docker中启动Jenkins | OvO</title>
   
 
 
@@ -161,7 +159,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/12/%E8%BF%94%E6%A0%A1%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/08/%E5%9C%A8docker%E4%B8%AD%E5%90%AF%E5%8A%A8Jenkins/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/eason.jpg">
@@ -174,7 +172,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          返校记
+          在docker中启动Jenkins
         </h1>
 
         <div class="post-meta">
@@ -185,7 +183,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-12 23:28:08 / 修改时间：23:48:59" itemprop="dateCreated datePublished" datetime="2020-08-12T23:28:08+08:00">2020-08-12</time>
+              <time title="创建时间：2020-11-08 20:02:20 / 修改时间：20:03:32" itemprop="dateCreated datePublished" datetime="2020-11-08T20:02:20+08:00">2020-11-08</time>
             </span>
 
           
@@ -196,7 +194,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">睁开双眼，点亮手机屏幕——2020年8月11号08:00</div>
+            <div class="post-description">在docker容器中运行Jenkins</div>
 
         </div>
       </header>
@@ -207,14 +205,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>睁开双眼，点亮手机屏幕——2020年8月11号08:00，打开QQ，把置顶的课程群聊一一取消置顶。漫长的居家时期终于要结束了，经历了最水的一个学期，也经历了最硬核的一个假期。两个月来，上了3门暑期课程，写了4个大作业，刚刚赶完最后一个ddl，考试周就来了，返校第二天早上喜提专业课考试。  </p>
-<p>傍晚离开家，像是出去散步一样，虽然拖着行李箱，但完全没有一种返校的仪式感。一阵风吹来，落叶纷飞，突然意识到已经是秋天了。原来已经在家住了这么久——从冬到春，从春到夏，从夏到秋……这是漫长的“假期”，也是漫长的“学期”，寒假与暑假之间的壁垒被打破，一个学期连着下个学期不再是梦。  </p>
-<p>之前最担心的事情还是发生了，返校这天有台风登陆，万幸的是航班没有取消，只是延误了一阵子。返校的飞机从南往北飞，特地挑了一个最左边的位置，因为想在空中看夕阳，最后如愿以偿，弥补了未能按时返校的遗憾。  </p>
-<p><img src="https://nju-cat.oss-cn-hangzhou.aliyuncs.com/essay/plane.png" alt="空中夕阳"></p>
-<p>到达学校已是夜深，按计划住进了原本在学校里的酒店，之所以说“原本”，是因为疫情期间，本在学校里的酒店也被“隔离”了，当然这只是一种戏谑。  </p>
-<p>8月12号7:30，走在这熟悉而陌生的校园里，忽而觉得自己从来都没离开过，忽而觉得像两年前初来乍到一样。</p>
-<p>7个月没见了，关于这个校园的记忆，也几乎尘封了7个月。  </p>
-<p>两周后就要再一次离开这里了，这一次，将是某种意义上的永远。但愿两周内，能记录下关于这里想记录的一切。</p>
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">  -u root \</span><br><span class="line">  --rm \  # 关闭时自动删此容器</span><br><span class="line">  -d \  # 在后台运行容器（即“分离”模式）并输出容器ID，否则在终端窗口中输出正在运行的此容器的Docker日志</span><br><span class="line">  -p 8080:8080 \  # 映射主机端口（第一个数字8080）和容器端口（后一个数字8080），用于HTTP访问</span><br><span class="line">  -p 50000:50000 \  # 映射主机端口（第一个数字50000）和容器端口（后一个数字50000），用于连接Agent</span><br><span class="line">  -v jenkins-data:/var/jenkins_home \  # 将Jenkins的Home目录映射到本地</span><br><span class="line">  -v /var/run/docker.sock:/var/run/docker.sock \  # 允许容器与Docker守护进程通信</span><br><span class="line">  jenkinsci/blueocean</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">   --name myjenkins \</span><br><span class="line">   -u root \</span><br><span class="line">   --rm \</span><br><span class="line">   -d \</span><br><span class="line">   -p 8080:8080 \</span><br><span class="line">   -p 50000:50000 \</span><br><span class="line">   -v jenkins-data:/var/jenkins_home \</span><br><span class="line">   -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">   jenkinsci/blueocean:1.24.3</span><br></pre></td></tr></table></figure>
+
+<p>访问 [ip]:[port]  port是8080，此时需要初始化的密码以解锁<br>输入上一步日志输出的 或者通过以下方式找到  </p>
+<p>另外打开一个会话</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker exec -t [image ID] cat /var/jenkins_home/secrets/initialAdminPassword</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">cat /var/lib/docker/volumes/jenkins-data/_data/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
+
+<p>新手入门 –&gt; 安装推荐的插件  </p>
+<p>设置一个管理员账户，记住用户和密码  </p>
+<p>完成安装</p>
+<h2><span id="jenkins-ji-ben-shi-yong-pei-zhi-github-push-zi-dong-hong-fa-gou-jian">Jenkins 基本使用 (配置 GitHub Push 自动触发构建)</span><a href="#jenkins-ji-ben-shi-yong-pei-zhi-github-push-zi-dong-hong-fa-gou-jian" class="header-anchor">#</a></h2><h3><span id="huo-qu-github-de-persional-access-token">获取 Github 的 Persional access token</span><a href="#huo-qu-github-de-persional-access-token" class="header-anchor">#</a></h3><p>进入GitHub，点击setting，进入setting页面，点击左下角的Developer settings  </p>
+<p>进入页面后选择 Persional access token ，点击右边的 generate new token 输入密码  </p>
+<p>跳转页面后，输入Token description，再勾选repo和admin:repo_hook，再点击底部的Generate token按钮，就能产生一个新的access token，将此字符串复制到记事本，后面jenkins任务中会用到（注意：关闭这个页面就找不到这个字符串了）</p>
+<h3><span id="pei-zhi-jenkins">配置 Jenkins</span><a href="#pei-zhi-jenkins" class="header-anchor">#</a></h3><p>回到 Jenkins 管理页面 选择 系统管理 –&gt; 系统配置<br>找到 GitHub  GitHub服务器 –&gt; 添加GitHub Server<br>凭证右边 选中管理 Hook选择 Add -&gt;Jenkins<br>弹出的页面中，类型选择Secret text，Secret填入前面在GitHub上生成的Personal access tokens，描述随便写一些描述信息，点击添加完成添加。<br>填写完毕后，点击右侧的连接测试按钮，如果信息没有填错，显示的内容<br>Credentials verified for user …, rate limit: ….<br>成功后 保存即可  </p>
+<h3><span id="zai-jenkins-shang-xin-jian-gou-jian-xiang-mu">在Jenkins上新建构建项目</span><a href="#zai-jenkins-shang-xin-jian-gou-jian-xiang-mu" class="header-anchor">#</a></h3><p>新建任务 –&gt; 流水线<br>  选择GitHub项目<br>构建触发器<br>  构建触发器中勾选GitHub hook trigger for GiTScm polling<br>流水线<br>  pipeline script from SCM<br>  SCM 选择 git<br>  Repository URL输入仓库地址：<a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a>   .git<br>  Credentials创建一个Credentials，类型选择Username with password，Username输入GitHub账号，Password输入GitHub密码，描述随便输入，如下图<br>  源码库浏览器选择githubweb<br>  URL输入项目主页：<a href="https://github.com" target="_blank" rel="noopener">https://github.com</a><br>//构建环境并绑定<br>  勾选Use secret text(s) or file(s)，下面的”凭据”选择我们之前配置过的Personal access tokens</p>
+<h3><span id="pei-zhi-github-de-webhook-di-zhi">配置GitHub的 webhook 地址</span><a href="#pei-zhi-github-de-webhook-di-zhi" class="header-anchor">#</a></h3><p>webhook是通知Jenkins时的请求地址，用来填写到GitHub上，这样GitHub就能通过该地址通知到Jenkins；<br>假设登录Jenkins的地址是： <a href="http://192.168.0.1:8080/jenkins，那么webhook地址就是" target="_blank" rel="noopener">http://192.168.0.1:8080/jenkins，那么webhook地址就是</a> <a href="http://192.168.0.1:8080/jenkins/github-webhook" target="_blank" rel="noopener">http://192.168.0.1:8080/jenkins/github-webhook</a></p>
+<hr>
+<p><a href="https://www.cnblogs.com/anliven/p/11893316.html#_label2" target="_blank" rel="noopener">参考博客</a><br><a href="https://www.jenkins.io/doc/book/installing/docker/" target="_blank" rel="noopener">官方文档</a><br><a href="https://www.cnblogs.com/mingyue5826/p/10768486.html" target="_blank" rel="noopener">配置 GitHub Push 自动触发 Jenkins 的构建</a></p>
 
     </div>
 
@@ -224,7 +233,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/essay/" rel="tag"># essay</a>
+              <a href="/tags/docker-jenkins/" rel="tag"># docker jenkins</a>
           </div>
 
         
@@ -233,13 +242,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/03/21/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/" rel="prev" title="类加载器">
-      <i class="fa fa-chevron-left"></i> 类加载器
+    <a href="/2020/11/08/Dockerfile%E7%AE%80%E4%BB%8B/" rel="prev" title="Dockerfile简介">
+      <i class="fa fa-chevron-left"></i> Dockerfile简介
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/13/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80%E2%80%94%E2%80%94SQL%E8%AF%AD%E5%8F%A5/" rel="next" title="数据库基础——SQL语句">
-      数据库基础——SQL语句 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -298,6 +304,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">Jenkins 基本使用 (配置 GitHub Push 自动触发构建)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">获取 Github 的 Persional access token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.2.</span> <span class="nav-text">配置 Jenkins</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text">在Jenkins上新建构建项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.4.</span> <span class="nav-text">配置GitHub的 webhook 地址</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
