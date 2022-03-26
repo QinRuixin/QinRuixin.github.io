@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Java内存区域与类的生命周期">
+  <meta name="description" content="Java 内存区域与类的生命周期">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java内存区域与类的生命周期">
+<meta property="og:title" content="Java 内存区域与类的生命周期">
 <meta property="og:url" content="http://yoursite.com/2020/03/20/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%B8%8E%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/index.html">
 <meta property="og:site_name" content="OvO">
-<meta property="og:description" content="Java内存区域与类的生命周期">
+<meta property="og:description" content="Java 内存区域与类的生命周期">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2020/03/20/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%B8%8E%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/JVMdataArea.png">
 <meta property="article:published_time" content="2020-03-20T12:46:17.000Z">
-<meta property="article:modified_time" content="2020-09-22T01:50:15.333Z">
+<meta property="article:modified_time" content="2022-03-26T02:07:00.768Z">
 <meta property="article:author" content="Qin">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>Java内存区域与类的生命周期 | OvO</title>
+  <title>Java 内存区域与类的生命周期 | OvO</title>
   
 
 
@@ -127,12 +127,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">14</span></a>
 
   </li>
   </ul>
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Java内存区域与类的生命周期
+          Java 内存区域与类的生命周期
         </h1>
 
         <div class="post-meta">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-22 09:50:15" itemprop="dateModified" datetime="2020-09-22T09:50:15+08:00">2020-09-22</time>
+                <time title="修改时间：2022-03-26 10:07:00" itemprop="dateModified" datetime="2022-03-26T10:07:00+08:00">2022-03-26</time>
               </span>
 
           
@@ -212,7 +212,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Java内存区域与类的生命周期</p>
+        <p>Java 内存区域与类的生命周期</p>
 <a id="more"></a>
 
 <hr>
@@ -229,12 +229,11 @@
 <li>将这个字节流所代表的静态存储结构转化为<strong>方法区</strong>的运行时数据结构。</li>
 <li>在堆中生成一个代表这个类的<strong>java.lang.Class</strong>对象，作为方法区这个类的各种数据的访问入口</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.lang.Class类方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; forName(String className,<span class="keyword">boolean</span> initialize, ClassLoader loader) <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用给定的类加载器返回与给定字符串名称的类或接口相关联的类对象。如果参数loader为空，则通过引导类加载器加载该类。只有当initialize参数为true并且尚未被初始化时，该类才被初始化。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">()</span> <span class="keyword">throws</span> InstantiationException,IllegalAccessException</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//此方法创建此Class对象表示的类的新实例。通过具有空参数列表的新表达式创建类。如果尚未初始化，则初始化该类。</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//返回由 类对象表示的实体（类，接口，数组类，原始类型或空白）的名称(含包名)。</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">ClassLoader <span class="title">getClassLoader</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//此方法返回此类的类加载器。如果类加载器是bootstrap类加载器，那么此方法返回null，因为引导类加载器是用C，C++等语言实现的。如果此对象表示基本类型或void，则返回null</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.lang.Class类方法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; forName(String className,<span class="keyword">boolean</span> initialize, ClassLoader loader) <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line"><span class="comment">//使用给定的类加载器返回与给定字符串名称的类或接口相关联的类对象。如果参数loader为空，则通过引导类加载器加载该类。只有当initialize参数为true并且尚未被初始化时，该类才被初始化。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">()</span> <span class="keyword">throws</span> InstantiationException,IllegalAccessException</span></span><br><span class="line"><span class="function"><span class="comment">//此方法创建此Class对象表示的类的新实例。通过具有空参数列表的新表达式创建类。如果尚未初始化，则初始化该类。</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//返回由 类对象表示的实体（类，接口，数组类，原始类型或空白）的名称(含包名)。</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">ClassLoader <span class="title">getClassLoader</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//此方法返回此类的类加载器。如果类加载器是bootstrap类加载器，那么此方法返回null，因为引导类加载器是用C，C++等语言实现的。如果此对象表示基本类型或void，则返回null</span></span></span><br></pre></td></tr></table></figure>
 
 <h3><span id="yan-zheng">验证</span><a href="#yan-zheng" class="header-anchor">#</a></h3><p>验证是连接阶段的第一步，这一阶段的目的是为了确保Class文件的字节流中包含的信息符合当前虚拟机的要求，并不会危害虚拟机的自身安全。  </p>
 <ol>
-<li><p>文件格式验证：</p>
-<ol>
+<li>文件格式验证：<ol>
 <li>是否以魔数0xCAFEBABE开头。</li>
 <li>主、次版本号是否在当前虚拟机处理范围之内。</li>
 <li>常量池的常量中是否有不被支持的常量类型（检查常量tag标志）。</li>
@@ -244,8 +243,7 @@
 <li>……</li>
 </ol>
 </li>
-<li><p>元数据验证：</p>
-<ol>
+<li>元数据验证：<ol>
 <li>这个类是否有父类（除了java.lang.Object之外，所有类都应当有父类）。</li>
 <li>这个类是否继承了不允许被继承的类（被final修饰的类）。</li>
 <li>如果这个类不是抽象类，是否实现了其父类或接口之中所要求实现的所有方法。</li>
@@ -253,16 +251,14 @@
 <li>……</li>
 </ol>
 </li>
-<li><p>字节码验证：<br>主要目的是通过数据流和控制流分析，确定程序语义是合法的、符合逻辑的。这个阶段将对类的方法体进行校验分析，保证被校验类的方法在运行时不会产生危害虚拟机安全的事件，例如：</p>
-<ol>
+<li>字节码验证：<br>主要目的是通过数据流和控制流分析，确定程序语义是合法的、符合逻辑的。这个阶段将对类的方法体进行校验分析，保证被校验类的方法在运行时不会产生危害虚拟机安全的事件，例如：<ol>
 <li>保证任意时刻操作数栈的数据类型与指令代码序列都能配合工作，例如不会出现类似这样的情况：在操作数栈放置了一个int类型的数据，使用时却按long类型来加载入本地变量表中。</li>
 <li>保证跳转指令不会跳转到方法体以外的字节码指令上。</li>
 <li>保证方法体中的类型转换是有效的，例如可以把一个子类对象赋值给父类数据类型，但是把父类对象赋值给子类数据类型，甚至把对象赋值给与它毫无继承关系、完全不相干的一个数据类型，则是危险不合法的。</li>
 <li>……</li>
 </ol>
 </li>
-<li><p>符号引用验证：<br>符号引用验证可以看作是类对自身以外（常量池中的各种符号引用）的信息进行匹配性校验，通常需要校验以下内容：</p>
-<ol>
+<li>符号引用验证：<br>符号引用验证可以看作是类对自身以外（常量池中的各种符号引用）的信息进行匹配性校验，通常需要校验以下内容：<ol>
 <li>符号引用中通过字符串描述的全限定名是否能够找到对应的类。</li>
 <li>在指定类中是否存在符合方法的字段描述符以及简单名称所描述的方法和字段。</li>
 <li>符号引用中的类、字段、方法的访问性（private、protected、public、default）是否可被当前类访问。</li>
@@ -270,16 +266,14 @@
 </ol>
 </li>
 </ol>
-<h3><span id="zhun-bei">准备</span><a href="#zhun-bei" class="header-anchor">#</a></h3><p>准备阶段是正式为类变量分配内存并设置类变量初始值（通常情况下是数据类型的零值，注意没有初始化）的阶段，这些变量所使用的内存都将在<strong>方法区</strong>中进行分配。这时候进行内存分配的仅包括类变量（被static修饰的变量），而不包括实例变量，实例变量将会在对象实例化的时候随着对象一起分配在Java堆中。  </p>
-<p>初始值设置时的特殊情况：<br>如果类字段的字段属性表中存在ConstantValue属性，那在准备阶段变量value就会被初始化为ConstantValue属性所指定的值，如</p>
-<p>public static final int value = 123;</p>
+<h3><span id="zhun-bei">准备</span><a href="#zhun-bei" class="header-anchor">#</a></h3><p>准备阶段是正式为类变量分配内存并设置类变量初始值（通常情况下是数据类型的零值，注意没有初始化）的阶段，这些变量所使用的内存都将在<strong>方法区</strong>中进行分配。这时候进行内存分配的仅包括类变量（被static修饰的变量），而不包括实例变量，实例变量将会在对象实例化的时候随着对象一起分配在Java堆中。<br>初始值设置时的特殊情况：<br>如果类字段的字段属性表中存在ConstantValue属性，那在准备阶段变量value就会被初始化为ConstantValue属性所指定的值，如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> value = <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+
 <p>编译时Javac将会为value生成ConstantValue属性，在准备阶段虚拟机就会根据ConstantValue的设置将value赋值为123.  </p>
 <h3><span id="jie-xi">解析</span><a href="#jie-xi" class="header-anchor">#</a></h3><p>解析阶段是虚拟机将常量池内的符号引用替换为直接引用的过程。  </p>
 <ul>
-<li><p>符号引用（Symbolic References）：符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。</p>
-</li>
-<li><p>直接引用（Direct References）：直接引用可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。如果有了直接引用，那么引用的目标一定是已经存在于内存中。</p>
-</li>
+<li>符号引用（Symbolic References）：符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。</li>
+<li>直接引用（Direct References）：直接引用可以是直接指向目标的指针、相对偏移量或是一个能间接定位到目标的句柄。如果有了直接引用，那么引用的目标一定是已经存在于内存中。</li>
 </ul>
 <h4><span id="lei-huo-jie-kou-de-jie-xi">类或接口的解析</span><a href="#lei-huo-jie-kou-de-jie-xi" class="header-anchor">#</a></h4><p>假设当前代码所处的类为D，如果要把一个从未解析过的符号引用N解析为一个类或接口C的引用，那虚拟机完成整个解析过程需要以下3个步骤：  </p>
 <ol>
@@ -429,14 +423,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -444,9 +438,6 @@
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
         <a href="https://github.com/Qinruixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Qinruixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://www.zhihu.com/people/hhh-75-26" title="zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-75-26" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>zhihu</a>
       </span>
   </div>
 
@@ -479,7 +470,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

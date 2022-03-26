@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="《图解HTTP》阅读笔记_02">
+  <meta name="description" content="HTTPS 加密 通信的加密 内容的加密 共享密钥加密技术 公开密钥加密技术 HTTPS 采用混合加密机制   证明公开密钥正确性的证书 业务流程   HTTPS 的安全通信机制 完整性保护 参考资料       HTTPS#HTTPS &#x3D; HTTP+ （通信）加密 + 认证（证书） + 完整性保护    加密#通信的加密#一种方式就是将通信加密。HTTP 协议中没有加密机制，但可以通">
 <meta property="og:type" content="article">
 <meta property="og:title" content="What&#39;s HTTPS">
 <meta property="og:url" content="http://yoursite.com/2019/10/05/what-s-HTTPS/index.html">
 <meta property="og:site_name" content="OvO">
-<meta property="og:description" content="《图解HTTP》阅读笔记_02">
+<meta property="og:description" content="HTTPS 加密 通信的加密 内容的加密 共享密钥加密技术 公开密钥加密技术 HTTPS 采用混合加密机制   证明公开密钥正确性的证书 业务流程   HTTPS 的安全通信机制 完整性保护 参考资料       HTTPS#HTTPS &#x3D; HTTP+ （通信）加密 + 认证（证书） + 完整性保护    加密#通信的加密#一种方式就是将通信加密。HTTP 协议中没有加密机制，但可以通">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-10-05T08:39:35.000Z">
-<meta property="article:modified_time" content="2020-03-18T11:33:42.551Z">
+<meta property="article:modified_time" content="2022-03-26T02:04:59.077Z">
 <meta property="article:author" content="Qin">
 <meta property="article:tag" content="Web">
 <meta name="twitter:card" content="summary">
@@ -125,12 +125,12 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">11</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">7</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">14</span></a>
 
   </li>
   </ul>
@@ -189,7 +189,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-18 19:33:42" itemprop="dateModified" datetime="2020-03-18T19:33:42+08:00">2020-03-18</time>
+                <time title="修改时间：2022-03-26 10:04:59" itemprop="dateModified" datetime="2022-03-26T10:04:59+08:00">2022-03-26</time>
               </span>
 
           
@@ -200,7 +200,6 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">《图解HTTP》阅读笔记_02</div>
 
         </div>
       </header>
@@ -211,8 +210,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>《图解HTTP》阅读笔记_02</p>
-<a id="more"></a>
+        <a id="more"></a>
 <div class="toc">
 
 <!-- toc -->
@@ -233,6 +231,7 @@
 </li>
 <li><a href="#https-de-an-quan-tong-xin-ji-zhi">HTTPS 的安全通信机制</a></li>
 <li><a href="#wan-zheng-xing-bao-hu">完整性保护</a></li>
+<li><a href="#can-kao-zi-liao">参考资料</a></li>
 </ul>
 <!-- tocstop -->
 
@@ -284,7 +283,9 @@
 <li><p>最后由客户端断开连接。断开连接时，发送 close_notify 报文。上图做了一些省略，这步之后再发送 TCP FIN 报文来关闭与 TCP的通信。  </p>
 </li>
 </ol>
-<h2><span id="wan-zheng-xing-bao-hu">完整性保护</span><a href="#wan-zheng-xing-bao-hu" class="header-anchor">#</a></h2><p>在以上流程中，应用层发送数据时会附加一种叫做 MAC（Message Authentication Code）的报文摘要。MAC 能够查知报文是否遭到篡改，从而保护报文的完整性。</p>
+<h2><span id="wan-zheng-xing-bao-hu">完整性保护</span><a href="#wan-zheng-xing-bao-hu" class="header-anchor">#</a></h2><p>在以上流程中，应用层发送数据时会附加一种叫做 MAC（Message Authentication Code）的报文摘要。MAC 能够查知报文是否遭到篡改，从而保护报文的完整性。  </p>
+<hr>
+<h2><span id="can-kao-zi-liao">参考资料</span><a href="#can-kao-zi-liao" class="header-anchor">#</a></h2><p>《图解HTTP》</p>
 
     </div>
 
@@ -307,8 +308,8 @@
       <i class="fa fa-chevron-left"></i> What's HTTP
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/03/17/Software-Engineering-and-Computing-I/" rel="next" title="Software Engineering and Computing I">
-      Software Engineering and Computing I <i class="fa fa-chevron-right"></i>
+    <a href="/2020/03/18/class%E6%96%87%E4%BB%B6%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84/" rel="next" title=".class 文件组织结构">
+      .class 文件组织结构 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -368,7 +369,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">HTTPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">加密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">通信的加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">内容的加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.3.</span> <span class="nav-text">共享密钥加密技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.4.</span> <span class="nav-text">公开密钥加密技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.5.</span> <span class="nav-text">HTTPS 采用混合加密机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">证明公开密钥正确性的证书</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.1.</span> <span class="nav-text">业务流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">4.</span> <span class="nav-text">HTTPS 的安全通信机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">5.</span> <span class="nav-text">完整性保护</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">HTTPS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">加密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.1.</span> <span class="nav-text">通信的加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.2.</span> <span class="nav-text">内容的加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.3.</span> <span class="nav-text">共享密钥加密技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.4.</span> <span class="nav-text">公开密钥加密技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">2.5.</span> <span class="nav-text">HTTPS 采用混合加密机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">证明公开密钥正确性的证书</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">3.1.</span> <span class="nav-text">业务流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">4.</span> <span class="nav-text">HTTPS 的安全通信机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">5.</span> <span class="nav-text">完整性保护</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -384,14 +385,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -399,9 +400,6 @@
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
         <a href="https://github.com/Qinruixin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Qinruixin" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://www.zhihu.com/people/hhh-75-26" title="zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;hhh-75-26" rel="noopener" target="_blank"><i class="fab fa-zhihu fa-fw"></i>zhihu</a>
       </span>
   </div>
 
@@ -434,7 +432,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
